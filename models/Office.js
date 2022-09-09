@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
-// To validate if the timeRange format is correct
-const timeRangeValidator = {
+
+//TODO: move this function to utils
+// To validate if the time format is correct
+const timeValidator = {
   validator: (value) => /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(value),
   message:
     "Time must be in the format hh:mm and be a valid time of the day (being hh a number from 00 to 23 and mm a number from 00 to 59)",
@@ -43,11 +45,11 @@ const OfficeSchema = new mongoose.Schema(
     timeRange: {
       from: {
         type: String,
-        validate: { timeRangeValidator },
+        validate: { timeValidator },
       },
       to: {
         type: String,
-        validate: { timeRangeValidator },
+        validate: { timeValidator },
       },
     },
   },
