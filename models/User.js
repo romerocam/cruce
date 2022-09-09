@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { isEmail } = require("validator");
+//const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
@@ -17,8 +17,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "email required"],
     unique: true,
-    lowerCase: true,
-    validate: [isEmail, "enter valid email"],
+    // lowerCase: true,
+    // validate: [isEmail, "enter valid email"],
 },
   roles: {
     type: String,
