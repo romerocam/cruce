@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 //TODO: move this function to utils
 // To validate if the time format is correct
 const timeValidator = {
@@ -45,11 +44,11 @@ const OfficeSchema = new mongoose.Schema(
     timeRange: {
       from: {
         type: String,
-        validate: { timeValidator },
+        validate:  timeValidator,
       },
       to: {
         type: String,
-        validate: { timeValidator },
+        validate: timeValidator,
       },
     },
   },

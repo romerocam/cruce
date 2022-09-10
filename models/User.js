@@ -41,15 +41,6 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Office",
   }, 
-
-  // tokens: [
-  //   {
-  //     token: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //   },
-  // ],
 },
 { versionKey: false }
 );
