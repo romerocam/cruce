@@ -12,7 +12,7 @@
 
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";         // para convertir el userId que viene por params de string a ObjectId de Mongo
 
 export default async function handler(req, res) {
     const { method } = req;
