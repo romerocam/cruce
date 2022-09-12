@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 //Next.js
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+//components
+import Navbar from "../components/Navbar";
 //styles
 import {
   Flex,
@@ -15,6 +16,7 @@ import {
   FormErrorMessage,
   FormControl,
 } from "@chakra-ui/react";
+
 
 const Register = () => {
   const {
@@ -37,28 +39,24 @@ const Register = () => {
   };
 
   return (
+    <div>
+    <Navbar/>
     <Flex
       height="100vh"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-start"
       direction="column"
     >
-      <Avatar bg="teal.500" mb={10} />
+      <Avatar bg="teal.500" m={10} />
       <Flex
         width="90vw"
         direction="column"
         alignItems="center"
         background="gray.100"
-        p={2}
+        p={10}
         rounded={6}
       >
-        <Flex alignItems="center" justifyContent="center" mb={6}>
-          <Link href="/users">
-            <Button>Log in</Button>
-          </Link>
-          <span className="bold-underlined">Register</span>
-        </Flex>
-
+       
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.name||errors.lastname||errors.dni||errors.address||errors.email||errors.password||errors.confirmpassword}>
             <Stack spacing={3}>
@@ -172,6 +170,7 @@ const Register = () => {
         </form>
       </Flex>
     </Flex>
+    </div>
   );
 };
 

@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 //next.js
 import { useRouter } from "next/router";
+//components
+import Navbar from "../components/Navbar";
 //styles
 import {
   Flex,
@@ -27,13 +29,15 @@ const ForgotPassword = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <Flex
       height="100vh"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-start"
       direction="column"
     >
-      <Avatar bg="teal.500" mb={10} />
+      <Avatar bg="teal.500" m={10} />
       <Flex
         width="70vw"
         direction="column"
@@ -67,6 +71,7 @@ const ForgotPassword = () => {
         </form>
       </Flex>
     </Flex>
+    </>
   );
 };
 
