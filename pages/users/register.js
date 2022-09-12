@@ -1,6 +1,5 @@
 import axios from "axios";
 //react
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 //Next.js
 import Link from "next/link";
