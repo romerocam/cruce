@@ -1,14 +1,36 @@
+import axios from "axios";
+//react
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+//Next.js
 import Link from "next/link";
-import { Flex, Input, Button, Avatar , Stack,FormControl,
-  FormErrorMessage,
-  FormHelperText} from "@chakra-ui/react";
 
+//styles
+import {
+  Flex,
+  Input,
+  Button,
+  Avatar,
+  Stack,
+  FormErrorMessage,
+  FormControl,
+} from "@chakra-ui/react";
 
 const Register = () => {
-  const handleLogin = (e)=>{
-    e.preventDefault()
-    console.log("me estoy registrando!" )
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (formData) => {
+    console.log("esta es la form data", formData);
+    axios
+      .post("/api/user", formData)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
+
   return (
     <Flex
       height="100vh"
@@ -32,31 +54,85 @@ const Register = () => {
           <span className="bold-underlined">Register</span>
         </Flex>
 
-          <form onSubmit={handleLogin}>
-            <Stack>
-              <Input type="text" placeholder="Name" variant="flushed" mb={3} />
-              <Input type="text" placeholder="Last Name" variant="flushed" mb={3} />
-              <Input type="text" placeholder="DNI" variant="flushed" mb={3} />
-              <Input type="email" placeholder="E-mail" variant="flushed" mb={3} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={errors.name}>
+            <Stack spacing={3}>
+              <Input
+                type="text"
+                placeholder="Name"
+                variant="flushed"
+                id="name"
+                {...register("name")}
+              />
+              <Input
+                type="text"
+                placeholder="Last Name"
+                variant="flushed"
+                id="lastname"
+                {...register("lastname")}
+              />
+              <Input
+                type="text"
+                placeholder="DNI"
+                variant="flushed"
+                id="dni"
+                {...register("dni", {
+                  minLength: {
+                    value: 8,
+                    message: "Please enter 8 digits",
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: "Please enter 8 digits",
+                  },
+                })}
+              />
+              <Input
+                type="text"
+                placeholder="address"
+                variant="flushed"
+                name="address"
+                {...register("address")}
+              />
+              <Input
+                type="email"
+                placeholder="E-mail"
+                variant="flushed"
+                id="email"
+                {...register("email", {
+                  required: "E-mail is required",
+                })}
+              />
               <Input
                 type="password"
                 placeholder="Password"
                 variant="flushed"
-                mb={3}
+                id="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 7,
+                    message: "Minimum length is 7",
+                  },
+                })}
               />
               <Input
                 type="password"
                 placeholder="Confirm Password"
                 variant="flushed"
-                mb={6}
+                id="confirmpassword"
               />
-              <Button type='submit' colorScheme="teal" variant="solid">
+              <Button
+                type="submit"
+                colorScheme="teal"
+                variant="solid"
+                margin={6}
+              >
                 Submit
               </Button>
             </Stack>
-          </form>
-
-        {/* </FormControl> */}
+          </FormControl>
+        </form>
       </Flex>
     </Flex>
   );

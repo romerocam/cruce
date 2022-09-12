@@ -29,14 +29,16 @@ const UsersPage = () => {
         </Flex>
 
         <form>
-          <Stack> 
-            <Input type="email" placeholder="E-mail" variant="flushed" mb={3} />
+          <Stack spacing={3}> 
+            <Input type="email" placeholder="E-mail" variant="flushed"/>
             <Input
               type="password"
               placeholder="Password"
               variant="flushed"
-              mb={6}
             />
+            <Link href="/users/forgotpassword">
+              <span>Forgot your password?</span>
+            </Link>
             <Button type='submit' colorScheme="teal" variant="solid">
               Log in
             </Button>
