@@ -4,10 +4,22 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-  name: String,
-  lastname: String,
-  dni: Number,
-  address: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
+  dni: {
+    type: Number,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
@@ -22,18 +34,13 @@ const UserSchema = new mongoose.Schema({
 },
   roles: {
     type: String,
-    default: 'guest',
-    enum: ['guest', 'admin', 'operator'],
+    default: 'customer',
+    enum: ['customer', 'admin', 'operator'],
   },  
-  operator: String,
-  // tokens: [
-  //   {
-  //     token: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //   },
-  // ],
+  office: { // in case the user is an operator, then an office should be assigned.
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Office",
+  }, 
 },
 { versionKey: false }
 );
