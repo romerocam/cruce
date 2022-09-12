@@ -12,7 +12,7 @@
 
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
-import { ObjectId } from "mongodb";         // para convertir el userId que viene por params de string a ObjectId de Mongo
+// import { ObjectId } from "mongodb";         // para convertir el userId que viene por params de string a ObjectId de Mongo
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca el usuario del userId pasado por params:
             try {
-                const foundUser = await User.findOne({ _id: ObjectId(userId) });    // ObjectId convierte el string a ObjetId de mongo
+                const foundUser = await User.findOne({ _id: userId });    // ObjectId convierte el string a ObjetId de mongo
                 res.status(200).json(
                     {
                         success: true,
@@ -57,11 +57,11 @@ export default async function handler(req, res) {
 
         case "DELETE": // si no existe el usuario responde con 409 y un mensaje, sino lo borra:
             try {
-                const existingUser = await User.findOne({ _id: ObjectId(userId) })
+                const existingUser = await User.findOne({ _id: userId })
                 if (!existingUser) {
                     res.status(409).json({ success: false, data: `User ${email} does not exist` })
                 } else {
-                    const deletedQuantity = await User.deleteOne({ _id: ObjectId(userId) })
+                    const deletedQuantity = await User.deleteOne({ _id: userId })
                     console.log("DELETED QTY >>>>>", deletedQuantity)
                     res.status(200).json({
                         success: true,
@@ -95,7 +95,7 @@ export default async function handler(req, res) {
                  */
 
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: ObjectId(userId) },
+                    { _id: userId },
                     {
                         name: reqBody.name,
                         lastname: reqBody.lastname,
