@@ -25,7 +25,7 @@ const Register = () => {
   const onSubmit = (formData) => {
     console.log("esta es la form data", formData);
     axios
-      .post("/api/user", formData)
+      .post("/api/users", formData)
       .then((response) => response.data)
       .catch((error) => console.log(error));
   };
