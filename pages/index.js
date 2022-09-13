@@ -36,6 +36,7 @@ const HomePage = () => {
       </Flex>
     </>
   );
+
 };
 
 export default HomePage;

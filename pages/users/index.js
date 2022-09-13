@@ -1,3 +1,4 @@
+
 //next.js
 import { useRouter } from "next/router";
 //styles
@@ -6,6 +7,35 @@ import Navbar from "../components/Navbar";
 
 const UsersPage = () => {
   const router = useRouter();
+
+import Link from "next/link";
+import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+
+const UsersPage = () => {
+  const router = useRouter();
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await axios.post("/api/auth/login", credentials);
+    console.log("response", response);
+    if (response.status === 200) {
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -24,23 +54,24 @@ const UsersPage = () => {
           p={2}
           rounded={6}
         >
-          <form>
-            <Stack spacing={3}>
-              <Input
-                type="email"
-                placeholder="E-mail"
-                variant="flushed"
-                focusBorderColor="teal.400"
-                errorBorderColor="none"
-              />
-              <Input
-                type="password"
-                placeholder="Password"
-                variant="flushed"
-                focusBorderColor="teal.400"
-                errorBorderColor="none"
-              />
-
+    
+   
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <Input
+              type="email"
+              placeholder="E-mail"
+              variant="flushed"
+              name="email"
+              onChange={handleChange}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              variant="flushed"
+              name="password"
+              onChange={handleChange}
+            />
               <Button
                 color="blue"
                 variant="link"
@@ -52,13 +83,11 @@ const UsersPage = () => {
               >
                 Forgot your password?
               </Button>
-
-              <Button type="submit" colorScheme="teal" variant="solid">
-                Log in
-              </Button>
-            </Stack>
-          </form>
-        </Flex>
+            <Button type="submit" colorScheme="teal" variant="solid">
+              Log in
+            </Button>
+          </Stack>
+        </form>
       </Flex>
     </>
   );
