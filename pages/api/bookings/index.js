@@ -21,11 +21,7 @@ export default async function handler(req, res) {
 
                 let bookings
 
-                if (userId) {
-                    bookings = await Booking.find({ user: userId });
-                } else {
-                    bookings = await Booking.find({});
-                }
+                userId ? bookings = await Booking.find({ user: userId }) : bookings = await Booking.find({});
 
                 if (!bookings) res
                     .status(404)
