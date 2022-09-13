@@ -1,18 +1,10 @@
-
-//next.js
-import { useRouter } from "next/router";
-//styles
-import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
-
-const UsersPage = () => {
-  const router = useRouter();
-
-import Link from "next/link";
 import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+
+
 
 const UsersPage = () => {
   const router = useRouter();
@@ -89,8 +81,9 @@ const UsersPage = () => {
           </Stack>
         </form>
       </Flex>
+      </Flex>
     </>
-  );
-};
+  )
+}
 
 export default UsersPage;
