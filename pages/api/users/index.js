@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca todos los usuarios registrados:
             try {
-                const users = await User.find({});
+                const users = await User.find({}, 'name lastname dni address email roles office');
                 res.status(200).json({ success: true, data: users });
             } catch (error) {
                 res
