@@ -1,20 +1,11 @@
 /* ***********************
  *          RUTA:        *
- *   api/users/:userId   *
+ *   api/bookings/:bookingId   *
  * ***********************/
 
-/*
- * VER cual es la forma correcta para para una API REST:}
- *
- * Hice los querys con tanto con info que llega por body (index.js)
- * como con info que llega por params (este archivo)
- */
-
 import connectMongo from "../../../util/dbConnect";
-import User from "../../../models/User";
-import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
-
-
+import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
+import Booking from "../../../models/Booking";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -22,23 +13,25 @@ export default async function handler(req, res) {
     const email = reqBody.email;
 
     /*
-     * para obtener el userId que viene por params tiene q tener como ultima propiedad el
+     * para obtener el bookingId que viene por params tiene q tener como ultima propiedad el
      * mismo nombre que esta entre [] en el nombre del archivo.
      */
 
-    const userId = req.query.userId;
+    const bookingId = req.query.bookingId;
 
     await connectMongo();
 
+    // HAY QUE HACER TODOS LOS METODOS (SON LOS DE [userId])
+
     switch (method) {
-        case "GET": // busca el usuario del userId pasado por params:
+        case "GET": // busca el booking del bookingId pasado por params:
             try {
-                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email roles office');    // ObjectId convierte el string a ObjetId de mongo
+                const foundBooking = await Booking.findOne({ _id: bookingId });   // ObjectId convierte el string a ObjetId de mongo
                 res.status(200).json(
                     {
                         success: true,
-                        data: foundUser,
-                        message: `User ${foundUser.email} found`,
+                        data: foundBooking,
+                        message: `Booking N° ${foundBooking._id} found`,
                     })
 
             } catch (error) {
@@ -47,7 +40,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User not found`,
+                        message: `Booking not found`,
                     });
             }
             break;

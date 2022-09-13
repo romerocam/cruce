@@ -10,14 +10,18 @@ const timeValidator = {
 
 const { Schema } = mongoose;
 const bookingSchema = new Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   date: {
     type: Date,
-    required: true,
+    // required: true,
   },
   startAt: {
     type: String,
-    required: true,
-    validate: { timeValidator },
+    // required: true,
+    // validate: { timeValidator },
   },
   office: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,10 +37,12 @@ const bookingSchema = new Schema({
     type: String,
     default: "pending",
     enum: ["pending", "present", "absent"],
-    required: true,
+    // required: true,
   },
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
 
 module.exports = Booking;
+
+//module.exports = mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
