@@ -3,7 +3,9 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 //Next.js
 import Link from "next/link";
-
+import { useRouter } from "next/router";
+//components
+import Navbar from "../components/Navbar";
 //styles
 import {
   Flex,
@@ -15,67 +17,82 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
+
 const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({mode: "onBlur"});
+
+  const router = useRouter()
 
   const onSubmit = (formData) => {
     console.log("esta es la form data", formData);
-    axios
-      .post("/api/users", formData)
-      .then((response) => response.data)
-      .catch((error) => console.log(error));
+    // axios
+    //   .post("/api/users", formData)
+    //   .then((response) => {
+    //   router.push("/users")
+    //   return response.data
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   return (
+    <div>
+    <Navbar/>
     <Flex
       height="100vh"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-start"
       direction="column"
     >
-      <Avatar bg="teal.500" mb={10} />
+      <Avatar bg="teal.500" m={10} />
       <Flex
         width="90vw"
         direction="column"
         alignItems="center"
         background="gray.100"
-        p={2}
+        p={10}
         rounded={6}
       >
-        <Flex alignItems="center" justifyContent="center" mb={6}>
-          <Link href="/users">
-            <Button>Log in</Button>
-          </Link>
-          <span className="bold-underlined">Register</span>
-        </Flex>
-
+       
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.name}>
+          <FormControl isInvalid={errors.name||errors.lastname||errors.dni||errors.address||errors.email||errors.password||errors.confirmpassword}>
             <Stack spacing={3}>
               <Input
                 type="text"
                 placeholder="Name"
                 variant="flushed"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
                 id="name"
-                {...register("name")}
+                {...register("name", {
+                  required: "Name is required"
+                })}
               />
+              <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
               <Input
                 type="text"
                 placeholder="Last Name"
                 variant="flushed"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
                 id="lastname"
-                {...register("lastname")}
+                {...register("lastname", {
+                  required: "Last Name is required"
+                })}
               />
+              <FormErrorMessage>{errors.lastname && errors.lastname.message}</FormErrorMessage>
               <Input
                 type="text"
                 placeholder="DNI"
                 variant="flushed"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
                 id="dni"
                 {...register("dni", {
+                  required: "DNI is required",
                   minLength: {
                     value: 8,
                     message: "Please enter 8 digits",
@@ -86,27 +103,39 @@ const Register = () => {
                   },
                 })}
               />
+              <FormErrorMessage>{errors.dni && errors.dni.message}</FormErrorMessage>
               <Input
                 type="text"
-                placeholder="address"
+                placeholder="Address"
                 variant="flushed"
-                name="address"
-                {...register("address")}
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
+                id="address"
+                {...register("address", {
+                  required: "Address is required"
+                })}
               />
+              <FormErrorMessage>{errors.address && errors.address.message}</FormErrorMessage>
               <Input
                 type="email"
                 placeholder="E-mail"
                 variant="flushed"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
                 id="email"
                 {...register("email", {
                   required: "E-mail is required",
                 })}
               />
+              <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
               <Input
                 type="password"
                 placeholder="Password"
                 variant="flushed"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
                 id="password"
+                // name="password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -115,12 +144,19 @@ const Register = () => {
                   },
                 })}
               />
+              <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
               <Input
                 type="password"
                 placeholder="Confirm Password"
                 variant="flushed"
                 id="confirmpassword"
+                focusBorderColor="teal.400"
+                errorBorderColor="none"
+                {...register("confirmpassword",{
+                  validate: value => value === password.value || "The passwords do not match"
+                })}
               />
+               <FormErrorMessage>{errors.confirmpassword && errors.confirmpassword.message}</FormErrorMessage>
               <Button
                 type="submit"
                 colorScheme="teal"
@@ -134,6 +170,7 @@ const Register = () => {
         </form>
       </Flex>
     </Flex>
+    </div>
   );
 };
 

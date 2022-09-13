@@ -1,3 +1,13 @@
+
+//next.js
+import { useRouter } from "next/router";
+//styles
+import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
+import Navbar from "../components/Navbar";
+
+const UsersPage = () => {
+  const router = useRouter();
+
 import Link from "next/link";
 import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -25,31 +35,27 @@ const UsersPage = () => {
       router.push("/dashboard");
     }
   };
-  return (
-    <Flex
-      height="100vh"
-      alignItems="center"
-      justifyContent="center"
-      direction="column"
-    >
-      <Avatar bg="teal.500" mb={10} />
-      <Flex
-        width="70vw"
-        direction="column"
-        alignItems="center"
-        background="gray.100"
-        p={2}
-        rounded={6}
-      >
-        <Flex alignItems="center" justifyContent="center" mb={6}>
-          <span className="bold-underlined" color="00A8E8">
-            Log in
-          </span>
-          <Link href="/users/register">
-            <Button>Register</Button>
-          </Link>
-        </Flex>
 
+  return (
+    <>
+      <Navbar />
+      <Flex
+        height="100vh"
+        alignItems="center"
+        justifyContent="flex-start"
+        direction="column"
+      >
+        <Avatar bg="teal.500" m={10} />
+        <Flex
+          width="70vw"
+          direction="column"
+          alignItems="center"
+          background="gray.100"
+          p={2}
+          rounded={6}
+        >
+    
+   
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
             <Input
@@ -66,16 +72,24 @@ const UsersPage = () => {
               name="password"
               onChange={handleChange}
             />
-            <Link href="/users/forgotpassword">
-              <span>Forgot your password?</span>
-            </Link>
+              <Button
+                color="blue"
+                variant="link"
+                size="xs"
+                alignSelf="flex-end"
+                onClick={() => {
+                  router.push("/users/forgotpassword");
+                }}
+              >
+                Forgot your password?
+              </Button>
             <Button type="submit" colorScheme="teal" variant="solid">
               Log in
             </Button>
           </Stack>
         </form>
       </Flex>
-    </Flex>
+    </>
   );
 };
 
