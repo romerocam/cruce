@@ -4,13 +4,12 @@
  * ***********************/
 
 import connectMongo from "../../../util/dbConnect";
-import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
+// import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
 import Booking from "../../../models/Booking";
 
 export default async function handler(req, res) {
     const { method } = req;
     const reqBody = req.body;
-    const email = reqBody.email;
 
     /*
      * para obtener el bookingId que viene por params tiene q tener como ultima propiedad el
@@ -82,9 +81,7 @@ export default async function handler(req, res) {
 
                 const data = await Booking.findOneAndUpdate(
                     { _id: bookingId },
-                    {
-                        date: reqBody.date,
-                        startAt: reqBody.startAt,
+                    {   // solo quiero editar attendance, ya que editar otra propiedad seria un turno nuevo:
                         attendance: reqBody.attendance,
                     },
                     { new: true })

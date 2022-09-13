@@ -10,14 +10,23 @@ import { ObjectId } from "mongodb";         // para convertir los ids que vienen
 export default async function handler(req, res) {
     const { method } = req;
     const reqBody = req.body;
+    const userId = reqBody.userId
 
     await connectMongo();
     console.log("BODY", reqBody)
 
     switch (method) {
-        case "GET": // busca todos los bookings:
+        case "GET": // busca todos los bookings de un user si se pasa un userId en el body, sino busca todos los bookings de la db:
             try {
-                const bookings = await Booking.find({});
+
+                let bookings
+
+                if (userId) {
+                    bookings = await Booking.find({ user: userId });
+                } else {
+                    bookings = await Booking.find({});
+                }
+
                 if (!bookings) res
                     .status(404)
                     .json({
