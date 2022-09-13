@@ -21,7 +21,7 @@ const bookingSchema = new Schema({
   startAt: {
     type: String,
     // required: true,
-    // validate: { timeValidator },
+    // validate: { timeValidator }, // NO FUNCIONA CON EL VALIDATE
   },
   office: {
     type: mongoose.Schema.Types.ObjectId,
@@ -41,8 +41,12 @@ const bookingSchema = new Schema({
   },
 });
 
+module.exports = mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
+
+/*
+Exportado asi se rompe el servidor en la 2da query de booking:
+
 const Booking = mongoose.model("Booking", bookingSchema);
-
 module.exports = Booking;
+*/
 
-//module.exports = mongoose.models.Booking || mongoose.model("Booking", bookingSchema);

@@ -50,7 +50,6 @@ export default async function handler(req, res) {
                     office: ObjectId(reqBody.office),
                     user: ObjectId(reqBody.user),
                     attendance: reqBody.attendance,
-
                 })
                 console.log("CREATED BOOKING >>>>>", newBooking)
                 res.status(201).json({
@@ -78,7 +77,7 @@ export default async function handler(req, res) {
                 // para recibir un arreglo de ids: https://www.mongodb.com/docs/manual/reference/operator/query/in/
 
                 const data = await Booking.deleteMany({ _id: { $in: reqBody.idArray } })
-                console.log("DELETED QTY >>>>>", data)
+                console.log("DELETED DATA >>>>>", data)
                 res.status(200).json({
                     success: true,
                     data,

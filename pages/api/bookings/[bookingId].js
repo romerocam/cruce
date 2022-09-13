@@ -21,12 +21,13 @@ export default async function handler(req, res) {
 
     await connectMongo();
 
-    // HAY QUE HACER TODOS LOS METODOS (SON LOS DE [userId])
-
     switch (method) {
         case "GET": // busca el booking del bookingId pasado por params:
             try {
                 const foundBooking = await Booking.findOne({ _id: bookingId });   // ObjectId convierte el string a ObjetId de mongo
+
+                if (!foundBooking) res.status(404).json({ success: false, data: `Booking N° ${bookingId} does not exist` })
+
                 res.status(200).json(
                     {
                         success: true,
@@ -36,7 +37,7 @@ export default async function handler(req, res) {
 
             } catch (error) {
                 res
-                    .status(404)
+                    .status(400)
                     .json({
                         success: false,
                         data: error,
@@ -45,21 +46,18 @@ export default async function handler(req, res) {
             }
             break;
 
-        case "DELETE": // si no existe el usuario responde con 409 y un mensaje, sino lo borra:
+        case "DELETE": // si no existe el booking responde con 409 y un mensaje, sino lo borra:
             try {
-                const existingUser = await User.findOne({ _id: ObjectId(userId) })
-                if (!existingUser) {
-                    res.status(409).json({ success: false, data: `User ${email} does not exist` })
+                const existingBooking = await Booking.findOne({ _id: bookingId })
+                if (!existingBooking) {
+                    res.status(409).json({ success: false, data: `Booking N° ${bookingId} does not exist` })
                 } else {
-                    const deletedQuantity = await User.deleteOne({ _id: ObjectId(userId) })
-                    console.log("DELETED QTY >>>>>", deletedQuantity)
+                    const data = await Booking.deleteOne({ _id: bookingId })
+                    console.log("DELETED DATA >>>>>", data)
                     res.status(200).json({
                         success: true,
-                        data: {
-                            // id: newUser._id,
-                            email: email,
-                        },
-                        message: `User ${email} has been deleted`,
+                        data,
+                        message: `Booking N° ${bookingId} has been deleted`,
                     })
                 }
             } catch (error) {
@@ -68,47 +66,42 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User has not been deleted`,
+                        message: `Booking has not been deleted`,
                     });
             }
             break;
 
-        case "PUT": // busca el usuario del userId que viene por params y lo edita:
+        case "PUT": // busca el booking del bookingId que viene por params y lo edita:
             try {
 
                 /* 
-                 * User.findOneAndUpdate(filter, updateInfo, option)
+                 * Booking.findOneAndUpdate(filter, updateInfo, option)
                  * option = { new: true } hace que retorne el documento actualizado, por defecto
                  * trae el anterio al update
                  */
 
-                const updatedUser = await User.findOneAndUpdate(
-                    { _id: ObjectId(userId) },
+                const data = await Booking.findOneAndUpdate(
+                    { _id: bookingId },
                     {
-                        name: reqBody.name,
-                        lastname: reqBody.lastname,
-                        dni: reqBody.dni,
-                        address: reqBody.address,
-                        office: ObjectId(reqBody.office),
-                        roles: reqBody.roles
+                        date: reqBody.date,
+                        startAt: reqBody.startAt,
+                        attendance: reqBody.attendance,
                     },
                     { new: true })
 
-                console.log("UPDATED USER >>>>>", updatedUser)
+                console.log("UPDATED BOOKING >>>>>", data)
 
-                // sino existe el user responde con 409 y un mensaje:
-                if (!updatedUser) res.status(409).json({ success: false, data: `user ${email} does not exist` })
+                // sino existe el booking responde con 404 y un mensaje:
+                if (!data) res.status(404).json({
+                    success: false,
+                    message: `Booking N° ${bookingId} does not exist`
+                })
 
                 res.status(200).json(
                     {
                         success: true,
-                        data: {
-                            name: updatedUser.name,
-                            lastname: updatedUser.lastname,
-                            dni: updatedUser.dni,
-                            address: updatedUser.address
-                        },
-                        message: `User ${updatedUser.email} has been updated`,
+                        data,
+                        message: `Booking N° ${data._id} has been updated!`,
                     })
             } catch (error) {
                 console.log(error)
@@ -117,13 +110,17 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User has not been updated`,
+                        message: `Booking has not been updated`,
                     });
             }
             break;
 
         default:
-            res.status(400).json({ success: false });
+            res.status(400).json({
+                success: false,
+                data: error,
+                message: `Function not working`,
+            });
             break;
     }
 }
