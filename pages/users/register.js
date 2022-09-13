@@ -106,7 +106,7 @@ const Register = () => {
               <FormErrorMessage>{errors.dni && errors.dni.message}</FormErrorMessage>
               <Input
                 type="text"
-                placeholder="address"
+                placeholder="Address"
                 variant="flushed"
                 focusBorderColor="teal.400"
                 errorBorderColor="none"

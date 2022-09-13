@@ -30,47 +30,47 @@ const ForgotPassword = () => {
 
   return (
     <>
-    <Navbar/>
-    <Flex
-      height="100vh"
-      alignItems="center"
-      justifyContent="flex-start"
-      direction="column"
-    >
-      <Avatar bg="teal.500" m={10} />
+      <Navbar />
       <Flex
-        width="70vw"
-        direction="column"
+        height="100vh"
         alignItems="center"
-        background="gray.100"
-        p={2}
-        rounded={6}
+        justifyContent="flex-start"
+        direction="column"
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.email}>
-            <Stack spacing={3}>
-              <Input
-                type="email"
-                placeholder="E-mail"
-                id="email"
-                variant="flushed"
-                focusBorderColor="teal.400"
-                errorBorderColor="none"
-                {...register("email", {
-                  required: "E-mail is required",
-                })}
-              />
-              <FormErrorMessage>
-                {errors.email && errors.email.message}
-              </FormErrorMessage>
-              <Button type="submit" colorScheme="teal" variant="solid">
-                Send Reset Password Link
-              </Button>
-            </Stack>
-          </FormControl>
-        </form>
+        <Avatar bg="teal.500" m={10} />
+        <Flex
+          width="70vw"
+          direction="column"
+          alignItems="center"
+          background="gray.100"
+          p={2}
+          rounded={6}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormControl isInvalid={errors.email}>
+              <Stack spacing={3}>
+                <Input
+                  type="email"
+                  placeholder="E-mail"
+                  id="email"
+                  variant="flushed"
+                  focusBorderColor="teal.400"
+                  errorBorderColor="none"
+                  {...register("email", {
+                    required: "E-mail is required",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
+                <Button type="submit" colorScheme="teal" variant="solid">
+                  Send Reset Password Link
+                </Button>
+              </Stack>
+            </FormControl>
+          </form>
+        </Flex>
       </Flex>
-    </Flex>
     </>
   );
 };
