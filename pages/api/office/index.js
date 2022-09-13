@@ -1,6 +1,11 @@
 import connectMongo from "../../../util/dbConnect";
 import Office from "../../../models/Office";
 
+export const getOffices = async function () {
+  const offices = await Office.find({});
+  return offices;
+};
+
 export default async function handler(req, res) {
   const { method } = req;
 
@@ -9,7 +14,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const offices = await Office.find({});
+        const offices = await getOffices();
         res.status(200).json({
           success: true,
           data: offices,
