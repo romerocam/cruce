@@ -1,5 +1,8 @@
 const HomePage = () => {
-  return <hi>Cruce Booking App</hi>;
+  return (
+  <hi>Cruce Booking App</hi>
+  );
+
 };
 
 export default HomePage;
