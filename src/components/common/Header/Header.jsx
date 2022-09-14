@@ -32,7 +32,7 @@ const Header = () => {
     } catch (error) {
       console.error(error.message);
     }
-    router.push("/users");
+    router.push("/");
   };
 
   return (
@@ -51,15 +51,15 @@ const Header = () => {
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
               <Button
-              size={"sm"}
+                size={"sm"}
                 onClick={() => {
-                  router.push("/users");
+                  router.push("/users/login");
                 }}
               >
                 Log In
               </Button>
               <Button
-              size={"sm"}
+                size={"sm"}
                 onClick={() => {
                   router.push("/users/register");
                 }}
