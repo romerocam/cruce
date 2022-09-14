@@ -1,5 +1,5 @@
-import OfficesTable from "../../components/OfficesTable";
-import { getOffices } from "../api/office";
+import OfficesTable from "../../src/components/OfficeTable/OfficesTable";
+import { getOffices } from "../api/offices/index";
 
 function Offices(props) {
   return <OfficesTable offices={props.offices} />;

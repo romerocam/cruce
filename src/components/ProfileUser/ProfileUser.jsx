@@ -102,7 +102,7 @@ const ProfileUser = () => {
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    values={getProfile().name}
+                    // values={getProfile().name}
                   />
                 </InputGroup>
               </FormControl>
@@ -160,7 +160,7 @@ const ProfileUser = () => {
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    values={getProfile().email}
+                    // values={getProfile().email}
                   />
                 </InputGroup>
               </FormControl>
