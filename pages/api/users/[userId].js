@@ -96,6 +96,7 @@ export default async function handler(req, res) {
                         lastname: reqBody.lastname,
                         dni: reqBody.dni,
                         address: reqBody.address,
+                        password: reqBody.password,             //  OJO: se guarda un password no hasheado!!
                         office: ObjectId(reqBody.office),
                         roles: reqBody.roles
                     },
