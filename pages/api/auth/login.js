@@ -12,11 +12,11 @@ export default async function loginHandler(req, res) {
   const user = await User.findOne({ email });
   if (!user)
     return res
-      .status(400)
+      .status(401)
       .json({ error: true, mensaje: "Email not Registered" });
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword)
-    return res.status(400).json({ error: true, message: "Incorrect Password" });
+    return res.status(401).json({ error: true, message: "Incorrect Password" });
 
   const token = sign(
     {
@@ -29,7 +29,7 @@ export default async function loginHandler(req, res) {
 
   const serialized = serialize("myTokenName", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production", // VARIABLE DE ENTORNO QUE NO DEBERIA EXPONERSE ACA
     sameSite: "strict",
     maxAge: 1000 * 60 * 60 * 24 * 30,
     path: "/",
