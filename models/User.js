@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 //const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
   name: {
