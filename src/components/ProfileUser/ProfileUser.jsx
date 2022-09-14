@@ -15,13 +15,14 @@ import {
   FormControl,
   Container,
   useColorModeValue,
+  Icon,
 } from "@chakra-ui/react";
-import { PhoneIcon } from "@chakra-ui/icons";
+import { HiUser, HiMail,HiLockClosed } from "react-icons/hi";
 
 const ProfileUser = () => {
   return (
     <>
-      <Container maxW={"7xl"} zIndex={1} position={"relative"} height={"100vh"}>
+      <Container maxW={"7xl"} zIndex={1} position={"relative"} >
         <Center py={6}>
           <Box
             maxW={"320px"}
@@ -52,28 +53,30 @@ const ProfileUser = () => {
                 right: 3,
               }}
             />
-            <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
+            <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
               Santiago castaño
             </Heading>
 
-            <Text textAlign={"center"} color={"#000505"} px={3}>
-              <br />
+            <Text fontSize={"sm"} fontFamily={"body"}textAlign={"center"} color={"#000505"} px={3}>              
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             </Text>
 
-            <Stack spacing={3}>
-              <br />
+            <Stack spacing={3}>            
               <FormControl id="name" isrequired>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
@@ -82,13 +85,17 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="lastname"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
@@ -97,13 +104,17 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="DNI"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
@@ -112,23 +123,22 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
 
-              <Heading
-                fontSize={"2xl"}
-                fontFamily={"body"}
-                color={"#000505"}
-                alignItems={"left"}
-              >
+              <Heading fontSize={"xl"} color={"#000505"} textAlign="left" paddingBottom={"5px"} paddingTop={"5px"}>
                 Change password
               </Heading>
 
@@ -136,13 +146,17 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="current password"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
@@ -151,13 +165,17 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="New password"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
               </FormControl>
@@ -166,25 +184,28 @@ const ProfileUser = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300"> </PhoneIcon>}
+                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
                   />
                   <Input
                     variant="flushed"
-                    focusBorderColor="#00A8E8"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     placeholder="Confirm New password"
                     _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
                   />
                 </InputGroup>
-              </FormControl>
-              <br />
+              </FormControl>            
             </Stack>
-            <Stack spacing={6} direction={["column", "row"]}>
+            <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
                 bg={useColorModeValue("brand.700", "brand.600")}
                 color={"white"}
                 w="full"
                 _hover={{
-                  bg: "gray.500",
+                  bg: useColorModeValue("brand.600", "brand.700"),
                 }}
               >
                 Save
