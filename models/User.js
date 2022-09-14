@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   { versionKey: false }
 );
 
-UserSchema.pre(["save", "findOneAndUpdate"], function (next) {
+UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
   bcrypt.hash(this.password, 10, (err, passwordHash) => {
     if (err) return next(err);
