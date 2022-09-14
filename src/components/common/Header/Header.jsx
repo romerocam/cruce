@@ -16,10 +16,24 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
+//next.js
+import { useRouter } from "next/router";
+
+import axios from "axios";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+    } catch (error) {
+      console.error(error.message);
+    }
+    router.push("/users");
+  };
 
   return (
     <>
@@ -36,6 +50,22 @@ const Header = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
+              <Button
+              size={"sm"}
+                onClick={() => {
+                  router.push("/users");
+                }}
+              >
+                Log In
+              </Button>
+              <Button
+              size={"sm"}
+                onClick={() => {
+                  router.push("/users/register");
+                }}
+              >
+                Sign Up
+              </Button>
               <Button onClick={toggleColorMode} size={"sm"}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>

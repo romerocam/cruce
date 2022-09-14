@@ -19,7 +19,32 @@ import {
 } from "@chakra-ui/react";
 import { HiUser, HiMail,HiLockClosed } from "react-icons/hi";
 
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
 const ProfileUser = () => {
+
+  const [user, setUser] = useState({
+    email: "",
+    name: "",
+  });
+  const router = useRouter();
+
+  const getProfile = async () => {
+    const profile = await axios.get("/api/profile");
+    console.log('profile',profile);
+    setUser(profile.data);
+  };
+
+  const logout = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+    } catch (error) {
+      console.error(error.message);
+    }
+    router.push("/users");
+  };
   return (
     <>
       <Container maxW={"7xl"} zIndex={1} position={"relative"} >
@@ -77,6 +102,7 @@ const ProfileUser = () => {
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    values={getProfile().name}
                   />
                 </InputGroup>
               </FormControl>
@@ -134,6 +160,7 @@ const ProfileUser = () => {
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    values={getProfile().email}
                   />
                 </InputGroup>
               </FormControl>
