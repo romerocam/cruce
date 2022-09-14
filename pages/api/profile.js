@@ -9,6 +9,6 @@ export default function profileHandler(req, res) {
     return res.status(401).json({ error: "Not logged in" });
   }
 
-  const { email, password } = jwt.verify(myTokenName, secret);
-  return res.status(200).json({ email, password });
+  const { email, name } = jwt.verify(myTokenName, secret);
+  return res.status(200).json({ email, name });
 }
