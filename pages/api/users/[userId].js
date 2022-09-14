@@ -12,7 +12,9 @@
 
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
-// import { ObjectId } from "mongodb";         // para convertir el userId que viene por params de string a ObjectId de Mongo
+import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
+
+
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -31,16 +33,11 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca el usuario del userId pasado por params:
             try {
-                const foundUser = await User.findOne({ _id: userId });    // ObjectId convierte el string a ObjetId de mongo
+                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email roles office');    // ObjectId convierte el string a ObjetId de mongo
                 res.status(200).json(
                     {
                         success: true,
-                        data: {
-                            name: foundUser.name,
-                            lastname: foundUser.lastname,
-                            dni: foundUser.dni,
-                            address: foundUser.address
-                        },
+                        data: foundUser,
                         message: `User ${foundUser.email} found`,
                     })
 
@@ -57,11 +54,11 @@ export default async function handler(req, res) {
 
         case "DELETE": // si no existe el usuario responde con 409 y un mensaje, sino lo borra:
             try {
-                const existingUser = await User.findOne({ _id: userId })
+                const existingUser = await User.findOne({ _id: ObjectId(userId) })
                 if (!existingUser) {
                     res.status(409).json({ success: false, data: `User ${email} does not exist` })
                 } else {
-                    const deletedQuantity = await User.deleteOne({ _id: userId })
+                    const deletedQuantity = await User.deleteOne({ _id: ObjectId(userId) })
                     console.log("DELETED QTY >>>>>", deletedQuantity)
                     res.status(200).json({
                         success: true,
@@ -83,8 +80,6 @@ export default async function handler(req, res) {
             }
             break;
 
-        // HAY QUE HACER ESTE:
-
         case "PUT": // busca el usuario del userId que viene por params y lo edita:
             try {
 
@@ -95,12 +90,14 @@ export default async function handler(req, res) {
                  */
 
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: userId },
+                    { _id: ObjectId(userId) },
                     {
                         name: reqBody.name,
                         lastname: reqBody.lastname,
                         dni: reqBody.dni,
-                        address: reqBody.address
+                        address: reqBody.address,
+                        office: ObjectId(reqBody.office),
+                        roles: reqBody.roles
                     },
                     { new: true })
 
@@ -121,6 +118,7 @@ export default async function handler(req, res) {
                         message: `User ${updatedUser.email} has been updated`,
                     })
             } catch (error) {
+                console.log(error)
                 res
                     .status(400)
                     .json({
