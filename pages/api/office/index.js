@@ -2,14 +2,20 @@ import connectMongo from "../../../util/dbConnect";
 import Office from "../../../models/Office";
 
 export const getOffices = async function () {
+  //TODO: close mongo connection
+  connectMongo();
   const offices = await Office.find({});
   return offices;
+};
+export const createOffice = async function (office) {
+  //TODO: close mongo connection
+  connectMongo();
+  const newOffice = await Office.create(office);
+  return newOffice;
 };
 
 export default async function handler(req, res) {
   const { method } = req;
-
-  await connectMongo();
 
   switch (method) {
     case "GET":
@@ -29,7 +35,7 @@ export default async function handler(req, res) {
 
     case "POST":
       try {
-        const office = await Office.create(req.body);
+        const office = await createOffice(req.body);
         res.status(201).json({
           success: true,
           data: office,
