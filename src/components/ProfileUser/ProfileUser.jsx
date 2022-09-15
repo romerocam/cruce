@@ -97,7 +97,7 @@ const ProfileUser = () => {
             </Text>
 
             <Stack spacing={3}>
-              <FormControl id="name" isrequired>
+              <FormControl id="name" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -117,7 +117,7 @@ const ProfileUser = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="lastname" isrequired>
+              <FormControl id="lastname" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -136,7 +136,7 @@ const ProfileUser = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="DNI" isrequired>
+              <FormControl id="DNI" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -155,7 +155,7 @@ const ProfileUser = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="email" isrequired>
+              <FormControl id="email" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -179,7 +179,7 @@ const ProfileUser = () => {
                 Change password
               </Heading>
 
-              <FormControl id="current-password" isrequired>
+              <FormControl id="current-password" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -198,7 +198,7 @@ const ProfileUser = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="newPassword" isrequired>
+              <FormControl id="newPassword" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -217,7 +217,7 @@ const ProfileUser = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="confirmpassword" isrequired>
+              <FormControl id="confirmpassword" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"

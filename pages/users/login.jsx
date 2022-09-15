@@ -1,4 +1,4 @@
-import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
+import { Flex, Input, Button, Avatar, Stack, useColorModeValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -56,7 +56,7 @@ const UsersPage = () => {
           justifyContent="flex-start"
           direction="column"
         >
-          <Avatar bg="teal.500" m={10} />
+          <Avatar bg={useColorModeValue("brand.700", "brand.600")} m={10} />
           <Flex
             width="70vw"
             direction="column"
@@ -92,7 +92,12 @@ const UsersPage = () => {
                 >
                   Forgot your password?
                 </Button>
-                <Button type="submit" colorScheme="teal" variant="solid">
+                <Button type="submit"
+                  bg={useColorModeValue("brand.700", "brand.600")}
+                  color={"white"}
+                  _hover={{
+                    bg: useColorModeValue("brand.600", "brand.700"),
+                  }}>
                   Log in
                 </Button>
               </Stack>

@@ -74,7 +74,7 @@ const RoleCreator = () => {
             </Text>
 
             <Stack spacing={3}>
-              <FormControl id="name" isrequired>
+              <FormControl id="name" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -89,12 +89,12 @@ const RoleCreator = () => {
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    // values={getProfile().name}
+                  // values={getProfile().name}
                   />
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="lastname" isrequired>
+              <FormControl id="lastname" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -113,7 +113,7 @@ const RoleCreator = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="DNI" isrequired>
+              <FormControl id="DNI" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -132,7 +132,7 @@ const RoleCreator = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="email" isrequired>
+              <FormControl id="email" isrequired="true">
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -147,7 +147,7 @@ const RoleCreator = () => {
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    // values={getProfile().email}
+                  // values={getProfile().email}
                   />
                 </InputGroup>
               </FormControl>
@@ -177,7 +177,7 @@ const RoleCreator = () => {
                 Set Password
               </Heading>
 
-              <FormControl id="newPassword" isrequired>
+              <FormControl id="newPassword" isrequired="true">
                 <InputGroup size="md">
                   <Input
                     pr="4.5rem"
@@ -192,7 +192,7 @@ const RoleCreator = () => {
                 </InputGroup>
               </FormControl>
 
-              <FormControl id="confirmpassword" isrequired>
+              <FormControl id="confirmpassword" isrequired="true">
                 <InputGroup size="md">
                   <Input
                     pr="4.5rem"
