@@ -40,12 +40,18 @@ const Header = () => {
       <Box bg={useColorModeValue("brand.700", "brand.600")} px={6}>
         <Flex h={10} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
-            <Avatar
-              size={"sm"}
-              src={
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmNrwGtJeJINC3YpfWSOjK67cx6dFm1yWJFQ&usqp=CAU"
-              }
-            />
+            <Button
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              <Avatar
+                size={"sm"}
+                src={
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmNrwGtJeJINC3YpfWSOjK67cx6dFm1yWJFQ&usqp=CAU"
+                }
+              />
+            </Button>
           </Box>
 
           <Flex alignItems={"center"}>
