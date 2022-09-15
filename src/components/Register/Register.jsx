@@ -37,7 +37,7 @@ const Register = () => {
     axios
       .post("/api/users", formData)
       .then((response) => {
-        router.push("/users");
+        router.push("/users/login");
         return response.data;
       })
       .catch((error) => console.log(error));

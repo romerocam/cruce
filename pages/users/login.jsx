@@ -1,15 +1,26 @@
-import Layout from "../../src/components/common/Layout/Layout";
 import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { signIn, useSession, getSession } from "next-auth/react";
+//import { useSession } from 'next-auth/client'
+
+import Layout from "../../src/components/common/Layout/Layout";
 
 const UsersPage = () => {
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+
+  //const session = await getSession({ req })
+
   const router = useRouter();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  // console.log("SESSION", session);
+  // console.log("LOADING", loading);
 
   const handleChange = (e) => {
     setCredentials({
@@ -19,9 +30,19 @@ const UsersPage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("/api/auth/login", credentials);
-    console.log("response", response);
-    if (response.status === 200) {
+
+    const loginResult = await signIn("credentials", {
+      redirect: false, // para que no redirija a otra pagina cuando da error el login
+
+      // le paso las credenciales al pedido (signIn)
+      email: credentials.email,
+      password: credentials.password,
+    });
+
+    console.log("LOGIN_RESULT", loginResult);
+
+    // si login OK redirijo al perfil:
+    if (loginResult.ok) {
       router.push("/users/profile-user");
     }
   };

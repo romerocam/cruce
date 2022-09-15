@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -16,15 +16,23 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { BsPersonCircle } from "react-icons/bs";
 //next.js
 import { useRouter } from "next/router";
-
+import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+
+  const { data: session, status } = useSession();
+  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
+
+  console.log("Session in header", session);  // ver porque se consologuea cada vez que se escribe en el login
+
+  const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
 
   const logout = async () => {
     try {
@@ -56,22 +64,34 @@ const Header = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  router.push("/users/login");
-                }}
-              >
-                Log In
-              </Button>
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  router.push("/users/register");
-                }}
-              >
-                Sign Up
-              </Button>
+              {!session && (
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    router.push("/users/login");
+                  }}
+                >
+                  Log In
+                </Button>
+              )}
+              {!session && (
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    router.push("/users/register");
+                  }}
+                >
+                  Sign Up
+                </Button>
+              )}
+              {session && (
+                <Button
+                  size={"sm"}
+                  onClick={logoutHandler}
+                >
+                  Logout
+                </Button>
+              )}
               <Button onClick={toggleColorMode} size={"sm"}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
@@ -84,7 +104,8 @@ const Header = () => {
                   cursor={"pointer"}
                   minW={0}
                 >
-                  <HamburgerIcon color={"black"}></HamburgerIcon>
+                  {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
+                  <BsPersonCircle color="black" size="30px" />
                 </MenuButton>
                 <MenuList alignItems={"center"}>
                   <br />
@@ -98,13 +119,18 @@ const Header = () => {
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    {!session ? <p>Login Please!</p> : <p>{session.user.email}</p>}
+                  </Center>
+                  <br />
+                  <Center>
+                    {!session ? "" : <p>{session.user.name}</p>}
                   </Center>
                   <br />
                   <MenuDivider />
                   <MenuItem>My information</MenuItem>
                   <MenuItem>My appointments</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  {/* Ver porque no funcionan los botones del Menu */}
+                  {!session ? "" : <Button onClick={logoutHandler}>Logout</Button>}
                 </MenuList>
               </Menu>
             </Stack>

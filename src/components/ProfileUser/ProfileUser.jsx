@@ -17,13 +17,23 @@ import {
   useColorModeValue,
   Icon,
 } from "@chakra-ui/react";
-import { HiUser, HiMail,HiLockClosed } from "react-icons/hi";
+import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const ProfileUser = () => {
+
+  const { data: session, status } = useSession();
+  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
+
+  console.log("SESSION", session)
+
+  // const usuario = session
+
+  // console.log("USER", usuario)
 
   const [user, setUser] = useState({
     email: "",
@@ -33,7 +43,7 @@ const ProfileUser = () => {
 
   const getProfile = async () => {
     const profile = await axios.get("/api/profile");
-    console.log('profile',profile);
+    console.log('profile', profile);
     setUser(profile.data);
   };
 
@@ -79,14 +89,14 @@ const ProfileUser = () => {
               }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
-              Santiago castaño
+              {session.user.email}
             </Heading>
 
-            <Text fontSize={"sm"} fontFamily={"body"}textAlign={"center"} color={"#000505"} px={3}>              
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            <Text fontSize={"sm"} fontFamily={"body"} textAlign={"center"} color={"#000505"} px={3}>
+              {`Role: ${session.user.name}`}
             </Text>
 
-            <Stack spacing={3}>            
+            <Stack spacing={3}>
               <FormControl id="name" isrequired>
                 <InputGroup>
                   <InputLeftElement
@@ -102,7 +112,7 @@ const ProfileUser = () => {
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    // values={getProfile().name}
+                  // values={getProfile().name}
                   />
                 </InputGroup>
               </FormControl>
@@ -160,7 +170,7 @@ const ProfileUser = () => {
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    // values={getProfile().email}
+                  // values={getProfile().email}
                   />
                 </InputGroup>
               </FormControl>
@@ -224,7 +234,7 @@ const ProfileUser = () => {
                     borderColor={"gray.200"}
                   />
                 </InputGroup>
-              </FormControl>            
+              </FormControl>
             </Stack>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
