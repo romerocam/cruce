@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -19,17 +19,41 @@ import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { BsPersonCircle } from "react-icons/bs";
 //next.js
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession, signOut, getSession } from "next-auth/react";
 import axios from "axios";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const loading = status === "loading";
 
-  console.log("Session in header", session);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedSession, setLoadedSession] = useState({});
+  // const { data: session, status } = useSession();
+  // const loading = status === "loading";
+
+
+  useEffect(() => {
+
+    getSession().then(session => {
+
+      setLoadedSession(session)
+      setIsLoading(false)
+
+    })
+
+
+
+  }, [])
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
+
+  console.log("Session in header", loadedSession);
+
+  const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
 
   const logout = async () => {
     try {
@@ -55,7 +79,7 @@ const Header = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              {!session && (
+              {!loadedSession && (
                 <Button
                   size={"sm"}
                   onClick={() => {
@@ -65,7 +89,7 @@ const Header = () => {
                   Log In
                 </Button>
               )}
-              {!session && (
+              {!loadedSession && (
                 <Button
                   size={"sm"}
                   onClick={() => {
@@ -73,6 +97,14 @@ const Header = () => {
                   }}
                 >
                   Sign Up
+                </Button>
+              )}
+              {loadedSession && (
+                <Button
+                  size={"sm"}
+                  onClick={logoutHandler}
+                >
+                  Logout
                 </Button>
               )}
               <Button onClick={toggleColorMode} size={"sm"}>
@@ -88,7 +120,7 @@ const Header = () => {
                   minW={0}
                 >
                   {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
-                  <BsPersonCircle color="black" size="30px"/>
+                  <BsPersonCircle color="black" size="30px" />
                 </MenuButton>
                 <MenuList alignItems={"center"}>
                   <br />
@@ -102,14 +134,15 @@ const Header = () => {
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
-                    {/* <p>{session.email}</p> */}
+                    {/* <p>Username</p> */}
+                    {!loadedSession ? <p>Login Please!</p> : <p>{loadedSession.user.email}</p>}
                   </Center>
                   <br />
                   <MenuDivider />
                   <MenuItem>My information</MenuItem>
                   <MenuItem>My appointments</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  {/* Ver porque no funcionan los botones del Menu */}
+                  {/* <Button onClick={logoutHandler}>Logout</Button> */}
                 </MenuList>
               </Menu>
             </Stack>
@@ -119,5 +152,26 @@ const Header = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+
+  console.log(context)
+
+  const session = await getSession({ req: context.req })
+
+  // if (!session) {    // esto es para proteger rutas (no hay que usarlo aca porque es la navbar)
+  //   return {
+  //     redirect: {
+  //       destination: '/users/login',
+  //       permanent: false,
+  //     }
+  //   }
+  // }
+
+  return {
+    props: { session }
+  }
+
+}
 
 export default Header;

@@ -29,8 +29,8 @@ export default NextAuth({
     // },
 
     session: { // es un objeto donde especificamos como la sesion del usuario autentificado sera administrada
-        // jwt: true,
-        strategy: "jwt"
+        // jwt: true,       // next-auth v3
+        strategy: "jwt"     // next-auth v4
     },
     providers: [
         CredentialsProvider({
