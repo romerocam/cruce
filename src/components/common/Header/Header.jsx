@@ -130,7 +130,7 @@ const Header = () => {
                   <MenuItem>My information</MenuItem>
                   <MenuItem>My appointments</MenuItem>
                   {/* Ver porque no funcionan los botones del Menu */}
-                  <Button onClick={logoutHandler}>Logout</Button>
+                  {!session ? "" : <Button onClick={logoutHandler}>Logout</Button>}
                 </MenuList>
               </Menu>
             </Stack>
