@@ -1,3 +1,14 @@
+1st Demo:
+
+Slides:
+https://docs.google.com/presentation/d/1fWzp9rk5tPLJDtWdbR3CKvPkMN4fWWax-5qFOEfuVgM/edit#slide=id.g139136a9c4a_2_11
+
+Figma:
+https://www.figma.com/file/lyvFpl19wEr799SVFa3zmS/Reserva-de-turnos?node-id=0%3A1
+
+Schema Design:
+https://lucid.app/lucidchart/09e2d921-8cad-457b-b27f-c2a0ae29b244/edit?beaconFlowId=AE10BEB72201367D&page=0_0&invitationId=inv_dc3d7a47-0ded-4e9e-9826-5c5df12010bc#
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
