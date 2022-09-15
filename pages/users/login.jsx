@@ -2,14 +2,14 @@ import { Flex, Input, Button, Avatar, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { signIn, useSession, getSession } from 'next-auth/react';
+import { signIn, useSession, getSession } from "next-auth/react";
 //import { useSession } from 'next-auth/client'
 
 import Layout from "../../src/components/common/Layout/Layout";
 
 const UsersPage = () => {
   const { data: session, status } = useSession();
-  const loading = status === "loading"
+  const loading = status === "loading";
 
   //const session = await getSession({ req })
 
@@ -19,8 +19,8 @@ const UsersPage = () => {
     password: "",
   });
 
-  console.log("SESSION", session)
-  console.log("LOADING", loading)
+  console.log("SESSION", session);
+  console.log("LOADING", loading);
 
   const handleChange = (e) => {
     setCredentials({
@@ -31,16 +31,19 @@ const UsersPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const loginResult = await signIn('credentials', {
-
-      redirect: false,                // para que no redirija a otra pagina cuando da error el login
+    const loginResult = await signIn("credentials", {
+      redirect: false, // para que no redirija a otra pagina cuando da error el login
 
       // le paso las credenciales al pedido (signIn)
       email: credentials.email,
       password: credentials.password,
     });
 
-    console.log("LOGIN_RESULT", loginResult)
+    console.log("LOGIN_RESULT", loginResult);
+
+    if (loginResult.ok) {
+      router.push("/users/profile-user");
+    }
 
     // console.log(credentials)
     // const response = await axios.post("/api/auth/login", credentials);

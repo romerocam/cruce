@@ -16,15 +16,20 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { BsPersonCircle } from "react-icons/bs";
 //next.js
 import { useRouter } from "next/router";
-
+import { useSession } from "next-auth/react";
 import axios from "axios";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+
+  console.log("Session in header", session);
 
   const logout = async () => {
     try {
@@ -50,22 +55,26 @@ const Header = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  router.push("/users/login");
-                }}
-              >
-                Log In
-              </Button>
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  router.push("/users/register");
-                }}
-              >
-                Sign Up
-              </Button>
+              {!session && (
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    router.push("/users/login");
+                  }}
+                >
+                  Log In
+                </Button>
+              )}
+              {!session && (
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    router.push("/users/register");
+                  }}
+                >
+                  Sign Up
+                </Button>
+              )}
               <Button onClick={toggleColorMode} size={"sm"}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
@@ -78,7 +87,8 @@ const Header = () => {
                   cursor={"pointer"}
                   minW={0}
                 >
-                  <HamburgerIcon color={"black"}></HamburgerIcon>
+                  {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
+                  <BsPersonCircle color="black" size="30px"/>
                 </MenuButton>
                 <MenuList alignItems={"center"}>
                   <br />
@@ -93,6 +103,7 @@ const Header = () => {
                   <br />
                   <Center>
                     <p>Username</p>
+                    {/* <p>{session.email}</p> */}
                   </Center>
                   <br />
                   <MenuDivider />
