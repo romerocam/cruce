@@ -40,7 +40,7 @@ const OfficeSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: [1, "Only positive amounts allowed."],
-    },
+    },    
     timeRange: {
       from: {
         type: String,
