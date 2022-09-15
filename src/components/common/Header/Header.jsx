@@ -19,7 +19,7 @@ import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { BsPersonCircle } from "react-icons/bs";
 //next.js
 import { useRouter } from "next/router";
-import { useSession, signOut, getSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 
 const Header = () => {
@@ -27,31 +27,10 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadedSession, setLoadedSession] = useState({});
-  // const { data: session, status } = useSession();
-  // const loading = status === "loading";
+  const { data: session, status } = useSession();
+  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
 
-
-  useEffect(() => {
-
-    getSession().then(session => {
-
-      setLoadedSession(session)
-      setIsLoading(false)
-
-    })
-
-
-
-  }, [])
-
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
-
-
-  console.log("Session in header", loadedSession);
+  console.log("Session in header", session);
 
   const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
 
@@ -79,7 +58,7 @@ const Header = () => {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              {!loadedSession && (
+              {!session && (
                 <Button
                   size={"sm"}
                   onClick={() => {
@@ -89,7 +68,7 @@ const Header = () => {
                   Log In
                 </Button>
               )}
-              {!loadedSession && (
+              {!session && (
                 <Button
                   size={"sm"}
                   onClick={() => {
@@ -99,7 +78,7 @@ const Header = () => {
                   Sign Up
                 </Button>
               )}
-              {loadedSession && (
+              {session && (
                 <Button
                   size={"sm"}
                   onClick={logoutHandler}
@@ -134,8 +113,7 @@ const Header = () => {
                   </Center>
                   <br />
                   <Center>
-                    {/* <p>Username</p> */}
-                    {!loadedSession ? <p>Login Please!</p> : <p>{loadedSession.user.email}</p>}
+                    {!session ? <p>Login Please!</p> : <p>{session.user.email}</p>}
                   </Center>
                   <br />
                   <MenuDivider />
@@ -152,26 +130,5 @@ const Header = () => {
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-
-  console.log(context)
-
-  const session = await getSession({ req: context.req })
-
-  // if (!session) {    // esto es para proteger rutas (no hay que usarlo aca porque es la navbar)
-  //   return {
-  //     redirect: {
-  //       destination: '/users/login',
-  //       permanent: false,
-  //     }
-  //   }
-  // }
-
-  return {
-    props: { session }
-  }
-
-}
 
 export default Header;
