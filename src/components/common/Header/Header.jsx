@@ -30,7 +30,7 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
 
-  console.log("Session in header", session);
+  console.log("Session in header", session);  // ver porque se consologuea cada vez que se escribe en el login
 
   const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
 
@@ -116,11 +116,15 @@ const Header = () => {
                     {!session ? <p>Login Please!</p> : <p>{session.user.email}</p>}
                   </Center>
                   <br />
+                  <Center>
+                    {!session ? "" : <p>{session.user.name}</p>}
+                  </Center>
+                  <br />
                   <MenuDivider />
                   <MenuItem>My information</MenuItem>
                   <MenuItem>My appointments</MenuItem>
                   {/* Ver porque no funcionan los botones del Menu */}
-                  {/* <Button onClick={logoutHandler}>Logout</Button> */}
+                  <Button onClick={logoutHandler}>Logout</Button>
                 </MenuList>
               </Menu>
             </Stack>

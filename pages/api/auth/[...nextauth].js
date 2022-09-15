@@ -21,6 +21,7 @@ export default NextAuth({
      * VER: https://next-auth.js.org/providers/credentials
      */
 
+    // TO DO: VER PORQUE NO PODEMOS CUSTOMIZAR EL PAYLOAD DEL JWT AGREGANDO EL ROLE SIN PERDER NAME
     // callbacks: {
     //     async session({ session, token, user }) {
     //         session.user.roles = user.roles; // Add role value to user object so it is passed along with session

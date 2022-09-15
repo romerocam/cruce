@@ -19,8 +19,8 @@ const UsersPage = () => {
     password: "",
   });
 
-  console.log("SESSION", session);
-  console.log("LOADING", loading);
+  // console.log("SESSION", session);
+  // console.log("LOADING", loading);
 
   const handleChange = (e) => {
     setCredentials({
@@ -41,16 +41,10 @@ const UsersPage = () => {
 
     console.log("LOGIN_RESULT", loginResult);
 
+    // si login OK redirijo al perfil:
     if (loginResult.ok) {
       router.push("/users/profile-user");
     }
-
-    // console.log(credentials)
-    // const response = await axios.post("/api/auth/login", credentials);
-    // console.log("response", response);
-    // if (response.status === 200) {
-    //   router.push("/users/profile-user");
-    // }
   };
 
   return (

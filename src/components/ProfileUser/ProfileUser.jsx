@@ -22,9 +22,12 @@ import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-const ProfileUser = ({ session }) => {
+const ProfileUser = () => {
+
+  const { data: session, status } = useSession();
+  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
 
   console.log("SESSION", session)
 
