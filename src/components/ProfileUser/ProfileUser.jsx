@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Heading,
@@ -29,23 +29,38 @@ const ProfileUser = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
 
+  const id = session.user.name.split(",")[1]
+
+  console.log(id)
+
   console.log("SESSION", session)
 
   // const usuario = session
 
   // console.log("USER", usuario)
 
-  const [user, setUser] = useState({
-    email: "",
-    name: "",
-  });
+  const [profile, setProfile] = useState({});
   const router = useRouter();
 
-  const getProfile = async () => {
-    const profile = await axios.get("/api/profile");
-    console.log('profile', profile);
-    setUser(profile.data);
-  };
+  useEffect(() => {
+
+    axios.get(`/api/users/${id}`)
+      .then(profile => {
+
+        console.log('USER', profile.data.data);
+        setProfile(profile.data.data);
+
+      })
+
+  }, [])
+
+
+
+  // const getProfile = async () => {
+  //   const profile = await axios.get(`/api/users/${id}`);
+  //   console.log('profile', profile);
+  //   setUser(profile.data);
+  // };
 
   const logout = async () => {
     try {

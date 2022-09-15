@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Heading,
@@ -21,10 +21,30 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const RoleCreator = () => {
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+
+  const { data: session, status } = useSession();
+
+  const [offices, setOffices] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/offices")
+      .then(officesArray => {
+        console.log(officesArray.data)
+        setOffices(officesArray.data.data)
+
+      })
+
+    console.log(offices)
+
+  }, [])
+
+
 
   return (
     <>
@@ -160,11 +180,14 @@ const RoleCreator = () => {
                 </Stack>
               </CheckboxGroup>
               <Select placeholder="Select Branch Office">
-                <option value="option1">Almagro</option>
+                {offices.map((office, i) => <option value={office._id} key={office._id}>{office.name}</option>)}
+
+
+                {/* <option value="option1">Almagro</option>
                 <option value="option2">Belgrano</option>
                 <option value="option3">Palermo</option>
                 <option value="option3">Recoleta</option>
-                <option value="option3">Caballito</option>
+                <option value="option3">Caballito</option> */}
               </Select>
 
               <Heading

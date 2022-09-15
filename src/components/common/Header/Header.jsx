@@ -30,7 +30,7 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
 
-  // console.log("Session in header", session);  // ver porque se consologuea cada vez que se escribe en el login
+  console.log("Session in header", session);  // ver porque se consologuea cada vez que se escribe en el login
 
   const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
 
