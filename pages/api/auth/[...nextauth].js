@@ -21,14 +21,19 @@ export default NextAuth({
      * VER: https://next-auth.js.org/providers/credentials
      */
 
-    // TO DO: VER PORQUE NO PODEMOS CUSTOMIZAR EL PAYLOAD DEL JWT AGREGANDO EL ROLE SIN PERDER NAME
+    // Para customizar la info que se le pasa al payload del JWT
+    // Configuracion Callbacks: https://next-auth.js.org/configuration/callbacks
+    // EJEMPLO DOCUMENTACION: (https://next-auth.js.org/tutorials/role-based-login-strategy)
+
     callbacks: {
-        jwt: async ({ token, user }) => {
+        async jwt({ token, user }) {
             user && (token.user = user)
             return token
         },
-        session: async ({ session, token, user }) => {
-            session.user.roles = token.user.roles; // Add role value to user object so it is passed along with session
+
+        async session({ session, token, user }) {
+            session.user.role = token.user.role; // Add role value to user object so it is passed along with session
+            session.user.id = token.user.id; // Add id value to user object so it is passed along with session
             return session;
         }
     },
@@ -72,7 +77,7 @@ export default NextAuth({
 
                 // solucionar la customizacion del JWT
 
-                return { email: foundUser.email, roles: foundUser.roles, name: "role,id" };
+                return { email: foundUser.email, role: foundUser.roles, name: foundUser.name, id: foundUser._id };
             }
         })
     ]
