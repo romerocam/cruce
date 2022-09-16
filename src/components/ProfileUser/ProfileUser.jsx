@@ -1,5 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect } from "react";
+//react
+import { useForm } from "react-hook-form";
 
 import {
   Heading,
@@ -13,6 +15,7 @@ import {
   InputGroup,
   InputLeftElement,
   FormControl,
+  FormErrorMessage,
   Container,
   useColorModeValue,
   Icon,
@@ -25,15 +28,17 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 const ProfileUser = () => {
-
   const { data: session, status } = useSession();
-  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
+  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  const id = session.user.name.split(",")[1]
+  const role = session && session.user.name.split(",")[0];
+  const id = session.user.name.split(",")[1];
+  
 
-  console.log(id)
 
-  console.log("SESSION", session)
+  console.log(">>>>", id);
+
+  console.log("SESSION", session);
 
   // const usuario = session
 
@@ -43,18 +48,28 @@ const ProfileUser = () => {
   const router = useRouter();
 
   useEffect(() => {
+    axios.get(`/api/users/${id}`).then((profile) => {
+      console.log("USER", profile.data.data);
+      setProfile(profile.data.data);
+    });
+  }, []);
 
-    axios.get(`/api/users/${id}`)
-      .then(profile => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onBlur" });
 
-        console.log('USER', profile.data.data);
-        setProfile(profile.data.data);
-
+  const onSubmit = (formData) => {
+    console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
+    axios
+      .put(`/api/users/${id}`, formData)
+      .then((response) => {
+        router.push("/users/profile-user");
+        return response.data;
       })
-
-  }, [])
-
-
+      .catch((error) => console.log(error));
+  };
 
   // const getProfile = async () => {
   //   const profile = await axios.get(`/api/users/${id}`);
@@ -72,7 +87,7 @@ const ProfileUser = () => {
   };
   return (
     <>
-      <Container maxW={"7xl"} zIndex={1} position={"relative"} >
+      <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
             maxW={"320px"}
@@ -107,13 +122,31 @@ const ProfileUser = () => {
               {session.user.email}
             </Heading>
 
-            <Text fontSize={"sm"} fontFamily={"body"} textAlign={"center"} color={"#000505"} px={3}>
-              {`Role: ${session.user.name}`}
+            <Text
+              fontSize={"sm"}
+              fontFamily={"body"}
+              textAlign={"center"}
+              color={"#000505"}
+              px={3}
+            >
+              {`Role: ${role}`}
             </Text>
 
-            <Stack spacing={3}>
-              <FormControl id="name" isrequired="true">
-                <InputGroup>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl
+                isInvalid={
+                  errors.name ||
+                  errors.lastname ||
+                  errors.dni ||
+                  errors.address ||
+                  errors.email ||
+                  errors.password ||
+                  errors.confirmpassword
+                }
+                textColor={"black"}
+                marginY={"2vh"}
+              >
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
@@ -127,13 +160,20 @@ const ProfileUser = () => {
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                  // values={getProfile().name}
+                    defaultValue={profile.name}
+                    errorBorderColor="none"
+                    id="name"
+                    {...register("name", {
+                      required: "Name is required",
+                    })}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <FormControl id="lastname" isrequired="true">
-                <InputGroup>
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
@@ -147,12 +187,20 @@ const ProfileUser = () => {
                     placeholder="lastname"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    defaultValue={profile.lastname}
+                    errorBorderColor="none"
+                    id="lastname"
+                    {...register("lastname", {
+                      required: "Last Name is required",
+                    })}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <FormControl id="DNI" isrequired="true">
-                <InputGroup>
+                <FormErrorMessage>
+                  {errors.lastname && errors.lastname.message}
+                </FormErrorMessage>
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
@@ -166,12 +214,28 @@ const ProfileUser = () => {
                     placeholder="DNI"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    defaultValue={profile.dni}
+                    errorBorderColor="none"
+                    id="dni"
+                    {...register("dni", {
+                      required: "DNI is required",
+                      minLength: {
+                        value: 8,
+                        message: "Please enter 8 digits",
+                      },
+                      maxLength: {
+                        value: 8,
+                        message: "Please enter 8 digits",
+                      },
+                    })}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <FormControl id="email" isrequired="true">
-                <InputGroup>
+                <FormErrorMessage>
+                  {errors.dni && errors.dni.message}
+                </FormErrorMessage>
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiMail} color={"gray.400"}></Icon>}
@@ -185,20 +249,36 @@ const ProfileUser = () => {
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                  // values={getProfile().email}
+                    defaultValue={profile.email}
+                    errorBorderColor="none"
+                    id="email"
+                    {...register("email", {
+                      required: "E-mail is required",
+                    })}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <Heading fontSize={"xl"} color={"#000505"} textAlign="left" paddingBottom={"5px"} paddingTop={"5px"}>
-                Change password
-              </Heading>
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
 
-              <FormControl id="current-password" isrequired="true">
-                <InputGroup>
+                <Heading
+                  fontSize={"xl"}
+                  color={"#000505"}
+                  textAlign="left"
+                  paddingBottom={"5px"}
+                  paddingTop={"5px"}
+                  marginY={"1vh"}
+                >
+                  Change password
+                </Heading>
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
                   />
                   <Input
                     variant="flushed"
@@ -211,15 +291,18 @@ const ProfileUser = () => {
                     borderColor={"gray.200"}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <FormControl id="newPassword" isrequired="true">
-                <InputGroup>
+                {/* //Es necesario traer la contraseña actual ? */}
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
                   />
                   <Input
+                    type="password"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -228,17 +311,32 @@ const ProfileUser = () => {
                     placeholder="New password"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    errorBorderColor="none"
+                    id="password"
+                    // name="password"
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 7,
+                        message: "Minimum length is 7",
+                      },
+                    })}
                   />
                 </InputGroup>
-              </FormControl>
 
-              <FormControl id="confirmpassword" isrequired="true">
-                <InputGroup>
+                <FormErrorMessage>
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+
+                <InputGroup marginY={"1vh"}>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
                   />
                   <Input
+                    type="password"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -247,22 +345,35 @@ const ProfileUser = () => {
                     placeholder="Confirm New password"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
+                    errorBorderColor="none"
+                    id="confirmpassword"
+                    {...register("confirmpassword", {
+                      validate: (value) =>
+                        value === password.value ||
+                        "The passwords do not match",
+                    })}
                   />
                 </InputGroup>
+
+                <FormErrorMessage>
+                  {errors.confirmpassword && errors.confirmpassword.message}
+                </FormErrorMessage>
+
+                <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
+                  <Button
+                  type="submit"
+                    bg={useColorModeValue("brand.700", "brand.600")}
+                    color={"white"}
+                    w="full"
+                    _hover={{
+                      bg: useColorModeValue("brand.600", "brand.700"),
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Stack>
               </FormControl>
-            </Stack>
-            <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
-              <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
-                }}
-              >
-                Save
-              </Button>
-            </Stack>
+            </form>
           </Box>
         </Center>
       </Container>

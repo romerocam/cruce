@@ -13,6 +13,7 @@ import {
   Stack,
   FormControl,
   FormErrorMessage,
+  useColorModeValue
 } from "@chakra-ui/react";
 
 const ForgotPassword = () => {
@@ -37,24 +38,29 @@ const ForgotPassword = () => {
           justifyContent="flex-start"
           direction="column"
         >
-          <Avatar bg="teal.500" m={10} />
+          <Avatar bg={useColorModeValue("brand.700", "brand.600")} m={10} />
           <Flex
-            width="70vw"
+            maxW={"94%"}
+            w={"full"}
             direction="column"
             alignItems="center"
-            background="gray.100"
-            p={2}
-            rounded={6}
+            background="#FFFFFB"
+            boxShadow={"2xl"}
+            p={6}
+            rounded={"lg"}
           >
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.email}>
+              <FormControl isInvalid={errors.email} color={"black"}>
                 <Stack spacing={3}>
                   <Input
                     type="email"
                     placeholder="E-mail"
                     id="email"
                     variant="flushed"
-                    focusBorderColor="teal.400"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
                     errorBorderColor="none"
                     {...register("email", {
                       required: "E-mail is required",
@@ -63,7 +69,7 @@ const ForgotPassword = () => {
                   <FormErrorMessage>
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
-                  <Button type="submit" colorScheme="teal" variant="solid">
+                  <Button bg={useColorModeValue("brand.700", "brand.600")} type="submit" colorScheme="teal" variant="solid">
                     Send Reset Password Link
                   </Button>
                 </Stack>

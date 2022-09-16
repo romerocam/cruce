@@ -46,7 +46,7 @@ const CreateBranchOffice = () => {
       .then((error) => console.log(error));
   };
   return (
-    <Container maxW={"7xl"} zIndex={1} position={"relative"}>
+    <Container maxW={"7xl"}  position={"relative"}>
       <Box
         bg={useColorModeValue("brand.700", "brand.600")}
         mt="20px"

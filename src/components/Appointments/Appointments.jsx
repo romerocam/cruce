@@ -11,14 +11,18 @@ import {
   TableContainer,
   Box,
   Center,
+  Icon,
+  Button,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
   return (
     <>
       <Center py={6}>
         <Box
-          flex={1}          
+          flex={1}
           maxW={"96%"}
           w={"full"}
           bg={"#FFFFFB"}
@@ -27,9 +31,8 @@ const Appointments = () => {
           p={6}
           textAlign={"center"}
         >
-          <TableContainer>
+          <TableContainer color={"black"}>
             <Table variant="simple">
-              <TableCaption>Imperial to metric conversion factors</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Date</Th>
@@ -39,28 +42,86 @@ const Appointments = () => {
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td>inches</Td>
-                  <Td>millimetres (mm)</Td>
-                  <Td isNumeric>25.4</Td>
+                  <Td>30/10/2022</Td>
+                  <Td>10:15 am</Td>
+                  <Td>
+                    Sede Y{" "}
+                    <Button
+                      marginLeft={6}
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                    >
+                      <Icon
+                        as={HiArrowNarrowRight}
+                        color={useColorModeValue("white", "black")}
+                      />
+                    </Button>
+                  </Td>
                 </Tr>
                 <Tr>
-                  <Td>feet</Td>
-                  <Td>centimetres (cm)</Td>
-                  <Td isNumeric>30.48</Td>
+                  <Td>30/10/2022</Td>
+                  <Td>10:15 am</Td>
+                  <Td>
+                    Sede Y{" "}
+                    <Button
+                      marginLeft={6}
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                    >
+                      <Icon
+                        as={HiArrowNarrowRight}
+                        color={useColorModeValue("white", "black")}
+                      />
+                    </Button>
+                  </Td>
                 </Tr>
                 <Tr>
-                  <Td>yards</Td>
-                  <Td>metres (m)</Td>
-                  <Td isNumeric>0.91444</Td>
+                  <Td>30/10/2022</Td>
+                  <Td>10:15 am</Td>
+                  <Td>
+                    Sede Y{" "}
+                    <Button
+                      marginLeft={6}
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                    >
+                      <Icon
+                        as={HiArrowNarrowRight}
+                        color={useColorModeValue("white", "black")}
+                      />
+                    </Button>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>30/10/2022</Td>
+                  <Td>10:15 am</Td>
+                  <Td>
+                    Sede Y{" "}
+                    <Button
+                      marginLeft={6}
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                    >
+                      <Icon
+                        as={HiArrowNarrowRight}
+                        color={useColorModeValue("white", "black")}
+                      />
+                    </Button>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>30/10/2022</Td>
+                  <Td>10:15 am</Td>
+                  <Td>
+                    Sede Y{" "}
+                    <Button
+                      marginLeft={6}
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                    >
+                      <Icon
+                        as={HiArrowNarrowRight}
+                        color={useColorModeValue("white", "black")}
+                      />
+                    </Button>
+                  </Td>
                 </Tr>
               </Tbody>
-              <Tfoot>
-                <Tr>
-                  <Th>To convert</Th>
-                  <Th>into</Th>
-                  <Th isNumeric>multiply by</Th>
-                </Tr>
-              </Tfoot>
             </Table>
           </TableContainer>
         </Box>

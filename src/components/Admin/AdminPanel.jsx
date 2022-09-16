@@ -18,7 +18,7 @@ const adminPanel = () => {
 
   return (
     <>
-      <Container maxW={"7xl"} zIndex={1} position={"relative"}>
+      <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
             maxW={"md"}
