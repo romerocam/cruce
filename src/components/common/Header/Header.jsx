@@ -28,11 +28,11 @@ const Header = () => {
   const router = useRouter();
 
   const { data: session, status } = useSession();
-  const loading = status === "loading";   // ver de sacarlo si no usamos un mensaje de loading
+  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  console.log("Session in header", session);  // ver porque se consologuea cada vez que se escribe en el login
+  console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
 
-  const logoutHandler = () => signOut() // VER PORQUE NO FUNCIONA EN EL MENU
+  const logoutHandler = () => signOut(); // VER PORQUE NO FUNCIONA EN EL MENU
 
   const logout = async () => {
     try {
@@ -85,10 +85,7 @@ const Header = () => {
                 </Button>
               )}
               {session && (
-                <Button
-                  size={"sm"}
-                  onClick={logoutHandler}
-                >
+                <Button size={"sm"} onClick={logoutHandler}>
                   Logout
                 </Button>
               )}
@@ -119,18 +116,22 @@ const Header = () => {
                   </Center>
                   <br />
                   <Center>
-                    {!session ? <p>Login Please!</p> : <p>{session.user.email}</p>}
+                    {!session ? (
+                      <p>Login Please!</p>
+                    ) : (
+                      <p>{session.user.email}</p>
+                    )}
                   </Center>
                   <br />
-                  <Center>
-                    {!session ? "" : <p>{session.user.name}</p>}
-                  </Center>
+                  <Center>{!session ? "" : <p>{session.user.name}</p>}</Center>
                   <br />
                   <MenuDivider />
                   <MenuItem>My information</MenuItem>
                   <MenuItem>My appointments</MenuItem>
                   {/* Ver porque no funcionan los botones del Menu */}
-                  {!session ? "" : <Button onClick={logoutHandler}>Logout</Button>}
+                  {session && (
+                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                  )}
                 </MenuList>
               </Menu>
             </Stack>
