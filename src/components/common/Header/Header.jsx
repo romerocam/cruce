@@ -30,9 +30,19 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
+  const role = session && session.user.name.split(",")[0];
+
   console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
 
   const logoutHandler = () => signOut(); // VER PORQUE NO FUNCIONA EN EL MENU
+
+  const myInformation = (formData) => {
+    router.push("/users/profile-user");
+  };
+
+  const myAppointments = (formData) => {
+    router.push("/users/my-appointments");
+  };
 
   const logout = async () => {
     try {
@@ -84,11 +94,6 @@ const Header = () => {
                   Sign Up
                 </Button>
               )}
-              {session && (
-                <Button size={"sm"} onClick={logoutHandler}>
-                  Logout
-                </Button>
-              )}
               <Button onClick={toggleColorMode} size={"sm"}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
@@ -123,14 +128,20 @@ const Header = () => {
                     )}
                   </Center>
                   <br />
-                  <Center>{!session ? "" : <p>{session.user.name}</p>}</Center>
+                  <Center>{!session ? "" : <p>{`Role: ${role}`}</p>}</Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>My information</MenuItem>
-                  <MenuItem>My appointments</MenuItem>
+                  {session && (
+                    <MenuItem onClick={myInformation}>My information</MenuItem>
+                  )}
+                  {session && (
+                    <MenuItem onClick={myAppointments}>
+                      My appointments
+                    </MenuItem>
+                  )}
                   {/* Ver porque no funcionan los botones del Menu */}
                   {session && (
-                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                    <MenuItem onClick={logoutHandler} fontWeight={"bolder"}>Logout</MenuItem>
                   )}
                 </MenuList>
               </Menu>

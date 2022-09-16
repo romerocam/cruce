@@ -31,7 +31,10 @@ const ProfileUser = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
+  const role = session && session.user.name.split(",")[0];
   const id = session.user.name.split(",")[1];
+  
+
 
   console.log(">>>>", id);
 
@@ -58,9 +61,9 @@ const ProfileUser = () => {
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = (formData) => {
-    console.log("esta es la form data", formData);
+    console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
     axios
-      .put(`api/users/${id}`, formData)
+      .put(`/api/users/${id}`, formData)
       .then((response) => {
         router.push("/users/profile-user");
         return response.data;
@@ -126,7 +129,7 @@ const ProfileUser = () => {
               color={"#000505"}
               px={3}
             >
-              {`Role: ${session.user.name}`}
+              {`Role: ${role}`}
             </Text>
 
             <form onSubmit={handleSubmit(onSubmit)}>
