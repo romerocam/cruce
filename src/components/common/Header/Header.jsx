@@ -31,7 +31,7 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  const role = session && session.user.name.split(",")[0];
+  // const role = session && session.user.name.split(",")[0];
 
   console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
 
@@ -143,22 +143,22 @@ const Header = () => {
                       )}
                     </Center>
                     <br />
-                    <Center>{!session ? "" : <p>{`Role: ${role}`}</p>}</Center>
+                    {/* <Center>{!session ? "" : <p>{`Role: ${role}`}</p>}</Center> */}
                     <br />
 
                     <MenuDivider />
 
-                    {role === "admin" && (
+                    {/* {role === "admin" && (
                       <MenuItem onClick={adminPanel}>
                         Admin Panel
                       </MenuItem>
-                    )}
+                    )} */}
 
-                    {role === "operator" && (
+                    {/* {role === "operator" && (
                       <MenuItem onClick={operatorPanel}>
                         Operator Panel
                       </MenuItem>
-                    )}
+                    )} */}
 
                     {session && (
                       <MenuItem onClick={myInformation}>

@@ -22,12 +22,16 @@ export default NextAuth({
      */
 
     // TO DO: VER PORQUE NO PODEMOS CUSTOMIZAR EL PAYLOAD DEL JWT AGREGANDO EL ROLE SIN PERDER NAME
-    // callbacks: {
-    //     async session({ session, token, user }) {
-    //         session.user.roles = User.roles; // Add role value to user object so it is passed along with session
-    //         return session;
-    //     }
-    // },
+    callbacks: {
+        jwt: async ({ token, user }) => {
+            user && (token.user = user)
+            return token
+        },
+        session: async ({ session, token, user }) => {
+            session.user.roles = token.user.roles; // Add role value to user object so it is passed along with session
+            return session;
+        }
+    },
 
     session: { // es un objeto donde especificamos como la sesion del usuario autentificado sera administrada
         // jwt: true,       // next-auth v3
@@ -68,7 +72,7 @@ export default NextAuth({
 
                 // solucionar la customizacion del JWT
 
-                return { email: foundUser.email, name: `${foundUser.roles},${foundUser._id}` };
+                return { email: foundUser.email, roles: foundUser.roles, name: "role,id" };
             }
         })
     ]
