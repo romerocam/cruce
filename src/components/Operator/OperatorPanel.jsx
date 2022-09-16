@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-const AdminPanel = () => {
+const OperatorPanel = () => {
   const router = useRouter();
 
   return (
@@ -60,7 +60,7 @@ const AdminPanel = () => {
               color={"#000505"}
               px={3}
             >
-              Admin/Manager
+              Operator
             </Text>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
@@ -92,23 +92,6 @@ const AdminPanel = () => {
                 View Branch Office
               </Button>
             </Stack>
-
-            <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
-              <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
-                }}
-                onClick={() => {
-                  router.push("/manage-users");
-                }}
-              >
-                Manage Users
-              </Button>
-            </Stack>
-
             <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
               <Button
                 bg={useColorModeValue("brand.700", "brand.600")}
@@ -131,4 +114,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default OperatorPanel;

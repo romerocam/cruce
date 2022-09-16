@@ -37,6 +37,14 @@ const Header = () => {
 
   const logoutHandler = () => signOut(); // VER PORQUE NO FUNCIONA EN EL MENU
 
+  const adminPanel = (formData) => {
+    router.push("/users/adminpanel");
+  };
+
+  const operatorPanel = (formData) => {
+    router.push("/users/operator-panel");
+  };
+
   const myInformation = (formData) => {
     router.push("/users/profile-user");
   };
@@ -104,7 +112,7 @@ const Header = () => {
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 
-              { session && (  
+              {session && (
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -137,15 +145,29 @@ const Header = () => {
                     <br />
                     <Center>{!session ? "" : <p>{`Role: ${role}`}</p>}</Center>
                     <br />
+
                     <MenuDivider />
+
+                    {role === "admin" && (
+                      <MenuItem onClick={adminPanel}>
+                        Admin Panel
+                      </MenuItem>
+                    )}
+
+                    {role === "operator" && (
+                      <MenuItem onClick={operatorPanel}>
+                        Operator Panel
+                      </MenuItem>
+                    )}
+
                     {session && (
                       <MenuItem onClick={myInformation}>
-                        My information
+                        Profile
                       </MenuItem>
                     )}
                     {session && (
                       <MenuItem onClick={myAppointments}>
-                        My appointments
+                        Bookings
                       </MenuItem>
                     )}
                     {/* Ver porque no funcionan los botones del Menu */}

@@ -198,6 +198,7 @@ const Register = () => {
                       children={<Icon as={HiMail} color={"gray.400"}></Icon>}
                     />
                     <Input
+                      type="email"
                       variant="flushed"
                       focusBorderColor={useColorModeValue(
                         "brand.700",
