@@ -6,6 +6,7 @@ import {
   Stack,
   Button,
   Flex,
+  Text,
   Menu,
   MenuButton,
   MenuList,
@@ -109,7 +110,12 @@ const Header = () => {
                   Sign Up
                 </Button>
               )}
-              <Button onClick={toggleColorMode} size={"sm"} variant={Link} color={"white"}>
+              <Button
+                onClick={toggleColorMode}
+                size={"sm"}
+                variant={Link}
+                color={"white"}
+              >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 
@@ -134,18 +140,14 @@ const Header = () => {
                         }
                       />
                     </Center>
-                    <Center fontWeight={"bolder"}>
-                      <p>{name}</p>
+                    <Center fontWeight="bold" fontSize="xl">
+                      {name}
                     </Center>
-                    <Center>
-                      <p>{`Role: ${role}`}</p>
-                    </Center>
+                    <Center fontSize="sm">{`Role: ${role}`}</Center>
                     <MenuDivider />
 
                     {role === "admin" && (
-                      <MenuItem onClick={adminPanel}>
-                        Admin Panel
-                      </MenuItem>
+                      <MenuItem onClick={adminPanel}>Admin Panel</MenuItem>
                     )}
 
                     {role === "operator" && (
@@ -155,14 +157,10 @@ const Header = () => {
                     )}
 
                     {session && (
-                      <MenuItem onClick={myInformation}>
-                        Profile
-                      </MenuItem>
+                      <MenuItem onClick={myInformation}>Profile</MenuItem>
                     )}
                     {session && (
-                      <MenuItem onClick={myAppointments}>
-                        Bookings
-                      </MenuItem>
+                      <MenuItem onClick={myAppointments}>Bookings</MenuItem>
                     )}
                     {session && (
                       <MenuItem onClick={logoutHandler} fontWeight={"bolder"}>

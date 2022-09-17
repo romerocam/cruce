@@ -58,7 +58,8 @@ const ProfileUser = () => {
       })
       .catch((error) => console.log(error));
   };
-
+// la idea es hacer un onchange para cuando el valor del formulario cambie, si cambia lo guarde en un objeto o lo set en un estado,
+//  si no cambia envie la informacion como viene en el objeto que trae el useEffect
   return (
     <>
       <Container maxW={"7xl"} position={"relative"}>
