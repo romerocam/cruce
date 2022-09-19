@@ -1,17 +1,18 @@
-import OfficesTable from "../../src/components/OfficeTable/OfficesTable";
-import { getOffices } from "../api/offices/index";
+import ManageUsers from "../../src/components/Admin/ManageUsers";
+import {getAllUsers} from "../api/users/index"
 
-function Offices(props) {
-  return <OfficesTable offices={props.offices} />;
+
+function ManageUsersPage(props) {
+  return <ManageUsers users={props.usersList} />;
 }
 
-export default Offices;
+export default ManageUsersPage;
 
 export async function getServerSideProps() {
-  const offices = await getOffices();
+  const users = await getAllUsers();
   return {
     props: {
-      offices: JSON.parse(JSON.stringify(offices)),
+      usersList: JSON.parse(JSON.stringify(users)),
     },
   };
 }
