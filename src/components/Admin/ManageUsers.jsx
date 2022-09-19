@@ -1,4 +1,4 @@
-import React from "react";
+import { useRouter } from "next/router";
 import { ViewIcon } from "@chakra-ui/icons";
 import { EditIcon } from "@chakra-ui/icons";
 import {
@@ -11,11 +11,12 @@ import {
   TableContainer,
   Box,
   Input,
+  Button
 } from "@chakra-ui/react";
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
+
 
 export default function ManageUsers({users}) {
-
+    const router = useRouter()
     console.log("los ususarios", users)
   return (
     <Box>
@@ -43,7 +44,7 @@ export default function ManageUsers({users}) {
                 <Th>DNI</Th>
                 <Th>E-mail</Th>
                 <Th>Role</Th>
-                <Th>Assign Role</Th>
+                <Th>Edit User</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -56,8 +57,7 @@ export default function ManageUsers({users}) {
                   <Td>{user.roles}</Td>
                   <Td>
                     <Box>
-                      <Checkbox mr="0.7em">Operator</Checkbox>
-                      <Checkbox>Admin</Checkbox>
+                      <Button leftIcon={<EditIcon/>} size="xs" onClick={()=>{router.push(`/manage-users/${user._id}`)}}></Button>
                     </Box>
                   </Td>
                 </Tr>
