@@ -64,7 +64,7 @@ export default async function handler(req, res) {
         // If today is September 18th, we will just care about the slots from September
         // 18th until September 31st, but we won't care about the slots from September 1st until September 17th.
         let daysInMonth = new Date(yearId, monthId, 0).getDate();
-
+ 
         let initDay = 1;
 
         let currentDate = new Date();
@@ -81,10 +81,15 @@ export default async function handler(req, res) {
 
         let officeDataArrPerDay = [];
         for (initDay; initDay <= daysInMonth; initDay++) {
-          officeDataArrPerDay.push({
-            day: initDay,
-            slots: JSON.parse(JSON.stringify(officeDataArr))/*officeDataArr.slice()*/ /*[...officeDataArr]*/,
-          });
+          if (new Date(currentYear, currentMonth, initDay).getDay() !== 6 && new Date(currentYear, currentMonth, initDay).getDay() !== 0) {
+            console.log(new Date(currentYear, currentMonth, initDay).getDay(), "día")
+            console.log(new Date(currentYear, currentMonth, initDay), "fecha entera")
+
+            officeDataArrPerDay.push({
+              day: initDay,
+              slots: JSON.parse(JSON.stringify(officeDataArr))/*officeDataArr.slice()*/ /*[...officeDataArr]*/,
+            });
+          }
         }
 
         // console.log(
@@ -187,7 +192,7 @@ export default async function handler(req, res) {
         
         console.log(officeDataArr, "officeDataArray");
         console.log(bookedSlots, "bookedSlots");
-        console.log(availableSlots, "availableSlots");
+        //console.log(availableSlots, "availableSlots");
         //console.log(officeDataArrPerDay, "officeDataArrPerDay")
         
 
