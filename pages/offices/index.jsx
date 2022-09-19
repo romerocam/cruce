@@ -1,8 +1,13 @@
+import Layout from "../../src/components/common/Layout/Layout";
 import OfficesTable from "../../src/components/OfficeTable/OfficesTable";
 import { getOffices } from "../api/offices/index";
 
 function Offices(props) {
-  return <OfficesTable offices={props.offices} />;
+  return (
+    <Layout>
+      <OfficesTable offices={props.offices} />
+    </Layout>
+  );
 }
 
 export default Offices;
