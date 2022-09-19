@@ -26,6 +26,7 @@ if (!cached) {
 
 async function dbConnect () {
   console.log("Estoy en la conexion")
+  mongoose.set("debug", true)
   if (cached.conn) {
     return cached.conn
   }
