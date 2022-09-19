@@ -1,5 +1,8 @@
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 // import Providers from 'next-auth/providers';
 
 import connectMongo from "../../../util/dbConnect";
@@ -38,9 +41,39 @@ export default NextAuth({
     },
 
     session: { // es un objeto donde especificamos como la sesion del usuario autentificado sera administrada
+
+        // MATI: REVISAR PORQUE NO FUNCIONA LA EXPIRACION CON ACTUALIZACION DE EXPIRACION
+
+        /* 
+         * Choose how you want to save the user session.
+         * The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+         * If you use an `adapter` however, we default it to `"database"` instead.
+         * You can still force a JWT session by explicitly defining `"jwt"`.
+         * When using `"database"`, the session cookie will only contain a `sessionToken` value,
+         * which is used to look up the session in the database.
+         */
         // jwt: true,       // next-auth v3
-        strategy: "jwt"     // next-auth v4
+        strategy: "jwt",     // next-auth v4
+
+        // Seconds - How long until an idle session expires and is no longer valid:
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+
+        /* Seconds - Throttle how frequently to write to database to extend a session.
+         Use it to limit write operations. Set to 0 to always update the database.
+         Note: This option is ignored if using JSON Web Tokens
+         */
+        // updateAge: 24 * 60 * 60, // 24 hours
     },
+    jwt: {
+        // The maximum age of the NextAuth.js issued JWT in seconds.
+        // Defaults to `session.maxAge`.
+        maxAge: 24 * 60 * 60, // 24 hours
+        // You can define your own encode/decode functions for signing and encryption:
+        // async encode() { },
+        // async decode() { },
+        // updateAge: 2 * 60 * 60,
+    },
+    adapter: MongoDBAdapter(connectMongo),
     providers: [
         CredentialsProvider({
             // como ya tenemos un formulario de autenticacion (no vamos a usar el que provee Next Auth)
@@ -81,6 +114,11 @@ export default NextAuth({
 
                 return { email: foundUser.email, role: foundUser.roles, name: foundUser.name, id: foundUser._id };
             }
-        })
-    ]
+        }),
+        EmailProvider({
+            server: process.env.EMAIL_SERVER,
+            from: process.env.EMAIL_FROM,
+            maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+
+        }),]
 });
