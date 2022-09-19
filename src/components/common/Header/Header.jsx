@@ -31,11 +31,12 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  const role = session && session.user.name.split(",")[0];
+  const name = session && session.user.name;
+  const role = session && session.user.role;
 
-  console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
+  // console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
 
-  const logoutHandler = () => signOut(); // VER PORQUE NO FUNCIONA EN EL MENU
+  const logoutHandler = () => signOut();
 
   const adminPanel = (formData) => {
     router.push("/users/adminpanel");
@@ -125,7 +126,6 @@ const Header = () => {
                     <BsPersonCircle color="black" size="30px" />
                   </MenuButton>
                   <MenuList alignItems={"center"}>
-                    <br />
                     <Center>
                       <Avatar
                         size={"2xl"}
@@ -134,18 +134,12 @@ const Header = () => {
                         }
                       />
                     </Center>
-                    <br />
-                    <Center>
-                      {!session ? (
-                        <p>Login Please!</p>
-                      ) : (
-                        <p>{session.user.email}</p>
-                      )}
+                    <Center fontWeight={"bolder"}>
+                      <p>{name}</p>
                     </Center>
-                    <br />
-                    <Center>{!session ? "" : <p>{`Role: ${role}`}</p>}</Center>
-                    <br />
-
+                    <Center>
+                      <p>{`Role: ${role}`}</p>
+                    </Center>
                     <MenuDivider />
 
                     {role === "admin" && (
@@ -170,7 +164,6 @@ const Header = () => {
                         Bookings
                       </MenuItem>
                     )}
-                    {/* Ver porque no funcionan los botones del Menu */}
                     {session && (
                       <MenuItem onClick={logoutHandler} fontWeight={"bolder"}>
                         Logout

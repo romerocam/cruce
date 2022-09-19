@@ -38,6 +38,7 @@ const ProfileUser = () => {
 
   useEffect(() => {
     axios.get(`/api/users/${id}`).then((profile) => {
+      console.log("USER", profile.data.data);
       setProfile(profile.data.data);
     });
   }, []);
@@ -92,13 +93,9 @@ const ProfileUser = () => {
                 right: 3,
               }}
             />
-            <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
-              Profile
-            </Heading>
-
-            <Text fontSize={"sm"} fontFamily={"body"} color={"#000505"}>
+            <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
               {`Role: ${role}`}
-            </Text>
+            </Heading>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl
@@ -223,12 +220,108 @@ const ProfileUser = () => {
                     {...register("email", {
                       required: "E-mail is required",
                     })}
-                    isDisabled={true}
                   />
                 </InputGroup>
 
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
+                </FormErrorMessage>
+
+                <Heading
+                  fontSize={"xl"}
+                  color={"#000505"}
+                  textAlign="left"
+                  paddingBottom={"5px"}
+                  paddingTop={"5px"}
+                  marginY={"1vh"}
+                >
+                  Change password
+                </Heading>
+
+                <InputGroup marginY={"1vh"}>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
+                  />
+                  <Input
+                    variant="flushed"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
+                    placeholder="current password"
+                    _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
+                  />
+                </InputGroup>
+
+                {/* //Es necesario traer la contraseña actual ? */}
+
+                <InputGroup marginY={"1vh"}>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
+                  />
+                  <Input
+                    type="password"
+                    variant="flushed"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
+                    placeholder="New password"
+                    _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
+                    errorBorderColor="none"
+                    id="password"
+                    // name="password"
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 7,
+                        message: "Minimum length is 7",
+                      },
+                    })}
+                  />
+                </InputGroup>
+
+                <FormErrorMessage>
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+
+                <InputGroup marginY={"1vh"}>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    }
+                  />
+                  <Input
+                    type="password"
+                    variant="flushed"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
+                    placeholder="Confirm New password"
+                    _placeholder={{ color: "gray.500" }}
+                    borderColor={"gray.200"}
+                    errorBorderColor="none"
+                    id="confirmpassword"
+                    {...register("confirmpassword", {
+                      validate: (value) =>
+                        value === password.value ||
+                        "The passwords do not match",
+                    })}
+                  />
+                </InputGroup>
+
+                <FormErrorMessage>
+                  {errors.confirmpassword && errors.confirmpassword.message}
                 </FormErrorMessage>
 
                 <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
