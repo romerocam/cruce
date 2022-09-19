@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { EditIcon } from "@chakra-ui/icons";
 import {
@@ -11,16 +11,28 @@ import {
   TableContainer,
   Box,
   Input,
+  Heading,
 } from "@chakra-ui/react";
 
 export default function OfficesTable(props) {
+  const [enteredSearchInput, setEnteredSearchInput] = useState("");
+
+  const enteredSearchHandler = (event) => {
+    setEnteredSearchInput(event.target.value);
+  };
+
   return (
     <Box>
+      <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
+        List of offices
+      </Heading>
       <Box display="flex" justifyContent="center">
         <Input
           placeholder="Search by name of the office"
           width="auto"
           marginTop="5px"
+          value={enteredSearchInput}
+          onChange={enteredSearchHandler}
         />
       </Box>
       <Box display="flex" justifyContent="center">
@@ -32,7 +44,7 @@ export default function OfficesTable(props) {
           boxShadow="md"
           m={5}
         >
-          <Table variant="striped" colorScheme="teal" size="sm">
+          <Table variant="striped" colorScheme="blue" size="sm">
             <Thead>
               <Tr>
                 <Th>Name</Th>
@@ -42,25 +54,31 @@ export default function OfficesTable(props) {
               </Tr>
             </Thead>
             <Tbody>
-              {props.offices.map((office) => (
-                <Tr key={office.name}>
-                  <Td>{office.name}</Td>
-                  <Td>{office.capacityPerSlot}</Td>
-                  <Td>
-                    {office.timeRange.from}-{office.timeRange.to}
-                  </Td>
-                  <Td>
-                    <Box>
-                      <button>
-                        <ViewIcon />
-                      </button>{" "}
-                      <button>
-                        <EditIcon />
-                      </button>
-                    </Box>
-                  </Td>
-                </Tr>
-              ))}
+              {props.offices
+                .filter((office) =>
+                  office.name
+                    .toLowerCase()
+                    .includes(enteredSearchInput.toLowerCase())
+                )
+                .map((office) => (
+                  <Tr key={office.name}>
+                    <Td>{office.name}</Td>
+                    <Td>{office.capacityPerSlot}</Td>
+                    <Td>
+                      {office.timeRange.from}-{office.timeRange.to}
+                    </Td>
+                    <Td>
+                      <Box>
+                        <button >
+                          <ViewIcon mr="2" w={4} h={4} color="Green"/>
+                        </button>
+                        <button>
+                          <EditIcon ml="2" w={4} h={4} color="darkOrange"/>
+                        </button>
+                      </Box>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </Table>
         </TableContainer>
