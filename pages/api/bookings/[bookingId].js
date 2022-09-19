@@ -3,6 +3,8 @@
  *   api/bookings/:bookingId   *
  * ***********************/
 
+import { getSession } from "next-auth/react";
+
 import connectMongo from "../../../util/dbConnect";
 // import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
 import Booking from "../../../models/Booking";
@@ -17,6 +19,11 @@ export default async function handler(req, res) {
      */
 
     const bookingId = req.query.bookingId;
+
+    // verifica que el usuario este logeado:
+    const session = await getSession({ req: req });
+    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+    
 
     await connectMongo();
 
