@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { ViewIcon } from "@chakra-ui/icons";
 import { EditIcon } from "@chakra-ui/icons";
 import {
@@ -20,6 +21,9 @@ export default function OfficesTable(props) {
   const enteredSearchHandler = (event) => {
     setEnteredSearchInput(event.target.value);
   };
+
+
+  const router = useRouter();
 
   return (
     <Box>
@@ -69,11 +73,11 @@ export default function OfficesTable(props) {
                     </Td>
                     <Td>
                       <Box>
-                        <button >
-                          <ViewIcon mr="2" w={4} h={4} color="Green"/>
+                        <button onClick={() => router.push(`/offices/${office._id}-view`)}>
+                          <ViewIcon mr="2" w={4} h={4} color="Green" />
                         </button>
                         <button>
-                          <EditIcon ml="2" w={4} h={4} color="darkOrange"/>
+                          <EditIcon onClick={() => router.push(`/offices/${office._id}-edit`)} ml="2" w={4} h={4} color="darkOrange" />
                         </button>
                       </Box>
                     </Td>
