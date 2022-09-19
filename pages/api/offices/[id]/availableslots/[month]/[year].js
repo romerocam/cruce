@@ -83,7 +83,7 @@ export default async function handler(req, res) {
         for (initDay; initDay <= daysInMonth; initDay++) {
           officeDataArrPerDay.push({
             day: initDay,
-            slots: [...officeDataArr],
+            slots: JSON.parse(JSON.stringify(officeDataArr))/*officeDataArr.slice()*/ /*[...officeDataArr]*/,
           });
         }
 
@@ -122,27 +122,78 @@ export default async function handler(req, res) {
           },
         ]);
 
-        console.log("bookedSlots", bookedSlots);
-        /*
+       
         // Obtain available slots (by difference between officeData and bookedSlots):
-        let availableSlots = []; // {date, remainingCapacity and time}
-
+        //let availableSlots = []; // {day, remainingCapacity and time}
+        /*
         officeDataArr.forEach((element) => {
           availableSlots.push({
-            date,
+            day,
             remainingCapacity: capacity,
             time: element.time,
           });
         });
+        */
+        /*
+        bookedSlots.forEach(elementBS => {
+          //console.log(elementBS._id.date, "element.date")
+          officeDataArrPerDay.forEach(elementOD => {
+            if (elementOD.day === elementBS._id.date) {
+              elementOD.slots.forEach( elementODSlot => {
+                if (elementBS._id.startAt === elementODSlot.time) {
+                  //elementODSlot.capacity = elementODSlot.capacity - elementBS.count
+                  availableSlots.push({day: elementOD.day, remainingSlots: elementODSlot.capacity - elementBS.count, time: elementODSlot.time})
+                } else {
+                  
+                }
+              })
+            } else {
+              
+            }
+          });
+        });
+        */
+        
+        /*
+        officeDataArrPerDay.forEach( elementOD => {
+          bookedSlots.forEach(elementBS => {
+            if (elementBS._id.date === elementOD.day && elementBS._id.startAt === elementOD.slots.time) {
+              availableSlots.push({day: elementOD.day, remainingSlots: elementOD.slots.capacity - elementBS.count, time: elementOD.slots.time })
+            } else {
+              availableSlots.push({day: elementOD.day, remainingSlots: elementOD.slots.capacity, time: elementOD.slots.time })
+            }
+          });
+        })
 
+        */
+
+        // mejor copiar el arreglo de officeDataArrPerDay en availableSlots y modificar availableSlots en base a los reservados, más eficiente
+        //let availableSlots = [...officeDataArrPerDay]
+        let availableSlots = JSON.parse(JSON.stringify(officeDataArrPerDay)) //We need to copy the array/objects this way because there are nested elements and then we get a shallow copy otherwise. What we need is a deep copy.
+
+        availableSlots.forEach(elementAS => {
+          bookedSlots.forEach(elementBS => {
+            if (elementBS._id.date === elementAS.day) {
+              elementAS.slots.forEach(elementASSlots => {
+                if (elementBS._id.startAt === elementASSlots.time) {
+                  elementASSlots.capacity = elementASSlots.capacity - elementBS.count
+                }
+              })
+            }
+          });
+        });
+        
+        
+        
         console.log(officeDataArr, "officeDataArray");
         console.log(bookedSlots, "bookedSlots");
         console.log(availableSlots, "availableSlots");
-        */
+        //console.log(officeDataArrPerDay, "officeDataArrPerDay")
+        
 
         res.status(200).json({
           success: true,
-          data: officeDataArr,
+          data: availableSlots,
         });
       } catch (error) {
         res.status(400).json({
