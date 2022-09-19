@@ -4,17 +4,17 @@
  * ***********************/
 
 /*
- * VER cual es la forma correcta para para una API REST:}
+ * VER cual es la forma correcta para para una API REST:
  *
  * Hice los querys con tanto con info que llega por body (index.js)
  * como con info que llega por params (este archivo)
  */
 
+import { getSession } from "next-auth/react";
+
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
 import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
-
-
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -27,6 +27,11 @@ export default async function handler(req, res) {
      */
 
     const userId = req.query.userId;
+
+    // verifica que el usuario este logeado
+    const session = await getSession({ req: req });
+    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+
 
     await connectMongo();
 

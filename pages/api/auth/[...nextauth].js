@@ -6,13 +6,12 @@ import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
 import { verifyPassword } from '../../../util/auth';
 
-/*
+/************************************************************************************************************************
  * NextAuth es una funcion que al ejecutarse retorna una handler function para
  * que podamos agarrar todos los request que llegan a /api/auth/
  * Recibe un objeto de configuracion donde se especifica la configuracion de la sesion, de los providers (proveedores
  * de servicio de login), etc, que a su vez llevan otro objeto de configuracion
- *
- */
+ ************************************************************************************************************************/
 
 export default NextAuth({
 
@@ -75,12 +74,13 @@ export default NextAuth({
                 // client.close();
                 console.log(foundUser)
 
-                // solucionar la customizacion del JWT
+                /* 
+                 * Por defecto deja usar las propiedades email y name, nosotros customizamos (en callbacks)
+                 * para que agregue las propiedades role e id
+                 */
 
                 return { email: foundUser.email, role: foundUser.roles, name: foundUser.name, id: foundUser._id };
             }
         })
     ]
-
-
 });
