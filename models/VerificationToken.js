@@ -18,12 +18,12 @@ const VerificationTokenSchema = new Schema({
     // },
     token: {
         type: String,
-        // required: true,
+        required: true,
     },
     expires: {
         type: Timestamp,
-        // required: true,
-        
+        required: true,
+
     },
 });
 

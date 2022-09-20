@@ -8,6 +8,7 @@ import EmailProvider from "next-auth/providers/email";
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
 import { verifyPassword } from '../../../util/auth';
+import clientPromise from "../../../util/mongodb";
 
 /************************************************************************************************************************
  * NextAuth es una funcion que al ejecutarse retorna una handler function para
@@ -18,18 +19,14 @@ import { verifyPassword } from '../../../util/auth';
 
 export default NextAuth({
 
-    /* 
-     * aca se puede agregar info para setear un formulario propio de Next para el login (no lo usamos porque ya tenemos uno propio)
-     * VER: https://next-auth.js.org/providers/credentials
-     */
-
-    // Para customizar la info que se le pasa al payload del JWT
+    // Para customizar la info que se le pasa al payload del JWT 
     // Configuracion Callbacks: https://next-auth.js.org/configuration/callbacks
     // EJEMPLO DOCUMENTACION: (https://next-auth.js.org/tutorials/role-based-login-strategy)
 
     callbacks: {
         async jwt({ token, user }) {
             user && (token.user = user)
+            console.log("TOKEN", token)
             return token
         },
 
@@ -37,7 +34,7 @@ export default NextAuth({
             session.user.role = token.user.role; // Add role value to user object so it is passed along with session
             session.user.id = token.user.id; // Add id value to user object so it is passed along with session
             return session;
-        }
+        },
     },
 
     session: { // es un objeto donde especificamos como la sesion del usuario autentificado sera administrada
@@ -73,52 +70,67 @@ export default NextAuth({
         // async decode() { },
         // updateAge: 2 * 60 * 60,
     },
-    adapter: MongoDBAdapter(connectMongo),
-    providers: [
-        CredentialsProvider({
-            // como ya tenemos un formulario de autenticacion (no vamos a usar el que provee Next Auth)
-            // no hace falta setear credenciales y pasamos directamente el metodo authorize:
-            async authorize(credentials) {
+    debug: true,
+    adapter: MongoDBAdapter(clientPromise),
+    providers: [EmailProvider({
+        server: process.env.EMAIL_SERVER,
+        from: process.env.EMAIL_FROM,
+        maxAge: 60 * 60, // Seconds - How long email links are valid for (default 24h)
 
-                const client = await connectMongo();
+    }),
+    CredentialsProvider({
 
-                const foundUser = await User.findOne({ email: credentials.email })
+        /* 
+         * aca se puede agregar info para setear un formulario propio de Next para el login (no
+         * lo usamos porque ya tenemos uno propio)
+         * VER: https://next-auth.js.org/providers/credentials
+         */
 
-                if (!foundUser) {
-                    // hay que usar throw err para que authorize rechace la promesa y muestre un msg(por defecto redirije a otra pagina)
-                    throw new Error('No user found!')
-                }
+        name: "Credentials",
 
-                // comparamos el password ingresado en el form con el de la db:
-                const isValid = await verifyPassword(credentials.password, foundUser.password);
+        credentials: {
+            email: { label: "Email", type: "text", placeholder: "Enter your Email" },
+            password: { label: "Password", type: "password", placeholder: "Enter Your Password" }
+        },
 
-                if (!isValid) {
-                    // client.close();
-                    throw new Error('Could not log you in!');
-                }
+        // como ya tenemos un formulario de autenticacion (no vamos a usar el que provee Next Auth)
+        // no hace falta setear credenciales y pasamos directamente el metodo authorize:
+        async authorize(credentials) {
 
-                /* 
-                 * Al retornar un objeto dentro de authorize le hacemos saber a Next Auth que la autorizacion
-                 * tuvo exito. Este objeto va a ser codificado dentro del jwt. 
-                 * Por ej, podemos incluir el email para identificar el usuario al que hace referencia el token.
-                 * 
-                 */
+            const client = await connectMongo();
 
-                // client.close();
-                console.log(foundUser)
+            const foundUser = await User.findOne({ email: credentials.email })
 
-                /* 
-                 * Por defecto deja usar las propiedades email y name, nosotros customizamos (en callbacks)
-                 * para que agregue las propiedades role e id
-                 */
-
-                return { email: foundUser.email, role: foundUser.roles, name: foundUser.name, id: foundUser._id };
+            if (!foundUser) {
+                // hay que usar throw err para que authorize rechace la promesa y muestre un msg(por defecto redirije a otra pagina)
+                throw new Error('No user found!')
             }
-        }),
-        EmailProvider({
-            server: process.env.EMAIL_SERVER,
-            from: process.env.EMAIL_FROM,
-            maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
 
-        }),]
+            // comparamos el password ingresado en el form con el de la db:
+            const isValid = await verifyPassword(credentials.password, foundUser.password);
+
+            if (!isValid) {
+                // client.close();
+                throw new Error('Could not log you in!');
+            }
+
+            /* 
+             * Al retornar un objeto dentro de authorize le hacemos saber a Next Auth que la autorizacion
+             * tuvo exito. Este objeto va a ser codificado dentro del jwt. 
+             * Por ej, podemos incluir el email para identificar el usuario al que hace referencia el token.
+             * 
+             */
+
+            // client.close();
+            // console.log("FOUND_USER-->", foundUser)
+
+            /* 
+             * Por defecto deja usar las propiedades email y name, nosotros customizamos (en callbacks)
+             * para que agregue las propiedades role e id
+             */
+
+            return { email: foundUser.email, role: foundUser.role, name: foundUser.name, id: foundUser._id };
+        }
+    }),
+    ]
 });

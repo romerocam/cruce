@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 //next.js
 import { useRouter } from "next/router";
+// next auth
+import { signIn } from "next-auth/react";
 //components
 import Layout from "../../src/components/common/Layout/Layout";
 //styles
@@ -16,6 +18,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 
+
 const ForgotPassword = () => {
   const {
     register,
@@ -24,9 +27,19 @@ const ForgotPassword = () => {
   } = useForm({ mode: "onBlur" });
   const router = useRouter();
 
-  const onSubmit = (formData) => {
-    console.log("el e-mail is:", formData);
-    router.push("/users");
+  const onSubmit = async (formData) => {
+    // formData.preventDefault();
+
+    const loginResult = await signIn("email", {
+      redirect: false, // para que no redirija a otra pagina cuando da error el login
+
+      // le paso las credenciales al pedido (signIn)
+      email: formData.email,
+
+    });
+
+
+    router.push("/api/auth/verify-request?provider=email&type=email");
   };
 
   return (
