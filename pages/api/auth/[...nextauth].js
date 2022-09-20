@@ -31,6 +31,9 @@ export default NextAuth({
         },
 
         async session({ session, token, user }) {
+
+            session.user.lastname = token.user.lastname; // Add role value to user object so it is passed along with session
+            session.user.office = token.user.office; // Add role value to user object so it is passed along with session
             session.user.role = token.user.role; // Add role value to user object so it is passed along with session
             session.user.id = token.user.id; // Add id value to user object so it is passed along with session
             return session;
@@ -79,7 +82,7 @@ export default NextAuth({
                  * para que agregue las propiedades role e id
                  */
 
-                return { email: foundUser.email, role: foundUser.roles, name: foundUser.name, id: foundUser._id };
+                return { email: foundUser.email, role: foundUser.role, name: foundUser.name, id: foundUser._id, office: foundUser.office, lastname :foundUser.lastname };
             }
         })
     ]
