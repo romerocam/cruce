@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca el usuario del userId pasado por params:
             try {
-                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email roles office');    // ObjectId convierte el string a ObjetId de mongo
+                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email role office');    // ObjectId convierte el string a ObjetId de mongo
                 res.status(200).json(
                     {
                         success: true,
@@ -103,7 +103,7 @@ export default async function handler(req, res) {
                         address: reqBody.address,
                         // password: reqBody.password,             //  OJO: se guarda un password no hasheado!!
                         office: ObjectId(reqBody.office),
-                        roles: reqBody.roles
+                        role: reqBody.role
                     },
                     { new: true })
 
