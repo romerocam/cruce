@@ -26,14 +26,6 @@ const EditUserPage = () => {
   )
 }
 
+
 export default EditUserPage
 
-// export async function getServerSideProps(context){
-//   const user = await axios.get(`http://localhost:3000/api/users/${context.params.userId}`).then(response=>response.data.data)
-//   console.log("axios user", user)
-//   return{
-//     props:{
-//       userData: user
-//     }
-//   }
-// }
