@@ -31,22 +31,27 @@ const ProfileUser = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  const { id, role } = session.user
+  const { id, role } = session.user;
 
   const [profile, setProfile] = useState({});
   const router = useRouter();
 
-  useEffect(() => {
-    axios.get(`/api/users/${id}`).then((profile) => {
-      setProfile(profile.data.data);
-    });
-  }, []);
-
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
+
+  useEffect(() => {
+    axios.get(`/api/users/${id}`).then((profile) => {
+      const { name, lastname, dni, email } = profile.data.data;
+      setValue("name", name);
+      setValue("lastname", lastname);
+      setValue("dni", dni);
+      setValue("email", email);
+    });
+  }, []);
 
   const onSubmit = (formData) => {
     console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
@@ -58,8 +63,8 @@ const ProfileUser = () => {
       })
       .catch((error) => console.log(error));
   };
-// la idea es hacer un onchange para cuando el valor del formulario cambie, si cambia lo guarde en un objeto o lo set en un estado,
-//  si no cambia envie la informacion como viene en el objeto que trae el useEffect
+  // la idea es hacer un onchange para cuando el valor del formulario cambie, si cambia lo guarde en un objeto o lo set en un estado,
+  //  si no cambia envie la informacion como viene en el objeto que trae el useEffect
   return (
     <>
       <Container maxW={"7xl"} position={"relative"}>
