@@ -32,10 +32,21 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
+  // const [profile, setProfile] = useState({});
+
   const name = session && session.user.name;
   const role = session && session.user.role;
+  //const id = session && session.user.id;
 
   // console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
+
+  // useEffect(() => {
+  //   session &&
+  //     axios.get(`/api/users/${id}`).then((profile) => {
+  //       setProfile(profile.data.data)
+  //       console.log(">>>>>-----",profile)
+  //     });    
+  // }, []);
 
   const logoutHandler = () => signOut();
 
@@ -53,15 +64,6 @@ const Header = () => {
 
   const myAppointments = (formData) => {
     router.push("/users/my-appointments");
-  };
-
-  const logout = async () => {
-    try {
-      await axios.get("/api/auth/logout");
-    } catch (error) {
-      console.error(error.message);
-    }
-    router.push("/");
   };
 
   return (
@@ -127,6 +129,7 @@ const Header = () => {
                     variant={"link"}
                     cursor={"pointer"}
                     minW={0}
+                    onClick={()=>{useEffect}}
                   >
                     {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
                     <BsPersonCircle color="black" size="30px" />
@@ -141,7 +144,7 @@ const Header = () => {
                       />
                     </Center>
                     <Center fontWeight="bold" fontSize="xl">
-                      {name}
+                      {name}                      
                     </Center>
                     <Center fontSize="sm">{`Role: ${role}`}</Center>
                     <MenuDivider />
