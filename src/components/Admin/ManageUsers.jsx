@@ -17,7 +17,7 @@ import {
 
 export default function ManageUsers({users}) {
     const router = useRouter()
-    console.log("los ususarios", users)
+    console.log("los usuarios", users)
   return (
     <Box>
       <Box display="flex" justifyContent="center">
@@ -54,7 +54,7 @@ export default function ManageUsers({users}) {
                   <Td>{user.lastname}</Td>
                   <Td>{user.dni}</Td>
                   <Td>{user.email}</Td>
-                  <Td>{user.roles}</Td>
+                  <Td>{user.role}</Td>
                   <Td>
                     <Box>
                       <Button leftIcon={<EditIcon/>} size="xs" onClick={()=>{router.push(`/manage-users/${user._id}`)}}></Button>
