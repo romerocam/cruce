@@ -31,6 +31,9 @@ export default NextAuth({
         },
 
         async session({ session, token, user }) {
+
+            session.user.lastname = token.user.lastname; // Add role value to user object so it is passed along with session
+            session.user.office = token.user.office; // Add role value to user object so it is passed along with session
             session.user.role = token.user.role; // Add role value to user object so it is passed along with session
             session.user.id = token.user.id; // Add id value to user object so it is passed along with session
             return session;
