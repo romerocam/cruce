@@ -54,15 +54,6 @@ const Header = () => {
     router.push("/users/my-appointments");
   };
 
-  const logout = async () => {
-    try {
-      await axios.get("/api/auth/logout");
-    } catch (error) {
-      console.error(error.message);
-    }
-    router.push("/");
-  };
-
   return (
     <>
       <Box bg={useColorModeValue("brand.700", "brand.600")} px={6}>
