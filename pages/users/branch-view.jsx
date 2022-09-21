@@ -11,6 +11,7 @@ export default function OperatorBranchView(props) {
     </Layout>
   )
 }
+
 export async function getServerSideProps() {
     const users = await getAllUsers();
     return {
