@@ -49,7 +49,7 @@ export default function ManageUsers({users}) {
             </Thead>
             <Tbody>
               {users.map((user) => (
-                <Tr key={user.id}>
+                <Tr key={user._id}>
                   <Td>{user.name}</Td>
                   <Td>{user.lastname}</Td>
                   <Td>{user.dni}</Td>

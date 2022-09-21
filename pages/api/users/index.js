@@ -15,6 +15,14 @@ import { getSession } from "next-auth/react";
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
 
+/*
+export const getAllUsers = async function(){
+    connectMongo()
+    const users = await User.find({})
+    return users
+}
+*/
+
 export default async function handler(req, res) {
     const { method } = req;
     const reqBody = req.body;

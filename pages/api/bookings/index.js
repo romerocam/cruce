@@ -51,11 +51,11 @@ export default async function handler(req, res) {
 
         case "POST": // crear Booking:
             try {
-                const newId = await Booking.estimatedDocumentCount() + 1;
-                console.log("ID", newId)
+                //const newId = await Booking.estimatedDocumentCount() + 1;
+                //console.log("ID", newId)
 
                 const newBooking = await Booking.create({
-                    _id: newId,
+                    //_id: newId,
                     date: reqBody.date,
                     startAt: reqBody.startAt,
                     office: ObjectId(reqBody.office),
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
                 res.status(201).json({
                     success: true,
                     data: newBooking,
-                    message: `Booking N° ${newBooking._id} has been created`,
+                    message: `Booking has been created`, //${newBooking._id}
                 })
 
             } catch (error) {
@@ -106,7 +106,7 @@ export default async function handler(req, res) {
                         message: `Bookings not deleted`,
                     });
             }
-            break;
+            break; 
 
         default:
             res.status(400).json({
