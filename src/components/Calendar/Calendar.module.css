@@ -1,0 +1,10 @@
+.oneOrMoreSlots {
+    font-weight: 700;
+    background-color:lightgreen;
+    border-radius: 25px;
+}
+
+.noSlots{
+    pointer-events: none;
+    border-radius: 25px;
+}

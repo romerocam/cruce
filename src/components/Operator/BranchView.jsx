@@ -13,22 +13,28 @@ import {
   Box,
   Input,
   Heading,
+  Stack,
+  Checkbox,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 
-export default function OfficesTable(props) {
+export default function BranchTable(props) {
   const [enteredSearchInput, setEnteredSearchInput] = useState("");
 
   const enteredSearchHandler = (event) => {
     setEnteredSearchInput(event.target.value);
   };
+  const { data: session, status } = useSession();
 
+  const office = session && session.user.office;
+  const role = session && session.user.role;
 
   const router = useRouter();
 
   return (
     <Box>
       <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
-        List of offices
+        {`${office} ${role}`}
       </Heading>
       <Box display="flex" justifyContent="center">
         <Input
@@ -52,33 +58,39 @@ export default function OfficesTable(props) {
             <Thead>
               <Tr>
                 <Th>Name</Th>
-                <Th>Capacity</Th>
-                <Th>Time Range</Th>
-                <Th>Action</Th>
+                <Th>Lastname</Th>
+                <Th>Email</Th>
+                <Th>Booking Status</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {props.offices
-                .filter((office) =>
-                  office.name
+              {props.users
+                .filter((users) =>
+                  users.email
                     .toLowerCase()
                     .includes(enteredSearchInput.toLowerCase())
                 )
-                .map((office) => (
-                  <Tr key={office.name}>
-                    <Td>{office.name}</Td>
-                    <Td>{office.capacityPerSlot}</Td>
-                    <Td>
-                      {office.timeRange.from}-{office.timeRange.to}
-                    </Td>
+                .map((users) => (
+                  <Tr key={users.name}>
+                    <Td>{users.name}</Td>
+                    <Td>{users.lastname}</Td>
+                    <Td>{users.email}</Td>
                     <Td>
                       <Box>
-                        <button onClick={() => router.push(`/offices/${office._id}-view`)}>
-                          <ViewIcon mr="2" w={4} h={4} color="Green" />
-                        </button>
-                        <button>
-                          <EditIcon onClick={() => router.push(`/offices/${office._id}-edit`)} ml="2" w={4} h={4} color="darkOrange" />
-                        </button>
+                        <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                          <Checkbox size="md" colorScheme="red" defaultChecked>
+                            Pending
+                          </Checkbox>
+                          <Checkbox
+                            size="md"
+                            colorScheme="green"
+                          >
+                            Cancelled
+                          </Checkbox>
+                          <Checkbox size="md" colorScheme="orange">
+                            Attended
+                          </Checkbox>
+                        </Stack>
                       </Box>
                     </Td>
                   </Tr>

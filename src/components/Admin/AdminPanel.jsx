@@ -108,22 +108,6 @@ const AdminPanel = () => {
                 Manage Users
               </Button>
             </Stack>
-
-            <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
-              <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
-                }}
-                onClick={() => {
-                  router.push("/users/rolecreator");
-                }}
-              >
-                Create Role
-              </Button>
-            </Stack>
           </Box>
         </Center>
       </Container>

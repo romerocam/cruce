@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from "react";
 
 import {
@@ -25,27 +24,24 @@ import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-const RoleCreator = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
+const EditUser = ({ user }) => {
+  // const [show, setShow] = useState(false);
+  // const handleClick = () => setShow(!show);
 
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
 
   const [offices, setOffices] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/offices")
-      .then(officesArray => {
-        console.log(officesArray.data)
-        setOffices(officesArray.data.data)
+    axios.get("/api/offices").then((officesArray) => {
+      console.log(officesArray.data);
+      setOffices(officesArray.data.data);
+    });
 
-      })
+    console.log(offices);
+  }, []);
 
-    console.log(offices)
-
-  }, [])
-
-
+  console.log("desde edit user es:", user)
 
   return (
     <>
@@ -67,7 +63,18 @@ const RoleCreator = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}             
+              pos={"relative"}
+              _after={{
+                content: '""',
+                w: 4,
+                h: 4,
+                bg: "green.300",
+                border: "2px solid white",
+                rounded: "full",
+                pos: "absolute",
+                bottom: 0,
+                right: 3,
+              }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
               Create Role
@@ -96,10 +103,11 @@ const RoleCreator = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.name}
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                  // values={getProfile().name}
+                    // values={getProfile().name}
                   />
                 </InputGroup>
               </FormControl>
@@ -116,6 +124,7 @@ const RoleCreator = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.lastname}
                     placeholder="lastname"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -135,6 +144,7 @@ const RoleCreator = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.dni}
                     placeholder="DNI"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -154,71 +164,45 @@ const RoleCreator = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.email}
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                  // values={getProfile().email}
+                    // values={getProfile().email}
                   />
                 </InputGroup>
               </FormControl>
 
-              <CheckboxGroup colorScheme="green" >
+              <CheckboxGroup colorScheme="green">
                 <Stack spacing={10} direction={["column", "row"]}>
-                  <Checkbox defaultChecked>Customer</Checkbox>
-                  <Checkbox value="operator">Operator</Checkbox>
-                  <Checkbox value="admin">Admin</Checkbox>
+                  {user.role === "customer" ? (
+                    <Checkbox defaultChecked>Customer</Checkbox>
+                  ) : (
+                    <Checkbox>Customer</Checkbox>
+                  )}
+                  {user.role === "operator" ? (
+                    <Checkbox defaultChecked>Operator</Checkbox>
+                  ) : (
+                    <Checkbox>Operator!!!</Checkbox>
+                  )}
+                  {user.role === "admin" ? (
+                    <Checkbox defaultChecked>Admin</Checkbox>
+                  ) : (
+                    <Checkbox>Admin</Checkbox>
+                  )}
                 </Stack>
               </CheckboxGroup>
-              <Select placeholder="Select Branch Office">
-                {offices.map((office, i) => <option value={office._id} key={office._id}>{office.name}</option>)}
+              {user.role === "operator" && (
+                <Select placeholder="Select Branch Office">
+                  {offices.map((office, i) => (
+                    <option value={office._id} key={office._id}>
+                      {office.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
 
-
-                {/* <option value="option1">Almagro</option>
-                <option value="option2">Belgrano</option>
-                <option value="option3">Palermo</option>
-                <option value="option3">Recoleta</option>
-                <option value="option3">Caballito</option> */}
-              </Select>
-
-              <Heading
-                fontSize={"xl"}
-                color={"#000505"}
-                textAlign="center"
-                paddingBottom={"5px"}
-                paddingTop={"5px"}
-              >
-                Set Password
-              </Heading>
-
-              <FormControl id="newPassword" isrequired="true">
-                <InputGroup size="md">
-                  <Input
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Enter Password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-
-              <FormControl id="confirmpassword" isrequired="true">
-                <InputGroup size="md">
-                  <Input
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Confirm Password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
+             
             </Stack>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
@@ -239,4 +223,4 @@ const RoleCreator = () => {
   );
 };
 
-export default RoleCreator;
+export default EditUser;

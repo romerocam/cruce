@@ -89,7 +89,7 @@ const UsersPage = () => {
                   size="xs"
                   alignSelf="flex-end"
                   onClick={() => {
-                    router.push("/users/forgot-password");
+                    router.push("/api/auth/signin");
                   }}
                 >
                   Forgot your password?

@@ -1,17 +1,41 @@
-import OfficesTable from "../../src/components/OfficeTable/OfficesTable";
-import { getOffices } from "../api/offices/index";
+import ManageUsers from "../../src/components/Admin/ManageUsers";
+//import {getAllUsers} from "../api/users/index"
+import axios from "axios";
+import Layout from "../../src/components/common/Layout/Layout"
+import { useEffect, useState } from "react";
 
-function Offices(props) {
-  return <OfficesTable offices={props.offices} />;
+
+
+function ManageUsersPage() {
+
+  const [users, setUsers] = useState([])
+
+useEffect(() => {
+  
+  axios.get("http://localhost:3000/api/users").then(response=>setUsers(response.data.data)).catch(error=>error.message)
+ 
+}, [])
+
+
+  return (
+  
+    <Layout>
+
+      <ManageUsers users={users} />
+    </Layout>
+ 
+
+  )
 }
 
-export default Offices;
+export default ManageUsersPage;
 
 export async function getServerSideProps() {
-  const offices = await getOffices();
+  const users = await axios.get("http://localhost:3000/api/users").then(response=>response.data.data).catch(error=>error.message)
+  console.log("users en axios", users)
   return {
     props: {
-      offices: JSON.parse(JSON.stringify(offices)),
+      usersList: users,
     },
   };
 }

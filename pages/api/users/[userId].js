@@ -4,17 +4,17 @@
  * ***********************/
 
 /*
- * VER cual es la forma correcta para para una API REST:}
+ * VER cual es la forma correcta para para una API REST:
  *
  * Hice los querys con tanto con info que llega por body (index.js)
  * como con info que llega por params (este archivo)
  */
 
+import { getSession } from "next-auth/react";
+
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
 import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
-
-
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -28,12 +28,17 @@ export default async function handler(req, res) {
 
     const userId = req.query.userId;
 
+    // verifica que el usuario este logeado
+    const session = await getSession({ req: req });
+    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+
+
     await connectMongo();
 
     switch (method) {
         case "GET": // busca el usuario del userId pasado por params:
             try {
-                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email roles office');    // ObjectId convierte el string a ObjetId de mongo
+                const foundUser = await User.findOne({ _id: ObjectId(userId) }, 'name lastname dni address email role office');    // ObjectId convierte el string a ObjetId de mongo
                 res.status(200).json(
                     {
                         success: true,
@@ -98,7 +103,7 @@ export default async function handler(req, res) {
                         address: reqBody.address,
                         // password: reqBody.password,             //  OJO: se guarda un password no hasheado!!
                         office: ObjectId(reqBody.office),
-                        roles: reqBody.roles
+                        role: reqBody.role
                     },
                     { new: true })
 
