@@ -24,7 +24,7 @@ import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-const RoleCreator = () => {
+const ChangePassword = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
@@ -249,4 +249,4 @@ const RoleCreator = () => {
   );
 };
 
-export default RoleCreator;
+export default ChangePassword;
