@@ -15,8 +15,8 @@ export default async function handler(req, res) {
     const userId = reqBody.userId
 
     // verifica que el usuario este logeado:
-    //const session = await getSession({ req: req });
-    //if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+    const session = await getSession({ req: req });
+    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
 
     await connectMongo();
     console.log("BODY", reqBody)
