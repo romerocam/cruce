@@ -55,6 +55,8 @@ const ProfileUser = () => {
 
   const onSubmit = (formData) => {
     console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
+    formData.name = formData.name.replace(/\s+/g, " ");
+    formData.lastname = formData.lastname.replace(/\s+/g, " ");
     axios
       .put(`/api/users/${id}`, formData)
       .then((response) => {
@@ -85,18 +87,7 @@ const ProfileUser = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}
-              _after={{
-                content: '""',
-                w: 4,
-                h: 4,
-                bg: "green.300",
-                border: "2px solid white",
-                rounded: "full",
-                pos: "absolute",
-                bottom: 0,
-                right: 3,
-              }}
+              pos={"relative"}             
             />
             <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
               Profile
@@ -125,7 +116,7 @@ const ProfileUser = () => {
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
-                  <Input
+                  <Input                  
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -139,6 +130,10 @@ const ProfileUser = () => {
                     id="name"
                     {...register("name", {
                       required: "Name is required",
+                      pattern: {
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                        message: 'Exceeded character limit or special characters' 
+                      }
                     })}
                   />
                 </InputGroup>
@@ -166,6 +161,10 @@ const ProfileUser = () => {
                     id="lastname"
                     {...register("lastname", {
                       required: "Last Name is required",
+                      pattern: {
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                        message: 'Exceeded character limit or special characters' 
+                      }
                     })}
                   />
                 </InputGroup>
@@ -180,6 +179,7 @@ const ProfileUser = () => {
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
+                  type="Number"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -200,7 +200,7 @@ const ProfileUser = () => {
                       maxLength: {
                         value: 8,
                         message: "Please enter 8 digits",
-                      },
+                      },                     
                     })}
                   />
                 </InputGroup>

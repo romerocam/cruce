@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { signIn, useSession, getSession } from "next-auth/react";
+import Login from "../../src/components/Login/Login";
 //import { useSession } from 'next-auth/client'
 
 import Layout from "../../src/components/common/Layout/Layout";
@@ -50,6 +51,7 @@ const UsersPage = () => {
   return (
     <>
       <Layout>
+          {/* <Login/> */}
         <Flex
           height="100vh"
           alignItems="center"
@@ -87,7 +89,7 @@ const UsersPage = () => {
                   size="xs"
                   alignSelf="flex-end"
                   onClick={() => {
-                    router.push("/users/forgotpassword");
+                    router.push("/users/forgot-password");
                   }}
                 >
                   Forgot your password?

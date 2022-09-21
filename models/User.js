@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
     // lowerCase: true,
     // validate: [isEmail, "enter valid email"],
   },
-  roles: {
+  role: {
     type: String,
     default: 'customer',
     enum: ['customer', 'admin', 'operator'],
