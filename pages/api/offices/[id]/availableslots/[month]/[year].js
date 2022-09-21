@@ -82,7 +82,8 @@ export default async function handler(req, res) {
         for (initDay; initDay <= daysInMonth; initDay++) {
           if (
             new Date(yearId, monthId - 1, initDay).getDay() !== 6 &&
-            new Date(yearId, monthId - 1, initDay).getDay() !== 0
+            new Date(yearId, monthId - 1, initDay).getDay() !== 0 &&
+            new Date(yearId, monthId - 1, initDay)>currentDate
           ) {
             console.log(new Date(yearId, monthId - 1, initDay).getDay(), "día");
             console.log(new Date(yearId, monthId - 1, initDay), "fecha entera");
