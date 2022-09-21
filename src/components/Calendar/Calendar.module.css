@@ -8,3 +8,35 @@
     pointer-events: none;
     border-radius: 25px;
 }
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content	:space-around;
+    align-items:flex-start;
+    margin-top: 30px
+}
+
+.itemMainContainer{
+    order : 0;
+    flex: 0 1 auto;
+    align-self: auto;
+}
+
+.slotsContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items:flex-start;
+    gap: 12px;
+    max-width: 450px;
+    margin-top: 30px
+}
+
+.itemSlot{
+    order : 0;
+    flex: 0 1 auto;
+    align-self: auto;
+}
