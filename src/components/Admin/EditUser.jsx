@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-
+import axios from "axios";
+import {useForm} from "react-hook-form"
 import {
   Heading,
   Avatar,
@@ -16,12 +17,12 @@ import {
   Container,
   useColorModeValue,
   Icon,
+  Radio,
   Checkbox,
   CheckboxGroup,
   Select,
 } from "@chakra-ui/react";
-import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
-import axios from "axios";
+import { HiUser, HiMail} from "react-icons/hi";
 import { useSession } from "next-auth/react";
 
 const EditUser = ({ user }) => {
@@ -29,6 +30,7 @@ const EditUser = ({ user }) => {
   // const handleClick = () => setShow(!show);
 
   // const { data: session, status } = useSession();
+  const {register, handleSubmit, formState:{errors}}= useForm()
 
   const [offices, setOffices] = useState([]);
 
@@ -37,11 +39,10 @@ const EditUser = ({ user }) => {
       console.log(officesArray.data);
       setOffices(officesArray.data.data);
     });
-
     console.log(offices);
   }, []);
 
-  console.log("desde edit user es:", user)
+  console.log("el user role es", user.role);
 
   return (
     <>
@@ -172,26 +173,44 @@ const EditUser = ({ user }) => {
                   />
                 </InputGroup>
               </FormControl>
+              
+              {/* <Stack spacing={10} direction={["column", "row"]}>
+                    <Checkbox defaultChecked={user.role==="customer"}>Customer</Checkbox>
+                    <Checkbox defaultChecked={user.role==="operator"}>Operator</Checkbox>
+                    <Checkbox defaultChecked={user.role==="admin"}>Admin</Checkbox>
+               </Stack> */}
 
-              <CheckboxGroup colorScheme="green">
-                <Stack spacing={10} direction={["column", "row"]}>
-                  {user.role === "customer" ? (
-                    <Checkbox defaultChecked>Customer</Checkbox>
-                  ) : (
+
+              {user.role === "customer" && (
+                <CheckboxGroup colorScheme="green">
+                  <Stack spacing={10} direction={["column", "row"]}>
+                    <Checkbox defaultChecked value="customer">Customer</Checkbox>
+                    <Checkbox value="operator">Operator</Checkbox>
+                    <Checkbox value="admin">Admin</Checkbox>
+                  </Stack>
+                </CheckboxGroup>
+              )}
+
+              {user.role === "operator" && (
+                <CheckboxGroup colorScheme="green">
+                  <Stack spacing={10} direction={["column", "row"]}>
                     <Checkbox>Customer</Checkbox>
-                  )}
-                  {user.role === "operator" ? (
                     <Checkbox defaultChecked>Operator</Checkbox>
-                  ) : (
-                    <Checkbox>Operator!!!</Checkbox>
-                  )}
-                  {user.role === "admin" ? (
-                    <Checkbox defaultChecked>Admin</Checkbox>
-                  ) : (
                     <Checkbox>Admin</Checkbox>
-                  )}
-                </Stack>
-              </CheckboxGroup>
+                  </Stack>
+                </CheckboxGroup>
+              )}
+
+              {user.role === "admin" && (
+                <CheckboxGroup colorScheme="green">
+                  <Stack spacing={10} direction={["column", "row"]}>
+                    <Checkbox>Customer</Checkbox>
+                    <Checkbox>Operator</Checkbox>
+                    <Checkbox defaultChecked>Admin</Checkbox>
+                  </Stack>
+                </CheckboxGroup>
+              )}
+
               {user.role === "operator" && (
                 <Select placeholder="Select Branch Office">
                   {offices.map((office, i) => (
@@ -201,8 +220,6 @@ const EditUser = ({ user }) => {
                   ))}
                 </Select>
               )}
-
-             
             </Stack>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
