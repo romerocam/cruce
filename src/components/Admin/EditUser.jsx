@@ -32,7 +32,6 @@ const EditUser = ({ user }) => {
   const [offices, setOffices] = useState([]);
   useEffect(() => {
     axios.get("/api/offices").then((officesArray) => {
-      console.log(officesArray.data);
       setOffices(officesArray.data.data);
     });
   }, []);
@@ -93,7 +92,7 @@ const EditUser = ({ user }) => {
               }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
-              Create Role
+              Edit User
             </Heading>
 
             <Text
@@ -216,23 +215,9 @@ const EditUser = ({ user }) => {
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
 
-                  {/* <CheckboxGroup colorScheme="green">
-                    <Stack spacing={10} direction={["column", "row"]}>
-                      <Checkbox defaultChecked={user.role === "customer"}>
-                        Customer
-                      </Checkbox>
-                      <Checkbox defaultChecked={user.role === "operator"}>
-                        Operator
-                      </Checkbox>
-                      <Checkbox defaultChecked={user.role === "admin"}>
-                        Admin
-                      </Checkbox>
-                    </Stack>
-                  </CheckboxGroup> */}
-
                   <Select
                     defaultValue={user.role}
-                    {...register("role")}
+                    {...register("role", {})}
                     onChange={onChangeRoleHandler}
                   >
                     <option>customer</option>
