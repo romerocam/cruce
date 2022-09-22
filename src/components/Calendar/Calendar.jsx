@@ -29,11 +29,16 @@ export default function NewBookingCalendar() {
 
   // TODO: replace axios request by getServerSideProps
   useEffect(() => {
-    axios
-      .get(`/api/offices/${idOffice}/availableslots/${idMonth}/${idYear}`)
-      .then((availableSlots) => {
-        setAvailableSlotsPerMonth(availableSlots.data.data);
-      });
+    if (idOffice && idMonth && idYear) {
+      axios
+        .get(`/api/offices/${idOffice}/availableslots/${idMonth}/${idYear}`)
+        .then((availableSlots) => {
+          setAvailableSlotsPerMonth(availableSlots.data.data);
+        });
+    } else {
+      setAvailableSlotsPerMonth([]);
+      setAvailableSlotsPerDay([]);
+    }
   }, [idOffice, idMonth, idYear]);
 
   const setAppointment = () => {
@@ -68,15 +73,14 @@ export default function NewBookingCalendar() {
   };
 
   const onChangeOffice = (event) => {
+    setAvailableSlotsPerDay([]);
     setIdOffice(event.target.value);
-    if (!event.target.value) {
-      setAvailableSlotsPerMonth([]);
-    }
   };
 
   const onActiveStartDateChangeHandler = ({ activeStartDate, value, view }) => {
     setIdMonth(activeStartDate.getMonth() + 1);
     setIdYear(activeStartDate.getFullYear());
+    setAvailableSlotsPerDay([]);
   };
 
   const onClickSlotHandler = (slot) => {
@@ -88,7 +92,11 @@ export default function NewBookingCalendar() {
       <div className={classes.itemMainContainer}>
         <Select placeholder="Select office" onChange={onChangeOffice} mb={10}>
           {listOfOffices.map((office, i) => {
-            return <option key={i} value={office._id}>{office.name}</option>;
+            return (
+              <option key={i} value={office._id}>
+                {office.name}
+              </option>
+            );
           })}
         </Select>
 
@@ -111,64 +119,67 @@ export default function NewBookingCalendar() {
 
               if (availableDay) {
                 let totalAvailable = 0;
-                availableDay.slots.forEach(slot => {
-                  totalAvailable += slot.capacity
+                availableDay.slots.forEach((slot) => {
+                  totalAvailable += slot.capacity;
                 });
 
-                if (totalAvailable>=10) {
-                  return classes.tenOrMoreSlots
+                if (totalAvailable >= 10) {
+                  return classes.tenOrMoreSlots;
                 }
 
-                if (totalAvailable>=5) {
-                  return classes.fiveOrMoreSlots
+                if (totalAvailable >= 5) {
+                  return classes.fiveOrMoreSlots;
                 }
 
-                if (totalAvailable>=2) {
-                  return classes.twoOrMoreSlots
-                }
-                
-                if (totalAvailable===1) {
-                  return classes.lastSlot
+                if (totalAvailable >= 2) {
+                  return classes.twoOrMoreSlots;
                 }
 
+                if (totalAvailable === 1) {
+                  return classes.lastSlot;
+                }
               } else {
-                return classes.noSlots
+                return classes.noSlots;
               }
             }}
           />
         )}
-      </div> {availableSlotsPerMonth.length? 
-      <div className={classes.itemMainContainer}>
-        <h1>Select slot</h1>
-        <div className={classes.slotsContainer}>
-          {availableSlotsPerDay.map((slot,i) => {
-            return (
-              <div key={i} className={classes.itemSlot}>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    onClickSlotHandler(slot);
-                  }}
-                >
-                  {slot}
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-        {selectedSlot && (
-          <p>
-            You selected the following slot: {selectedSlot}; please confirm!
-          </p>
-        )}
-        {availableSlotsPerDay.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <Button colorScheme="green" onClick={setAppointment}>
-              Confirm
-            </Button>
+      </div>{" "}
+      {availableSlotsPerMonth.length ? (
+        <div className={classes.itemMainContainer}>
+          <h1>Select slot</h1>
+          <div className={classes.slotsContainer}>
+            {availableSlotsPerDay.map((slot, i) => {
+              return (
+                <div key={i} className={classes.itemSlot}>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => {
+                      onClickSlotHandler(slot);
+                    }}
+                  >
+                    {slot}
+                  </Button>
+                </div>
+              );
+            })}
           </div>
-        )}
-      </div>:""}
+          {selectedSlot && (
+            <p>
+              You selected the following slot: {selectedSlot}; please confirm!
+            </p>
+          )}
+          {availableSlotsPerDay.length > 0 && (
+            <div style={{ marginTop: 10 }}>
+              <Button colorScheme="green" onClick={setAppointment}>
+                Confirm
+              </Button>
+            </div>
+          )}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
