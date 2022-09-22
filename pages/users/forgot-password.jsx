@@ -1,51 +1,12 @@
-//react
-import { useForm } from "react-hook-form";
-//next.js
-import { useRouter } from "next/router";
 // next auth
-import { getSession, signIn } from "next-auth/react";
+import { getSession } from "next-auth/react";
 //components
 import Layout from "../../src/components/common/Layout/Layout";
 //styles
-import {
-  Flex,
-  Input,
-  Button,
-  Avatar,
-  Stack,
-  FormControl,
-  FormErrorMessage,
-  useColorModeValue,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-} from "@chakra-ui/react";
 
-import { HiMail } from "react-icons/hi";
 import ForgotPassword from "../../src/components/Forgotpassword/ForgotPassword";
 
 const ForgotPasswordPage = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ mode: "onBlur" });
-  const router = useRouter();
-
-  const onSubmit = async (formData) => {
-    // formData.preventDefault();
-
-    const loginResult = await signIn("email", {
-      redirect: false, // para que no redirija a otra pagina cuando da error el login
-
-      // le paso las credenciales al pedido (signIn)
-      email: formData.email,
-
-    });
-
-    router.push("/api/auth/verify-request?provider=email&type=email");
-  };
-
   return (
     <>
       <Layout>
