@@ -1,22 +1,24 @@
 import BranchView from "../../src/components/Operator/BranchView";
 import Layout from "../../src/components/common/Layout/Layout";
-import { getAllUsers } from "../api/users";
+import axios from "axios";
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function OperatorBranchView(props) {
+export default function OperatorBranchView() {
+  // const router = useRouter()
+  // const {userId} =router.query
+
+  // console.log("userId", userId)
+  const[offices, setOffices] = useState([])
+
+  useEffect(()=>{
+    axios.get('http://localhost:3000/api/bookings').then(response=>setOffices(response.data.data))
+  },[])
   return (
     <Layout>
-      <BranchView users={props.users}/>
+      <BranchView offices={offices} />
     </Layout>
   )
 }
 
-export async function getServerSideProps() {
-    const users = await getAllUsers();
-    return {
-      props: {
-        users: JSON.parse(JSON.stringify(users)),
-      },
-    };
-  }
+
