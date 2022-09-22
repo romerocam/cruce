@@ -23,16 +23,20 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
   const { data: session, status } = useSession();
-  const id = session?.user;
+  const id = session?.user.id;
 
   console.log("user ------> ", id);
 
   const [userBooking, setUserBooking] = useState({});
 
   useEffect(() => {
-    axios.get(`/api/bookings`, { data: { userId: id } }).then((bookings) => {
+    session ?(
+    axios
+    .get(`/api/bookings/user/${id}`)
+    .then((bookings) => {
+      console.log(">>>>>>>>>>>>>>>", bookings);
       setUserBooking(bookings);
-    });
+    })): console.log("No hay session")
   }, []);
 
   console.log("Bookings --------->", userBooking);
@@ -61,13 +65,13 @@ const Appointments = () => {
               </Thead>
               <Tbody>
                 {userBooking?.data?.data.map((bookings) => {
-                  console.log(bookings.office);
+                  console.log("<<<<<<<<<<<",bookings.office);
                   return (
                     <Tr key={bookings._id}>
                       <Td>{bookings.date}</Td>
                       <Td>{bookings.startAt}</Td>
                       <Td>
-                        {bookings.office ? bookings.office.name : "--"}                        
+                        {bookings.office ? bookings.office.name : "--"}
                         <Button
                           marginLeft={6}
                           //bg={useColorModeValue("brand.700", "brand.600")}
