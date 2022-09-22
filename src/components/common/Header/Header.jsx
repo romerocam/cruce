@@ -6,7 +6,7 @@ import {
   Stack,
   Button,
   Flex,
-  Text,
+  Text, 
   Menu,
   MenuButton,
   MenuList,
@@ -66,6 +66,10 @@ const Header = () => {
     router.push("/users/my-appointments");
   };
 
+  const newBooking = (formData) => {
+    router.push("/users/new-booking");
+  };
+
   return (
     <>
       <Box bg={useColorModeValue("brand.700", "brand.600")} px={6}>
@@ -77,12 +81,7 @@ const Header = () => {
               }}
               variant={Link}
             >
-              <Avatar
-                size={"sm"}
-                src={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmNrwGtJeJINC3YpfWSOjK67cx6dFm1yWJFQ&usqp=CAU"
-                }
-              />
+             <Avatar/>                            
             </Button>
           </Box>
 
@@ -164,6 +163,9 @@ const Header = () => {
                     )}
                     {session && (
                       <MenuItem onClick={myAppointments}>Bookings</MenuItem>
+                    )}
+                    {session && (
+                      <MenuItem onClick={newBooking}>New Booking</MenuItem>
                     )}
                     {session && (
                       <MenuItem onClick={logoutHandler} fontWeight={"bolder"}>
