@@ -3,6 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 //next.js
 import { useRouter } from "next/router";
+import { signIn, useSession, getSession } from "next-auth/react";
 //styles
 import {
   Flex,
@@ -16,6 +17,9 @@ import {
 } from "@chakra-ui/react";
 
 const ForgotPassword = () => {
+
+  const { data: session, status } = useSession();
+
   const {
     register,
     handleSubmit,
@@ -23,9 +27,19 @@ const ForgotPassword = () => {
   } = useForm({ mode: "onBlur" });
   const router = useRouter();
 
-  const onSubmit = (formData) => {
-    console.log("el e-mail is:", formData);
-    router.push("/users");
+  session && router.push("/users/change-password");
+
+  const onSubmit = async (formData) => {
+    // formData.preventDefault();
+
+    const loginResult = await signIn("email", {
+      redirect: false, // para que no redirija a otra pagina cuando da error el login
+
+      // le paso las credenciales al pedido (signIn)
+      email: formData.email,
+    });
+
+    router.push("/api/auth/verify-request?provider=email&type=email");
   };
 
   return (

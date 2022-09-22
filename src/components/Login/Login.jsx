@@ -29,47 +29,28 @@ const Login = () => {
   //const session = await getSession({ req })
 
   const router = useRouter();
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
 
   // console.log("SESSION", session);
   // console.log("LOADING", loading);
+ 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onBlur" });
 
-  const handleChange = (e) => {
-    
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    });
-  };
+const onSubmit =  async (formData) => {
+  const loginResult = await signIn("credentials", {
+    redirect: false, // para que no redirija a otra pagina cuando da error el login
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(e.target.value)
-
-    const loginResult = await signIn("credentials", {
-      redirect: false, // para que no redirija a otra pagina cuando da error el login
-
-      // le paso las credenciales al pedido (signIn)
-      email: credentials.email,
-      password: credentials.password,
-    });
-
-    console.log("LOGIN_RESULT", loginResult);
-
-    // si login OK redirijo al perfil:
-    if (loginResult.ok) {
-      router.push("/users/profile-user");
-    }
-  };
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm({ mode: "onBlur" });
+    // le paso las credenciales al pedido (signIn)
+    email: formData.email,
+    password: formData.password,
+  });
+  if (loginResult.ok) {
+    router.push("/users/profile-user");
+  }
+}
 
   return (
     <>
@@ -91,7 +72,7 @@ const Login = () => {
               mb={4}
               pos={"relative"}
             />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl
                 // isInvalid={errors.email || errors.password}
                 textColor={"black"}
@@ -103,8 +84,7 @@ const Login = () => {
                     children={<Icon as={HiMail} color={"gray.400"}></Icon>}
                   />                          
                   <Input
-                    variant="flushed"
-                    onChange={handleChange}
+                    variant="flushed"                    
                     focusBorderColor={useColorModeValue(
                       "brand.700",
                       "brand.600"
@@ -114,15 +94,15 @@ const Login = () => {
                     borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="email"
-                    // {...register("email", {
-                    //   required: "E-mail is required",
-                    // })}
+                    {...register("email", {
+                      required: "E-mail is required",
+                    })}
                   />
                 </InputGroup>
 
-                {/* <FormErrorMessage>
+                <FormErrorMessage>
                   {errors.email && errors.email.message}
-                </FormErrorMessage> */}
+                </FormErrorMessage>
 
                 <InputGroup>
                   <InputLeftElement
@@ -142,22 +122,21 @@ const Login = () => {
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
                     color={"black"}
-                    errorBorderColor="none"
-                    onChange={handleChange}
+                    errorBorderColor="none"                    
                     id="password"
-                    // {...register("password", {
-                    //   required: "Password is required",
-                    //   minLength: {
-                    //     value: 7,
-                    //     message: "Minimum length is 7",
-                    //   },
-                    // })}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 7,
+                        message: "Minimum length is 7",
+                      },
+                    })}
                   />
                 </InputGroup>
 
-                {/* <FormErrorMessage>
+                <FormErrorMessage>
                   {errors.password && errors.password.message}
-                </FormErrorMessage> */}
+                </FormErrorMessage>
                 <Button
                   color="blue"
                   variant="link"
