@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import {
   Heading,
@@ -12,14 +13,10 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   FormControl,
   Container,
   useColorModeValue,
   Icon,
-  Radio,
-  Checkbox,
-  CheckboxGroup,
   Select,
   FormErrorMessage,
 } from "@chakra-ui/react";
@@ -32,18 +29,31 @@ const EditUser = ({ user }) => {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
-  const onSubmit = (formData) => {
-    console.log("la form data es", formData);
-  };
-
   const [offices, setOffices] = useState([]);
-
   useEffect(() => {
     axios.get("/api/offices").then((officesArray) => {
       console.log(officesArray.data);
       setOffices(officesArray.data.data);
     });
   }, []);
+
+  const [selectedRole, setSelectedRole] = useState("");
+  const onChangeRoleHandler = (e) => {
+    e.preventDefault();
+    setSelectedRole(e.target.value);
+  };
+
+  const router = useRouter();
+  const { userId } = router.query;
+  const onSubmit = (formData) => {
+    console.log("la form data es", formData);
+    axios
+      .put(`/api/users/${userId}`, formData)
+      .then((response) =>
+        alert("The user has been updated successfully", response.data)
+      )
+      .catch((error) => error);
+  };
 
   if (!user.name) {
     return <p>Loading...</p>;
@@ -206,7 +216,7 @@ const EditUser = ({ user }) => {
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
 
-                  <CheckboxGroup colorScheme="green">
+                  {/* <CheckboxGroup colorScheme="green">
                     <Stack spacing={10} direction={["column", "row"]}>
                       <Checkbox defaultChecked={user.role === "customer"}>
                         Customer
@@ -218,10 +228,29 @@ const EditUser = ({ user }) => {
                         Admin
                       </Checkbox>
                     </Stack>
-                  </CheckboxGroup>
+                  </CheckboxGroup> */}
 
-                  {user.role === "operator" && (
-                    <Select placeholder="Select Branch Office">
+                  <Select
+                    defaultValue={user.role}
+                    {...register("role")}
+                    onChange={onChangeRoleHandler}
+                  >
+                    <option>customer</option>
+                    <option>operator</option>
+                    <option>admin</option>
+                  </Select>
+
+                  {((user.role === "operator" && selectedRole === "") ||
+                    (user.role !== "operator" && selectedRole === "operator") ||
+                    (user.role === "operator" &&
+                      selectedRole === "operator")) && (
+                    <Select
+                      placeholder={offices.forEach((office) => {
+                        user.office === office._id && office.name;
+                      })}
+                      defaultValue={user.office}
+                      {...register("office")}
+                    >
                       {offices.map((office, i) => (
                         <option value={office._id} key={office._id}>
                           {office.name}
