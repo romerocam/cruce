@@ -1,0 +1,60 @@
+.noSlots{
+    pointer-events: none;
+    border-radius: 25px;
+}
+
+.lastSlot {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.2);
+    border-radius: 25px;
+}
+
+.twoOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.4);
+    border-radius: 25px;
+}
+
+.fiveOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.6);
+    border-radius: 25px;
+}
+
+.tenOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.8);
+    border-radius: 25px;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content	:space-around;
+    align-items:flex-start;
+    margin-top: 30px
+}
+
+.itemMainContainer{
+    order : 0;
+    flex: 0 1 auto;
+    align-self: auto;
+}
+
+.slotsContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items:flex-start;
+    gap: 12px;
+    max-width: 450px;
+    margin-top: 30px
+}
+
+.itemSlot{
+    order : 0;
+    flex: 0 1 auto;
+    align-self: auto;
+}

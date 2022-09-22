@@ -1,6 +1,7 @@
+import { getSession } from "next-auth/react";
+
 import ProfileUser from "../../src/components/ProfileUser/ProfileUser";
 import Layout from "../../src/components/common/Layout/Layout";
-import { getSession } from "next-auth/react";
 
 export default function ProfileUserPage() {
 

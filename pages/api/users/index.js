@@ -10,8 +10,18 @@
  * como con info que llega por params (archivo [userId].js)
  */
 
+import { getSession } from "next-auth/react";
+
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
+
+/*
+export const getAllUsers = async function(){
+    connectMongo()
+    const users = await User.find({})
+    return users
+}
+*/
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -23,7 +33,16 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca todos los usuarios registrados:
             try {
-                const users = await User.find({}, 'name lastname dni address email roles office');
+
+                // verifica que el usuario este logeado y que sea admin:
+                const session = await getSession({ req: req });
+                console.log("session:", session)
+                if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+                if (session.user.role === 'customer') res.status(403).json({ message: 'Forbidden' }); // return implicito
+
+
+                const users = await User.find({}, 'name lastname dni address email role office');
+                console.log("useeeeers:", users)
                 res.status(200).json({ success: true, data: users });
             } catch (error) {
                 res

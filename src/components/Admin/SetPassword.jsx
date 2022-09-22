@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Heading,
@@ -10,25 +10,72 @@ import {
   Button,
   Input,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
   FormControl,
   Container,
   useColorModeValue,
-  Icon,
-  Checkbox,
-  CheckboxGroup,
-  Select,
-} from "@chakra-ui/react";
-import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
+  FormErrorMessage,
 
-const RoleCreator = () => {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+} from "@chakra-ui/react";
+
+import { useForm } from "react-hook-form";
+
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import Router from "next/router";
+
+const ChangePassword = () => {
+
+  const [credentials, setCredentials] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [showNew, setShowNew] = useState(false);
+  const handleClickShowNew = () => setShowNew(!showNew);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const handleClickShowConfirm = () => setShowConfirm(!showConfirm);
+
+  const { data: session, status } = useSession();
+
+  const name = session && session.user.name;
+  const email = session && session.user.email;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onBlur" });
+
+  // const handleChange = (e) => {
+
+  //   console.log("VALUES", e.target.value)
+
+  //   setCredentials({
+  //     ...credentials,
+  //     [e.target.id]: e.target.value,
+  //   });
+  // };
+
+  const onSubmit = async (formData) => {
+
+    // console.log("CREDENTIALS", formData)
+
+    const response = await axios.post('/api/users/set-password', { newPassword: formData.newPassword })
+
+    console.log("RESPONSE", response)
+
+
+    Router.push('/users/profile-user')
+  }
+
+
 
   return (
     <>
-      <Container maxW={"7xl"} zIndex={1} position={"relative"}>
+      <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
             maxW={"md"}
@@ -60,7 +107,7 @@ const RoleCreator = () => {
               }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
-              Create Role
+              {name}
             </Heading>
 
             <Text
@@ -70,102 +117,10 @@ const RoleCreator = () => {
               color={"#000505"}
               px={3}
             >
-              Task Decription
+              {email}
             </Text>
 
             <Stack spacing={3}>
-              <FormControl id="name" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    placeholder="name"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  // values={getProfile().name}
-                  />
-                </InputGroup>
-              </FormControl>
-
-              <FormControl id="lastname" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    placeholder="lastname"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  />
-                </InputGroup>
-              </FormControl>
-
-              <FormControl id="DNI" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    placeholder="DNI"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  />
-                </InputGroup>
-              </FormControl>
-
-              <FormControl id="email" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    placeholder="email address"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  // values={getProfile().email}
-                  />
-                </InputGroup>
-              </FormControl>
-
-              <CheckboxGroup colorScheme="green" >
-                <Stack spacing={10} direction={["column", "row"]}>
-                  <Checkbox defaultChecked>Customer</Checkbox>
-                  <Checkbox value="operator">Operator</Checkbox>
-                  <Checkbox value="admin">Admin</Checkbox>
-                </Stack>
-              </CheckboxGroup>
-              <Select placeholder="Select Branch Office">
-                <option value="option1">Almagro</option>
-                <option value="option2">Belgrano</option>
-                <option value="option3">Palermo</option>
-                <option value="option3">Recoleta</option>
-                <option value="option3">Caballito</option>
-              </Select>
 
               <Heading
                 fontSize={"xl"}
@@ -174,50 +129,84 @@ const RoleCreator = () => {
                 paddingBottom={"5px"}
                 paddingTop={"5px"}
               >
-                Set Password
+                Set New Password
               </Heading>
-
-              <FormControl id="newPassword" isrequired="true">
-                <InputGroup size="md">
-                  <Input
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Enter Password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl marginY={"2vh"} textColor={"black"} isInvalid={errors.newPassword || errors.confirmPassword}>
+                  <InputGroup marginY={"1vh"} size="md">
+                    <Input id="newPassword"
+                      variant="flushed"
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      placeholder="New Password"
+                      _placeholder={{ color: "gray.500" }}
+                      borderColor={"gray.200"}
+                      errorBorderColor="none"
+                      // onChange={handleChange}
+                      type={showNew ? "text" : "password"}
+                      {...register("newPassword", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 7,
+                          message: "Minimum length is 7",
+                        },
+                      })}
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleClickShowNew}>
+                        {showNew ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.newPassword && errors.newPassword.message}
+                  </FormErrorMessage>
+                  <InputGroup marginY={"1vh"} size="md">
+                    <Input id="confirmPassword"
+                      variant="flushed"
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      placeholder="Confirm New Password"
+                      _placeholder={{ color: "gray.500" }}
+                      borderColor={"gray.200"}
+                      errorBorderColor="none"
+                      // onChange={handleChange}
+                      type={showConfirm ? "text" : "password"}
+                      {...register("confirmPassword", {
+                        validate: (value) =>
+                          value === newPassword.value ||
+                          "The passwords do not match",
+                      })}
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleClickShowConfirm}>
+                        {showConfirm ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.confirmPassword && errors.confirmPassword.message}
+                  </FormErrorMessage>
+                  <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
+                    <Button
+                      type="submit"
+                      bg={useColorModeValue("brand.700", "brand.600")}
+                      color={"white"}
+                      w="full"
+                      _hover={{
+                        bg: useColorModeValue("brand.600", "brand.700"),
+                      }}
+                    >
+                      Submit
                     </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
+                  </Stack>
+                </FormControl>
+              </form>
 
-              <FormControl id="confirmpassword" isrequired="true">
-                <InputGroup size="md">
-                  <Input
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Confirm Password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-            </Stack>
-            <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
-              <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
-                }}
-              >
-                Save
-              </Button>
             </Stack>
           </Box>
         </Center>
@@ -226,4 +215,4 @@ const RoleCreator = () => {
   );
 };
 
-export default RoleCreator;
+export default ChangePassword;

@@ -27,6 +27,7 @@ const OfficeSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     address: {
       type: String,

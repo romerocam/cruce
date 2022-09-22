@@ -38,6 +38,8 @@ const CreateBranchOffice = () => {
 
   const onSubmit = (formData) => {
     console.log("el nuevo subsidiary es:", formData);
+    formData.name = formData.name.replace(/\s+/g, " ");
+    formData.address = formData.address.replace(/\s+/g, " ");
     axios
       .post("/api/offices", formData)
       .then((response) => {
@@ -46,7 +48,7 @@ const CreateBranchOffice = () => {
       .then((error) => console.log(error));
   };
   return (
-    <Container maxW={"7xl"} zIndex={1} position={"relative"}>
+    <Container maxW={"7xl"} position={"relative"}>
       <Box
         bg={useColorModeValue("brand.700", "brand.600")}
         mt="20px"
@@ -79,6 +81,8 @@ const CreateBranchOffice = () => {
                   errors.timeRangeTo ||
                   errors.capacityPerSlot
                 }
+                textColor={"black"}
+                marginY={"2vh"}
               >
                 <InputGroup>
                   <InputLeftElement
@@ -93,12 +97,16 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Name"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                    
                     errorBorderColor="none"
                     id="name"
                     {...register("name", {
                       required: "Name is required",
+                      pattern: {
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,80}$/,
+                        message:
+                          "Exceeded character limit or special characters",
+                      },
                     })}
                   />
                 </InputGroup>
@@ -120,12 +128,16 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Address"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                  
                     errorBorderColor="none"
                     id="address"
                     {...register("address", {
                       required: "Address is required",
+                      pattern: {
+                        value: /^[a-zA-Z0-9\s,'#/-]*$/,
+                        message:
+                          "Exceeded character limit or special characters",
+                      },
                     })}
                   />
                 </InputGroup>
@@ -140,6 +152,7 @@ const CreateBranchOffice = () => {
                     children={<Icon as={HiPhone} color={"gray.400"}></Icon>}
                   />
                   <Input
+                    type={"number"}
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -147,8 +160,7 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Phone Number"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                    
                     errorBorderColor="none"
                     id="phone"
                     {...register("phone", {
@@ -159,37 +171,7 @@ const CreateBranchOffice = () => {
 
                 <FormErrorMessage>
                   {errors.phone && errors.phone.message}
-                </FormErrorMessage>
-
-                {/* <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={
-                        <Icon as={HiAtSymbol} color={"gray.400"}></Icon>
-                      }
-                    />
-
-                    <Input
-                      variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
-                      placeholder="E-mail"
-                      _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}
-                      color={"black"}
-                      errorBorderColor="none"
-                      id="email"
-                      {...register("email", {
-                        required: "E-mail is required",
-                      })}
-                    />
-                  </InputGroup>
-
-                  <FormErrorMessage>
-                    {errors.email && errors.email.message}
-                  </FormErrorMessage> */}
+                </FormErrorMessage>                
 
                 <InputGroup>
                   <InputLeftElement
@@ -198,6 +180,7 @@ const CreateBranchOffice = () => {
                   />
 
                   <Input
+                  type={"time"}
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -205,21 +188,14 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Opens At:"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                    
                     errorBorderColor="none"
                     id="opensat"
                     {...register("timeRange.from", {
-                      required: "Opening hour is required",
-                      validate: (value) =>
-                        /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ||
-                        "Please enter the time with the following format: HH:MM",
+                      required: "Opening hour is required",                      
                     })}
                   />
                 </InputGroup>
-                <FormHelperText textAlign="left" fontSize="12px">
-                  Example: 07:30
-                </FormHelperText>
                 <FormErrorMessage>
                   {errors.timeRangeFrom && errors.timeRangeFrom.message}
                 </FormErrorMessage>
@@ -231,6 +207,7 @@ const CreateBranchOffice = () => {
                   />
 
                   <Input
+                  type={"time"}
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -238,22 +215,15 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Closes At:"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                  
                     errorBorderColor="none"
                     id="closesat"
                     name="closesat"
                     {...register("timeRange.to", {
-                      required: "Opening hour is required",
-                      validate: (value) =>
-                        /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ||
-                        "Please enter the time with the following format: HH:MM",
+                      required: "Opening hour is required",                     
                     })}
                   />
                 </InputGroup>
-                <FormHelperText textAlign="left" fontSize="12px">
-                  Example: 19:30
-                </FormHelperText>
                 <FormErrorMessage>
                   {errors.timeRangeTo && errors.timeRangeTo.message}
                 </FormErrorMessage>
@@ -273,14 +243,13 @@ const CreateBranchOffice = () => {
                     )}
                     placeholder="Max capacity"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    color={"black"}
+                    borderColor={"gray.200"}                    
                     errorBorderColor="none"
-                    id="email"
+                    id="capacityPerSlot"
                     {...register("capacityPerSlot", {
                       required: "Max capacity is required",
                       validate: (value) =>
-                        value > 0 || "Max capacity cannot be less than 0",
+                        value > 0 || "Max capacity cannot be less than 1",
                     })}
                   />
                 </InputGroup>

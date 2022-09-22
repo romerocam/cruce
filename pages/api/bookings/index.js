@@ -3,14 +3,20 @@
  *   api/bookings/  *
  * ***************/
 
+import { getSession } from "next-auth/react";
+import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
+
 import connectMongo from "../../../util/dbConnect";
 import Booking from "../../../models/Booking";
-import { ObjectId } from "mongodb";         // para convertir los ids que vienen en el pedido a ObjectId de Mongo
 
 export default async function handler(req, res) {
     const { method } = req;
     const reqBody = req.body;
     const userId = reqBody.userId
+
+    // verifica que el usuario este logeado:
+    const session = await getSession({ req: req });
+    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
 
     await connectMongo();
     console.log("BODY", reqBody)
@@ -45,11 +51,11 @@ export default async function handler(req, res) {
 
         case "POST": // crear Booking:
             try {
-                const newId = await Booking.estimatedDocumentCount() + 1;
-                console.log("ID", newId)
+                //const newId = await Booking.estimatedDocumentCount() + 1;
+                //console.log("ID", newId)
 
                 const newBooking = await Booking.create({
-                    _id: newId,
+                    //_id: newId,
                     date: reqBody.date,
                     startAt: reqBody.startAt,
                     office: ObjectId(reqBody.office),
@@ -60,7 +66,7 @@ export default async function handler(req, res) {
                 res.status(201).json({
                     success: true,
                     data: newBooking,
-                    message: `Booking N° ${newBooking._id} has been created`,
+                    message: `Booking has been created`, //${newBooking._id}
                 })
 
             } catch (error) {
@@ -78,6 +84,9 @@ export default async function handler(req, res) {
 
         case "DELETE": // Borra Bookings masivamente:
             try {
+
+                // solo los admin/operators pueden borrar turnos masivamente:
+                if (session.user.role === 'customer') res.status(403).json({ message: 'Forbidden' }); // return implicito
 
                 // para recibir un arreglo de ids: https://www.mongodb.com/docs/manual/reference/operator/query/in/
 
@@ -97,7 +106,7 @@ export default async function handler(req, res) {
                         message: `Bookings not deleted`,
                     });
             }
-            break;
+            break; 
 
         default:
             res.status(400).json({

@@ -1,7 +1,4 @@
-/* eslint-disable react/no-children-prop */
-import React, { useEffect } from "react";
-//react
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
 
 import {
   Heading,
@@ -14,65 +11,44 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   FormControl,
-  FormErrorMessage,
   Container,
   useColorModeValue,
   Icon,
+  Checkbox,
+  CheckboxGroup,
+  Select,
 } from "@chakra-ui/react";
 import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
-
 import axios from "axios";
-import { useState } from "react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-const ProfileUser = () => {
-  const { data: session, status } = useSession();
-  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
+const EditUser = ({ user }) => {
+  // const [show, setShow] = useState(false);
+  // const handleClick = () => setShow(!show);
 
-  const { id, role } = session.user;
+  // const { data: session, status } = useSession();
 
-  const [profile, setProfile] = useState({});
-  const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({ mode: "onBlur" });
+  const [offices, setOffices] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/users/${id}`).then((profile) => {
-      const { name, lastname, dni, email } = profile.data.data;
-      setValue("name", name);
-      setValue("lastname", lastname);
-      setValue("dni", dni);
-      setValue("email", email);
+    axios.get("/api/offices").then((officesArray) => {
+      console.log(officesArray.data);
+      setOffices(officesArray.data.data);
     });
+
+    console.log(offices);
   }, []);
 
-  const onSubmit = (formData) => {
-    console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
-    formData.name = formData.name.replace(/\s+/g, " ");
-    formData.lastname = formData.lastname.replace(/\s+/g, " ");
-    axios
-      .put(`/api/users/${id}`, formData)
-      .then((response) => {
-        router.push("/users/profile-user");
-        return response.data;
-      })
-      .catch((error) => console.log(error));
-  };
-  // la idea es hacer un onchange para cuando el valor del formulario cambie, si cambia lo guarde en un objeto o lo set en un estado,
-  //  si no cambia envie la informacion como viene en el objeto que trae el useEffect
+  console.log("desde edit user es:", user)
+
   return (
     <>
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
-            maxW={"320px"}
+            maxW={"md"}
             w={"full"}
             bg={"#FFFFFB"}
             boxShadow={"2xl"}
@@ -87,62 +63,57 @@ const ProfileUser = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}             
+              pos={"relative"}
+              _after={{
+                content: '""',
+                w: 4,
+                h: 4,
+                bg: "green.300",
+                border: "2px solid white",
+                rounded: "full",
+                pos: "absolute",
+                bottom: 0,
+                right: 3,
+              }}
             />
-            <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
-              Profile
+            <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
+              Create Role
             </Heading>
 
-            <Text fontSize={"sm"} fontFamily={"body"} color={"#000505"}>
-              {`Role: ${role}`}
+            <Text
+              fontSize={"sm"}
+              fontFamily={"body"}
+              textAlign={"center"}
+              color={"#000505"}
+              px={3}
+            >
+              Task Decription
             </Text>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl
-                isInvalid={
-                  errors.name ||
-                  errors.lastname ||
-                  errors.dni ||
-                  errors.address ||
-                  errors.email ||
-                  errors.password ||
-                  errors.confirmpassword
-                }
-                textColor={"black"}
-                marginY={"2vh"}
-              >
-                <InputGroup marginY={"1vh"}>
+            <Stack spacing={3}>
+              <FormControl id="name" isrequired="true">
+                <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
-                  <Input                  
+                  <Input
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.name}
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    defaultValue={profile.name}
-                    errorBorderColor="none"
-                    id="name"
-                    {...register("name", {
-                      required: "Name is required",
-                      pattern: {
-                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                        message: 'Exceeded character limit or special characters' 
-                      }
-                    })}
+                    // values={getProfile().name}
                   />
                 </InputGroup>
+              </FormControl>
 
-                <FormErrorMessage>
-                  {errors.name && errors.name.message}
-                </FormErrorMessage>
-
-                <InputGroup marginY={"1vh"}>
+              <FormControl id="lastname" isrequired="true">
+                <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
@@ -153,63 +124,36 @@ const ProfileUser = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.lastname}
                     placeholder="lastname"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    defaultValue={profile.lastname}
-                    errorBorderColor="none"
-                    id="lastname"
-                    {...register("lastname", {
-                      required: "Last Name is required",
-                      pattern: {
-                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                        message: 'Exceeded character limit or special characters' 
-                      }
-                    })}
                   />
                 </InputGroup>
+              </FormControl>
 
-                <FormErrorMessage>
-                  {errors.lastname && errors.lastname.message}
-                </FormErrorMessage>
-
-                <InputGroup marginY={"1vh"}>
+              <FormControl id="DNI" isrequired="true">
+                <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
-                  type="Number"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.dni}
                     placeholder="DNI"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    defaultValue={profile.dni}
-                    errorBorderColor="none"
-                    id="dni"
-                    {...register("dni", {
-                      required: "DNI is required",
-                      minLength: {
-                        value: 8,
-                        message: "Please enter 8 digits",
-                      },
-                      maxLength: {
-                        value: 8,
-                        message: "Please enter 8 digits",
-                      },                     
-                    })}
                   />
                 </InputGroup>
+              </FormControl>
 
-                <FormErrorMessage>
-                  {errors.dni && errors.dni.message}
-                </FormErrorMessage>
-
-                <InputGroup marginY={"1vh"}>
+              <FormControl id="email" isrequired="true">
+                <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
                     children={<Icon as={HiMail} color={"gray.400"}></Icon>}
@@ -220,53 +164,58 @@ const ProfileUser = () => {
                       "brand.700",
                       "brand.600"
                     )}
+                    defaultValue={user.email}
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
-                    defaultValue={profile.email}
-                    errorBorderColor="none"
-                    id="email"
-                    {...register("email", {
-                      required: "E-mail is required",
-                    })}
-                    isDisabled={true}
+                    // values={getProfile().email}
                   />
                 </InputGroup>
-
-                <FormErrorMessage>
-                  {errors.email && errors.email.message}
-                </FormErrorMessage>
-                <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
-                  <Button
-                    id="changePassword"
-                    onClick={() => router.push('/users/change-password')}
-                    // type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
-                    color={"white"}
-                    w="full"
-                    _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
-                    }}
-                  >
-                    Change Password
-                  </Button>
-                </Stack>
-                <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
-                  <Button
-                    id="save"
-                    type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
-                    color={"white"}
-                    w="full"
-                    _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
-                    }}
-                  >
-                    Save
-                  </Button>
-                </Stack>
               </FormControl>
-            </form>
+
+              <CheckboxGroup colorScheme="green">
+                <Stack spacing={10} direction={["column", "row"]}>
+                  {user.role === "customer" ? (
+                    <Checkbox defaultChecked>Customer</Checkbox>
+                  ) : (
+                    <Checkbox>Customer</Checkbox>
+                  )}
+                  {user.role === "operator" ? (
+                    <Checkbox defaultChecked>Operator</Checkbox>
+                  ) : (
+                    <Checkbox>Operator!!!</Checkbox>
+                  )}
+                  {user.role === "admin" ? (
+                    <Checkbox defaultChecked>Admin</Checkbox>
+                  ) : (
+                    <Checkbox>Admin</Checkbox>
+                  )}
+                </Stack>
+              </CheckboxGroup>
+              {user.role === "operator" && (
+                <Select placeholder="Select Branch Office">
+                  {offices.map((office, i) => (
+                    <option value={office._id} key={office._id}>
+                      {office.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
+
+             
+            </Stack>
+            <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
+              <Button
+                bg={useColorModeValue("brand.700", "brand.600")}
+                color={"white"}
+                w="full"
+                _hover={{
+                  bg: useColorModeValue("brand.600", "brand.700"),
+                }}
+              >
+                Save
+              </Button>
+            </Stack>
           </Box>
         </Center>
       </Container>
@@ -274,4 +223,4 @@ const ProfileUser = () => {
   );
 };
 
-export default ProfileUser;
+export default EditUser;
