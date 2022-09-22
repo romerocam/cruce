@@ -1,15 +1,17 @@
-import { getSession } from "next-auth/react";
 
-import ProfileUser from "../../src/components/ProfileUser/ProfileUser";
+import React from 'react'
+
+import { getSession } from 'next-auth/react';
+
 import Layout from "../../src/components/common/Layout/Layout";
+import SetPassword from "../../src/components/Admin/SetPassword";
 
-export default function ProfileUserPage() {
-
+export default function roleCreator() {
   return (
     <Layout>
-      <ProfileUser />
+      <SetPassword />
     </Layout>
-  );
+  )
 }
 
 // Para proteger la ruta del perfil desde el servidor:

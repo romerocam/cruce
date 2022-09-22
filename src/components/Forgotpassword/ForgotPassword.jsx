@@ -14,11 +14,14 @@ import {
   FormControl,
   FormErrorMessage,
   useColorModeValue,
+  InputGroup,
+  InputLeftElement,
+  Icon,
 } from "@chakra-ui/react";
 
-const ForgotPassword = () => {
+import { HiMail } from "react-icons/hi";
 
-  const { data: session, status } = useSession();
+const ForgotPassword = () => {
 
   const {
     register,
@@ -26,8 +29,6 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
   const router = useRouter();
-
-  session && router.push("/users/change-password");
 
   const onSubmit = async (formData) => {
     // formData.preventDefault();
@@ -64,28 +65,43 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={errors.email} color={"black"}>
               <Stack spacing={3}>
-                <Input
-                  type="email"
-                  placeholder="E-mail"
-                  id="email"
-                  variant="flushed"
-                  focusBorderColor={useColorModeValue("brand.700", "brand.600")}
-                  errorBorderColor="none"
-                  {...register("email", {
-                    required: "E-mail is required",
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.email && errors.email.message}
-                </FormErrorMessage>
+                <InputGroup marginY={"2vh"} size="md">
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Please enter your E-mail"
+                    _placeholder={{ color: "gray.500" }}
+                    id="email"
+                    variant="flushed"
+                    focusBorderColor={useColorModeValue(
+                      "brand.700",
+                      "brand.600"
+                    )}
+                    borderColor={"gray.200"}
+                    errorBorderColor="none"
+                    color={"black"}
+                    {...register("email", {
+                      required: "E-mail is required",
+                    })}
+                  />
+                  <FormErrorMessage>
+                    {errors.email && errors.email.message}
+                  </FormErrorMessage>
+                </InputGroup>
                 <Button
-                  bg={useColorModeValue("brand.700", "brand.600")}
                   type="submit"
-                  colorScheme="teal"
-                  variant="solid"
-                >
-                  Send Reset Password Link
-                </Button>
+                  bg={useColorModeValue("brand.700", "brand.600")}
+                  color={"white"}
+                  w="md"
+                  _hover={{
+                    bg: useColorModeValue("brand.600", "brand.700"),
+                  }}
+                  >
+                    Reset Password
+                  </Button>
               </Stack>
             </FormControl>
           </form>

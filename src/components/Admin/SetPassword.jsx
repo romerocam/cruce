@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from "react";
 
 import {
@@ -33,9 +32,6 @@ const ChangePassword = () => {
     confirmPassword: "",
   });
 
-  const [showOld, setShowOld] = useState(false);
-  const handleClickShowOld = () => setShowOld(!showOld);
-
   const [showNew, setShowNew] = useState(false);
   const handleClickShowNew = () => setShowNew(!showNew);
 
@@ -67,11 +63,11 @@ const ChangePassword = () => {
 
     // console.log("CREDENTIALS", formData)
 
-    const response = await axios.post('/api/users/change-password',
-      {
-        oldPassword: formData.oldPassword,
-        newPassword: formData.newPassword,
-      })
+    const response = await axios.post('/api/users/set-password', { newPassword: formData.newPassword })
+
+    console.log("RESPONSE", response)
+
+
     Router.push('/users/profile-user')
   }
 
@@ -97,7 +93,18 @@ const ChangePassword = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}             
+              pos={"relative"}
+              _after={{
+                content: '""',
+                w: 4,
+                h: 4,
+                bg: "green.300",
+                border: "2px solid white",
+                rounded: "full",
+                pos: "absolute",
+                bottom: 0,
+                right: 3,
+              }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
               {name}
@@ -122,37 +129,10 @@ const ChangePassword = () => {
                 paddingBottom={"5px"}
                 paddingTop={"5px"}
               >
-                Change Password
+                Set New Password
               </Heading>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl marginY={"2vh"} textColor={"black"} isInvalid={errors.newPassword || errors.confirmPassword}>
-                  <InputGroup marginY={"2vh"} size="md">
-                    <Input id="oldPassword"
-                      variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
-                      placeholder="Current Password"
-                      _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}
-                      errorBorderColor="none"
-                      // onChange={handleChange}
-                      type={showOld ? "text" : "password"}
-                      {...register("oldPassword", {
-                        required: "Password is required",
-                        minLength: {
-                          value: 7,
-                          message: "Minimum length is 7",
-                        },
-                      })}
-                    />
-                    <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClickShowOld}>
-                        {showOld ? "Hide" : "Show"}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
                   <InputGroup marginY={"1vh"} size="md">
                     <Input id="newPassword"
                       variant="flushed"

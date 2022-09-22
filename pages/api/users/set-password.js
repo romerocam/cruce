@@ -1,6 +1,6 @@
 /* ******************************
  *      RUTA:                   *
- *  /api/users/change-password  *
+ *  /api/users/set-password     *
  * ******************************/
 
 import { getSession } from "next-auth/react";
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     }
 
     const userEmail = session.user.email;
-    const oldPassword = req.body.oldPassword;
+    // const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
 
     console.log("BODY", req.body)
@@ -39,20 +39,6 @@ export default async function handler(req, res) {
         if (!foundUser) {
 
             res.status(404).json({ message: 'user not found!' });
-            return;
-            // client.close();
-        }
-
-        const dbPassword = foundUser.password
-
-
-        // verifyPassword(password, hashedPassword): 
-        const passwordsAreEqual = await verifyPassword(oldPassword, dbPassword)
-
-        if (!passwordsAreEqual) {
-
-            // no pongo 401 porque esta logueado (esta autentificado pero no tiene los permisos porque puso mal el password):
-            res.status(403).json({ message: 'invalid password' });
             return;
             // client.close();
         }
