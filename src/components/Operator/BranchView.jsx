@@ -64,7 +64,7 @@ export default function BranchTable({offices}) {
             </Thead>
             <Tbody>
               {offices.map((office) => (
-                  <Tr key={office.office}>
+                  <Tr key={office._id}>
                     <Td>{office.user}</Td>
                     <Td>{office.date}</Td>
                     <Td>{office.startAt}</Td>
