@@ -46,11 +46,11 @@ export default function NewBookingCalendar() {
         user: id,
       },
       url: "/api/bookings",
-    }).then(() => {
-      router.push("/users/my-appointments");
     })
-    .catch((error) => console.log(error));;
-    console.log("entró al setAppointment")
+      .then(() => {
+        router.push("/users/my-appointments");
+      })
+      .catch((error) => console.log(error));
   };
 
   const onChange = (date) => {
@@ -94,6 +94,7 @@ export default function NewBookingCalendar() {
 
         {idOffice && (
           <Calendar
+            minDetail="month"
             locale="en"
             showNeighboringMonth={false}
             onChange={onChange}
@@ -109,11 +110,29 @@ export default function NewBookingCalendar() {
               );
 
               if (availableDay) {
-                return classes.oneOrMoreSlots;
-              }
+                let totalAvailable = 0;
+                availableDay.slots.forEach(slot => {
+                  totalAvailable += slot.capacity
+                });
 
-              if (!availableDay) {
-                //return classes.noSlots;
+                if (totalAvailable>=10) {
+                  return classes.tenOrMoreSlots
+                }
+
+                if (totalAvailable>=5) {
+                  return classes.fiveOrMoreSlots
+                }
+
+                if (totalAvailable>=2) {
+                  return classes.twoOrMoreSlots
+                }
+                
+                if (totalAvailable===1) {
+                  return classes.lastSlot
+                }
+
+              } else {
+                return classes.noSlots
               }
             }}
           />

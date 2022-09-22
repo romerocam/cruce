@@ -1,11 +1,29 @@
-.oneOrMoreSlots {
-    font-weight: 700;
-    background-color:lightgreen;
+.noSlots{
+    pointer-events: none;
     border-radius: 25px;
 }
 
-.noSlots{
-    pointer-events: none;
+.lastSlot {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.2);
+    border-radius: 25px;
+}
+
+.twoOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.4);
+    border-radius: 25px;
+}
+
+.fiveOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.6);
+    border-radius: 25px;
+}
+
+.tenOrMoreSlots {
+    font-weight: 700;
+    background-color:rgb(0, 255, 0, 0.8);
     border-radius: 25px;
 }
 
