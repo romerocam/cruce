@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form";
 import {
   Heading,
   Avatar,
@@ -21,8 +21,9 @@ import {
   Checkbox,
   CheckboxGroup,
   Select,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import { HiUser, HiMail} from "react-icons/hi";
+import { HiUser, HiMail } from "react-icons/hi";
 import { useSession } from "next-auth/react";
 
 const EditUser = ({ user }) => {
@@ -30,7 +31,25 @@ const EditUser = ({ user }) => {
   // const handleClick = () => setShow(!show);
 
   // const { data: session, status } = useSession();
-  const {register, handleSubmit, formState:{errors}}= useForm()
+ 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({mode: "onBlur"});
+
+
+  // const onSubmit = (event) => {
+  //   event.preventDefault()
+  //   const data = new FormData(event.currentTarget)
+  //   const name = data.get("name")
+  //   console.log("la form data es", name)
+  // }
+
+  const onSubmit = (formData)=>{
+  
+    console.log("la form data es", formData )
+  }
 
   const [offices, setOffices] = useState([]);
 
@@ -39,10 +58,11 @@ const EditUser = ({ user }) => {
       console.log(officesArray.data);
       setOffices(officesArray.data.data);
     });
-    console.log(offices);
   }, []);
 
-  console.log("el user role es", user.role);
+  if(!user.name){
+    return (<p>Loading...</p>)
+  }
 
   return (
     <>
@@ -90,149 +110,183 @@ const EditUser = ({ user }) => {
             >
               Task Decription
             </Text>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl isInvalid={errors.name||errors.lastname||errors.dni||errors.email}>
+                <Stack spacing={3}>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
+                    />
+                    <Input
+                      variant="flushed"
+                      defaultValue={user.name}
+                      placeholder="name"
+                      _placeholder={{ color: "gray.500" }}
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      borderColor={"gray.200"}
+                      errorBorderColor="none"
+                      {...register("name", { 
+                        // required: "Name is required",
+                      })}
+                    />
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.name && errors.name.message}
+                  </FormErrorMessage>
 
-            <Stack spacing={3}>
-              <FormControl id="name" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    defaultValue={user.name}
-                    placeholder="name"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    // values={getProfile().name}
-                  />
-                </InputGroup>
-              </FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
+                    />
+                    <Input
+                      variant="flushed"
+                      defaultValue={user.lastname}
+                      placeholder="lastname"
+                      _placeholder={{ color: "gray.500" }}
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      borderColor={"gray.200"}
+                      errorBorderColor="none"
+                      {...register("lastname",{
+                        // required: "Last name is required"
+                      })}
+                    />
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.lastname && errors.lastname.message}
+                  </FormErrorMessage>
 
-              <FormControl id="lastname" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    defaultValue={user.lastname}
-                    placeholder="lastname"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  />
-                </InputGroup>
-              </FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
+                    />
+                    <Input
+                      variant="flushed"
+                      defaultValue={user.dni}
+                      placeholder="DNI"
+                      _placeholder={{ color: "gray.500" }}
+                      borderColor={"gray.200"}
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      errorBorderColor="none"
+                      {...register("dni", {
+                        // required: "DNI is required",
+                        // validate: (value)=>(value>=10000000&&value<=99999999)||"Please enter a valid DNI"
+                      })}
+                    />
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.dni && errors.dni.message}
+                  </FormErrorMessage>
 
-              <FormControl id="DNI" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    defaultValue={user.dni}
-                    placeholder="DNI"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                  />
-                </InputGroup>
-              </FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<Icon as={HiMail} color={"gray.400"}></Icon>}
+                    />
+                    <Input
+                      type="email"
+                      variant="flushed"
+                      defaultValue={user.email}
+                      placeholder="email address"
+                      _placeholder={{ color: "gray.500" }}
+                      borderColor={"gray.200"}
+                      focusBorderColor={useColorModeValue(
+                        "brand.700",
+                        "brand.600"
+                      )}
+                      errorBorderColor="none"
+                      {...register("email",{
+                        // required: "E-mail is required"
+                      })}
+                    />
+                  </InputGroup>
+                  <FormErrorMessage>
+                    {errors.email && errors.email.message}
+                  </FormErrorMessage>
 
-              <FormControl id="email" isrequired="true">
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                  />
-                  <Input
-                    variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
-                    defaultValue={user.email}
-                    placeholder="email address"
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}
-                    // values={getProfile().email}
-                  />
-                </InputGroup>
-              </FormControl>
-              
-              {/* <Stack spacing={10} direction={["column", "row"]}>
+                  <Stack spacing={10} direction={["column", "row"]}>
                     <Checkbox defaultChecked={user.role==="customer"}>Customer</Checkbox>
                     <Checkbox defaultChecked={user.role==="operator"}>Operator</Checkbox>
                     <Checkbox defaultChecked={user.role==="admin"}>Admin</Checkbox>
-               </Stack> */}
+               </Stack>
 
+                  {/* {user.role === "customer" && (
+                    <CheckboxGroup colorScheme="green" {...register("role")}>
+                      <Stack spacing={10} direction={["column", "row"]}>
+                        <Checkbox defaultChecked value="customer"
+                        
+                        >
+                          Customer
+                        </Checkbox>
+                        <Checkbox value="operator">Operator</Checkbox>
+                        <Checkbox value="admin">Admin</Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
 
-              {user.role === "customer" && (
-                <CheckboxGroup colorScheme="green">
-                  <Stack spacing={10} direction={["column", "row"]}>
-                    <Checkbox defaultChecked value="customer">Customer</Checkbox>
-                    <Checkbox value="operator">Operator</Checkbox>
-                    <Checkbox value="admin">Admin</Checkbox>
-                  </Stack>
-                </CheckboxGroup>
-              )}
+                  {user.role === "operator" && (
+                    <CheckboxGroup colorScheme="green">
+                      <Stack spacing={10} direction={["column", "row"]}>
+                        <Checkbox>Customer</Checkbox>
+                        <Checkbox defaultChecked>Operator</Checkbox>
+                        <Checkbox>Admin</Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
 
-              {user.role === "operator" && (
-                <CheckboxGroup colorScheme="green">
-                  <Stack spacing={10} direction={["column", "row"]}>
-                    <Checkbox>Customer</Checkbox>
-                    <Checkbox defaultChecked>Operator</Checkbox>
-                    <Checkbox>Admin</Checkbox>
-                  </Stack>
-                </CheckboxGroup>
-              )}
+                  {user.role === "admin" && (
+                    <CheckboxGroup colorScheme="green">
+                      <Stack spacing={10} direction={["column", "row"]}>
+                        <Checkbox>Customer</Checkbox>
+                        <Checkbox>Operator</Checkbox>
+                        <Checkbox defaultChecked>Admin</Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  )} */}
 
-              {user.role === "admin" && (
-                <CheckboxGroup colorScheme="green">
-                  <Stack spacing={10} direction={["column", "row"]}>
-                    <Checkbox>Customer</Checkbox>
-                    <Checkbox>Operator</Checkbox>
-                    <Checkbox defaultChecked>Admin</Checkbox>
-                  </Stack>
-                </CheckboxGroup>
-              )}
+{/*                   
+                    <Select  placeholder={user.role} {...register("role")}>
+                        <option>customer</option>
+                        <option>operator</option>
+                        <option>admin</option>
+                    </Select> */}
 
-              {user.role === "operator" && (
-                <Select placeholder="Select Branch Office">
-                  {offices.map((office, i) => (
-                    <option value={office._id} key={office._id}>
-                      {office.name}
-                    </option>
-                  ))}
-                </Select>
-              )}
-            </Stack>
-            <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
-              <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
-                color={"white"}
-                w="full"
-                _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
-                }}
-              >
-                Save
-              </Button>
-            </Stack>
+                  {user.role === "operator" && (
+                    <Select placeholder="Select Branch Office">
+                      {offices.map((office, i) => (
+                        <option value={office._id} key={office._id}>
+                          {office.name}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                </Stack>
+                <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
+                  <Button
+                    type="submit"
+                    bg={useColorModeValue("brand.700", "brand.600")}
+                    color={"white"}
+                    w="full"
+                    _hover={{
+                      bg: useColorModeValue("brand.600", "brand.700"),
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Stack>
+              </FormControl>
+            </form>
           </Box>
         </Center>
       </Container>

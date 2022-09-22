@@ -149,14 +149,7 @@ const Register = () => {
                       id="dni"
                       {...register("dni", {
                         required: "DNI is required",
-                        minLength: {
-                          value: 8,
-                          message: "Please enter 8 digits",
-                        },
-                        maxLength: {
-                          value: 8,
-                          message: "Please enter 8 digits",
-                        },
+                        validate: (value)=>(value>=10000000&&value<=99999999)||"Please enter a valid DNI"
                       })}
                     />
                   </InputGroup>
