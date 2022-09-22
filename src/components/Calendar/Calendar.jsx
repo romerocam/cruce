@@ -137,7 +137,7 @@ export default function NewBookingCalendar() {
             }}
           />
         )}
-      </div>
+      </div> {availableSlotsPerMonth.length? 
       <div className={classes.itemMainContainer}>
         <h1>Select slot</h1>
         <div className={classes.slotsContainer}>
@@ -168,7 +168,7 @@ export default function NewBookingCalendar() {
             </Button>
           </div>
         )}
-      </div>
+      </div>:""}
     </div>
   );
 }
