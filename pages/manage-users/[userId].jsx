@@ -3,6 +3,7 @@ import EditUser from '../../src/components/Admin/EditUser'
 import axios from 'axios'
 import Layout from '../../src/components/common/Layout/Layout'
 import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/react'
 
 
 const EditUserPage = () => {
@@ -26,4 +27,26 @@ const EditUserPage = () => {
 
 
 export default EditUserPage
+
+// export async function getServerSideProps(context) {
+
+//   // console.log("CONTEXT", context)
+
+//   const session = await getSession({ req: context.req })
+
+//   //console.log("SESSION", session)
+
+//   if (session === null || session.user.role !== "admin") {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       }
+//     }
+//   }
+//   return {
+//     props: { session }
+//   }
+
+// }
 
