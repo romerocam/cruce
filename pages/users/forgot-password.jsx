@@ -1,23 +1,22 @@
-import React from "react";
+// next auth
 import { getSession } from "next-auth/react";
-
-import Login from "../../src/components/Login/Login";
-
-
+//components
 import Layout from "../../src/components/common/Layout/Layout";
+//styles
 
-const UsersPage = () => {
+import ForgotPassword from "../../src/components/Forgotpassword/ForgotPassword";
+
+const ForgotPasswordPage = () => {
   return (
     <>
       <Layout>
-        <Login />
+        <ForgotPassword />
       </Layout>
     </>
   );
 };
 
-export default UsersPage;
-
+export default ForgotPasswordPage;
 
 // Para proteger la ruta del perfil desde el servidor:
 export async function getServerSideProps(context) {
@@ -31,7 +30,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/users/profile-user',
+        destination: '/users/set-password',
         permanent: false,
       }
     }
@@ -39,5 +38,4 @@ export async function getServerSideProps(context) {
   return {
     props: { session }
   }
-
 }

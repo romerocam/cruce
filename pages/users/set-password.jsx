@@ -1,23 +1,18 @@
-import React from "react";
-import { getSession } from "next-auth/react";
 
-import Login from "../../src/components/Login/Login";
+import React from 'react'
 
+import { getSession } from 'next-auth/react';
 
 import Layout from "../../src/components/common/Layout/Layout";
+import SetPassword from "../../src/components/Admin/SetPassword";
 
-const UsersPage = () => {
+export default function roleCreator() {
   return (
-    <>
-      <Layout>
-        <Login />
-      </Layout>
-    </>
-  );
-};
-
-export default UsersPage;
-
+    <Layout>
+      <SetPassword />
+    </Layout>
+  )
+}
 
 // Para proteger la ruta del perfil desde el servidor:
 export async function getServerSideProps(context) {
@@ -28,10 +23,10 @@ export async function getServerSideProps(context) {
 
   //console.log("SESSION", session)
 
-  if (session) {
+  if (!session) {
     return {
       redirect: {
-        destination: '/users/profile-user',
+        destination: '/users/login',
         permanent: false,
       }
     }
