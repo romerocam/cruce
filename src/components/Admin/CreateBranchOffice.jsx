@@ -196,9 +196,6 @@ const CreateBranchOffice = () => {
                     })}
                   />
                 </InputGroup>
-                <FormHelperText textAlign="left" fontSize="12px">
-                  Example: 07:30
-                </FormHelperText>
                 <FormErrorMessage>
                   {errors.timeRangeFrom && errors.timeRangeFrom.message}
                 </FormErrorMessage>
@@ -227,9 +224,6 @@ const CreateBranchOffice = () => {
                     })}
                   />
                 </InputGroup>
-                <FormHelperText textAlign="left" fontSize="12px">
-                  Example: 19:30
-                </FormHelperText>
                 <FormErrorMessage>
                   {errors.timeRangeTo && errors.timeRangeTo.message}
                 </FormErrorMessage>
