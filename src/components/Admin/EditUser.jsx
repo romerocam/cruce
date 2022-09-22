@@ -24,32 +24,17 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { HiUser, HiMail } from "react-icons/hi";
-import { useSession } from "next-auth/react";
 
 const EditUser = ({ user }) => {
-  // const [show, setShow] = useState(false);
-  // const handleClick = () => setShow(!show);
-
-  // const { data: session, status } = useSession();
- 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({mode: "onBlur"});
+  } = useForm({ mode: "onBlur" });
 
-
-  // const onSubmit = (event) => {
-  //   event.preventDefault()
-  //   const data = new FormData(event.currentTarget)
-  //   const name = data.get("name")
-  //   console.log("la form data es", name)
-  // }
-
-  const onSubmit = (formData)=>{
-  
-    console.log("la form data es", formData )
-  }
+  const onSubmit = (formData) => {
+    console.log("la form data es", formData);
+  };
 
   const [offices, setOffices] = useState([]);
 
@@ -60,8 +45,8 @@ const EditUser = ({ user }) => {
     });
   }, []);
 
-  if(!user.name){
-    return (<p>Loading...</p>)
+  if (!user.name) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -111,7 +96,11 @@ const EditUser = ({ user }) => {
               Task Decription
             </Text>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.name||errors.lastname||errors.dni||errors.email}>
+              <FormControl
+                isInvalid={
+                  errors.name || errors.lastname || errors.dni || errors.email
+                }
+              >
                 <Stack spacing={3}>
                   <InputGroup>
                     <InputLeftElement
@@ -129,8 +118,8 @@ const EditUser = ({ user }) => {
                       )}
                       borderColor={"gray.200"}
                       errorBorderColor="none"
-                      {...register("name", { 
-                        // required: "Name is required",
+                      {...register("name", {
+                        required: "Name is required",
                       })}
                     />
                   </InputGroup>
@@ -154,8 +143,8 @@ const EditUser = ({ user }) => {
                       )}
                       borderColor={"gray.200"}
                       errorBorderColor="none"
-                      {...register("lastname",{
-                        // required: "Last name is required"
+                      {...register("lastname", {
+                        required: "Last name is required",
                       })}
                     />
                   </InputGroup>
@@ -180,8 +169,10 @@ const EditUser = ({ user }) => {
                       )}
                       errorBorderColor="none"
                       {...register("dni", {
-                        // required: "DNI is required",
-                        // validate: (value)=>(value>=10000000&&value<=99999999)||"Please enter a valid DNI"
+                        required: "DNI is required",
+                        validate: (value) =>
+                          (value >= 10000000 && value <= 99999999) ||
+                          "Please enter a valid DNI",
                       })}
                     />
                   </InputGroup>
@@ -206,8 +197,8 @@ const EditUser = ({ user }) => {
                         "brand.600"
                       )}
                       errorBorderColor="none"
-                      {...register("email",{
-                        // required: "E-mail is required"
+                      {...register("email", {
+                        required: "E-mail is required",
                       })}
                     />
                   </InputGroup>
@@ -215,52 +206,19 @@ const EditUser = ({ user }) => {
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
 
-                  <Stack spacing={10} direction={["column", "row"]}>
-                    <Checkbox defaultChecked={user.role==="customer"}>Customer</Checkbox>
-                    <Checkbox defaultChecked={user.role==="operator"}>Operator</Checkbox>
-                    <Checkbox defaultChecked={user.role==="admin"}>Admin</Checkbox>
-               </Stack>
-
-                  {/* {user.role === "customer" && (
-                    <CheckboxGroup colorScheme="green" {...register("role")}>
-                      <Stack spacing={10} direction={["column", "row"]}>
-                        <Checkbox defaultChecked value="customer"
-                        
-                        >
-                          Customer
-                        </Checkbox>
-                        <Checkbox value="operator">Operator</Checkbox>
-                        <Checkbox value="admin">Admin</Checkbox>
-                      </Stack>
-                    </CheckboxGroup>
-                  )}
-
-                  {user.role === "operator" && (
-                    <CheckboxGroup colorScheme="green">
-                      <Stack spacing={10} direction={["column", "row"]}>
-                        <Checkbox>Customer</Checkbox>
-                        <Checkbox defaultChecked>Operator</Checkbox>
-                        <Checkbox>Admin</Checkbox>
-                      </Stack>
-                    </CheckboxGroup>
-                  )}
-
-                  {user.role === "admin" && (
-                    <CheckboxGroup colorScheme="green">
-                      <Stack spacing={10} direction={["column", "row"]}>
-                        <Checkbox>Customer</Checkbox>
-                        <Checkbox>Operator</Checkbox>
-                        <Checkbox defaultChecked>Admin</Checkbox>
-                      </Stack>
-                    </CheckboxGroup>
-                  )} */}
-
-{/*                   
-                    <Select  placeholder={user.role} {...register("role")}>
-                        <option>customer</option>
-                        <option>operator</option>
-                        <option>admin</option>
-                    </Select> */}
+                  <CheckboxGroup colorScheme="green">
+                    <Stack spacing={10} direction={["column", "row"]}>
+                      <Checkbox defaultChecked={user.role === "customer"}>
+                        Customer
+                      </Checkbox>
+                      <Checkbox defaultChecked={user.role === "operator"}>
+                        Operator
+                      </Checkbox>
+                      <Checkbox defaultChecked={user.role === "admin"}>
+                        Admin
+                      </Checkbox>
+                    </Stack>
+                  </CheckboxGroup>
 
                   {user.role === "operator" && (
                     <Select placeholder="Select Branch Office">
