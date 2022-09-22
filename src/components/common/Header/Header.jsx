@@ -6,6 +6,7 @@ import {
   Stack,
   Button,
   Flex,
+  Text,
   Menu,
   MenuButton,
   MenuList,
@@ -31,10 +32,21 @@ const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
+  // const [profile, setProfile] = useState({});
+
   const name = session && session.user.name;
   const role = session && session.user.role;
+  //const id = session && session.user.id;
 
   // console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
+
+  // useEffect(() => {
+  //   session &&
+  //     axios.get(`/api/users/${id}`).then((profile) => {
+  //       setProfile(profile.data.data)
+  //       console.log(">>>>>-----",profile)
+  //     });    
+  // }, []);
 
   const logoutHandler = () => signOut();
 
@@ -100,7 +112,12 @@ const Header = () => {
                   Sign Up
                 </Button>
               )}
-              <Button onClick={toggleColorMode} size={"sm"} variant={Link} color={"white"}>
+              <Button
+                onClick={toggleColorMode}
+                size={"sm"}
+                variant={Link}
+                color={"white"}
+              >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 
@@ -112,6 +129,7 @@ const Header = () => {
                     variant={"link"}
                     cursor={"pointer"}
                     minW={0}
+                    onClick={()=>{useEffect}}
                   >
                     {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
                     <BsPersonCircle color="black" size="30px" />
@@ -125,18 +143,14 @@ const Header = () => {
                         }
                       />
                     </Center>
-                    <Center fontWeight={"bolder"}>
-                      <p>{name}</p>
+                    <Center fontWeight="bold" fontSize="xl">
+                      {name}                      
                     </Center>
-                    <Center>
-                      <p>{`Role: ${role}`}</p>
-                    </Center>
+                    <Center fontSize="sm">{`Role: ${role}`}</Center>
                     <MenuDivider />
 
                     {role === "admin" && (
-                      <MenuItem onClick={adminPanel}>
-                        Admin Panel
-                      </MenuItem>
+                      <MenuItem onClick={adminPanel}>Admin Panel</MenuItem>
                     )}
 
                     {role === "operator" && (
@@ -146,14 +160,10 @@ const Header = () => {
                     )}
 
                     {session && (
-                      <MenuItem onClick={myInformation}>
-                        Profile
-                      </MenuItem>
+                      <MenuItem onClick={myInformation}>Profile</MenuItem>
                     )}
                     {session && (
-                      <MenuItem onClick={myAppointments}>
-                        Bookings
-                      </MenuItem>
+                      <MenuItem onClick={myAppointments}>Bookings</MenuItem>
                     )}
                     {session && (
                       <MenuItem onClick={logoutHandler} fontWeight={"bolder"}>

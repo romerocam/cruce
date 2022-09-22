@@ -34,6 +34,9 @@ const Register = () => {
 
   const onSubmit = (formData) => {
     console.log("esta es la form data", formData);
+    formData.name = formData.name.replace(/\s+/g, " ");
+    formData.lastname = formData.lastname.replace(/\s+/g, " ");
+    formData.address = formData.address.replace(/\s+/g, " ");
     axios
       .post("/api/users", formData)
       .then((response) => {
@@ -48,7 +51,7 @@ const Register = () => {
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
-            maxW={"94%"}
+            maxW={"60%"}
             w={"full"}
             bg={"#FFFFFB"}
             boxShadow={"2xl"}
@@ -75,6 +78,8 @@ const Register = () => {
                     errors.password ||
                     errors.confirmpassword
                   }
+                  textColor={"black"}
+                marginY={"2vh"}
                 >
                   <InputGroup>
                     <InputLeftElement
@@ -87,14 +92,17 @@ const Register = () => {
                         "brand.700",
                         "brand.600"
                       )}
-                      placeholder="Name"
+                      placeholder="name"
                       _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}
-                      color={"black"}
+                      borderColor={"gray.200"}                      
                       errorBorderColor="none"
                       id="name"
                       {...register("name", {
                         required: "Name is required",
+                        pattern: {
+                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                          message: 'Exceeded character limit or special characters' 
+                        }
                       })}
                     />
                   </InputGroup>
@@ -114,14 +122,17 @@ const Register = () => {
                         "brand.700",
                         "brand.600"
                       )}
-                      placeholder="Last Name"
+                      placeholder="lastname"
                       _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}
-                      color={"black"}
+                      borderColor={"gray.200"}                      
                       errorBorderColor="none"
                       id="lastname"
                       {...register("lastname", {
                         required: "Last Name is required",
+                        pattern: {
+                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                          message: 'Exceeded character limit or special characters' 
+                        }
                       })}
                     />
                   </InputGroup>
@@ -136,28 +147,28 @@ const Register = () => {
                       children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                     />
                     <Input
-                      variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
-                      placeholder="DNI"
-                      _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}
-                      color={"black"}
-                      errorBorderColor="none"
-                      id="dni"
-                      {...register("dni", {
-                        required: "DNI is required",
-                        minLength: {
-                          value: 8,
-                          message: "Please enter 8 digits",
-                        },
-                        maxLength: {
-                          value: 8,
-                          message: "Please enter 8 digits",
-                        },
-                      })}
+                     type="Number"
+                     variant="flushed"
+                     focusBorderColor={useColorModeValue(
+                       "brand.700",
+                       "brand.600"
+                     )}
+                     placeholder="DNI"
+                     _placeholder={{ color: "gray.500" }}
+                     borderColor={"gray.200"}                     
+                     errorBorderColor="none"
+                     id="dni"
+                     {...register("dni", {
+                       required: "DNI is required",
+                       minLength: {
+                         value: 8,
+                         message: "Please enter 8 digits",
+                       },
+                       maxLength: {
+                         value: 8,
+                         message: "Please enter 8 digits",
+                       },                     
+                     })}
                     />
                   </InputGroup>
 
@@ -184,6 +195,10 @@ const Register = () => {
                       id="address"
                       {...register("address", {
                         required: "Address is required",
+                        pattern: {
+                          value: /^[a-zA-Z0-9\s,'#/-]*$/,                        
+                          message: 'Exceeded character limit or special characters' 
+                        }
                       })}
                     />
                   </InputGroup>
@@ -212,6 +227,10 @@ const Register = () => {
                       id="email"
                       {...register("email", {
                         required: "E-mail is required",
+                        pattern: {
+                          value: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,                        
+                          message: 'Enter a valid email' 
+                        }
                       })}
                     />
                   </InputGroup>

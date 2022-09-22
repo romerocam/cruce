@@ -31,25 +31,32 @@ const ProfileUser = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
-  const { id, role } = session.user
+  const { id, role } = session.user;
 
   const [profile, setProfile] = useState({});
   const router = useRouter();
 
-  useEffect(() => {
-    axios.get(`/api/users/${id}`).then((profile) => {
-      setProfile(profile.data.data);
-    });
-  }, []);
-
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
+  useEffect(() => {
+    axios.get(`/api/users/${id}`).then((profile) => {
+      const { name, lastname, dni, email } = profile.data.data;
+      setValue("name", name);
+      setValue("lastname", lastname);
+      setValue("dni", dni);
+      setValue("email", email);
+    });
+  }, []);
+
   const onSubmit = (formData) => {
     console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
+    formData.name = formData.name.replace(/\s+/g, " ");
+    formData.lastname = formData.lastname.replace(/\s+/g, " ");
     axios
       .put(`/api/users/${id}`, formData)
       .then((response) => {
@@ -58,7 +65,8 @@ const ProfileUser = () => {
       })
       .catch((error) => console.log(error));
   };
-
+  // la idea es hacer un onchange para cuando el valor del formulario cambie, si cambia lo guarde en un objeto o lo set en un estado,
+  //  si no cambia envie la informacion como viene en el objeto que trae el useEffect
   return (
     <>
       <Container maxW={"7xl"} position={"relative"}>
@@ -79,18 +87,7 @@ const ProfileUser = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}
-              _after={{
-                content: '""',
-                w: 4,
-                h: 4,
-                bg: "green.300",
-                border: "2px solid white",
-                rounded: "full",
-                pos: "absolute",
-                bottom: 0,
-                right: 3,
-              }}
+              pos={"relative"}             
             />
             <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
               Profile
@@ -119,7 +116,7 @@ const ProfileUser = () => {
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
-                  <Input
+                  <Input                  
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -133,6 +130,10 @@ const ProfileUser = () => {
                     id="name"
                     {...register("name", {
                       required: "Name is required",
+                      pattern: {
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                        message: 'Exceeded character limit or special characters' 
+                      }
                     })}
                   />
                 </InputGroup>
@@ -160,6 +161,10 @@ const ProfileUser = () => {
                     id="lastname"
                     {...register("lastname", {
                       required: "Last Name is required",
+                      pattern: {
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
+                        message: 'Exceeded character limit or special characters' 
+                      }
                     })}
                   />
                 </InputGroup>
@@ -174,6 +179,7 @@ const ProfileUser = () => {
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
+                  type="Number"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -194,7 +200,7 @@ const ProfileUser = () => {
                       maxLength: {
                         value: 8,
                         message: "Please enter 8 digits",
-                      },
+                      },                     
                     })}
                   />
                 </InputGroup>

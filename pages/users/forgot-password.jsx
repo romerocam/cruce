@@ -22,8 +22,9 @@ import {
 } from "@chakra-ui/react";
 
 import { HiMail } from "react-icons/hi";
+import ForgotPassword from "../../src/components/Forgotpassword/ForgotPassword";
 
-const ForgotPassword = () => {
+const ForgotPasswordPage = () => {
   const {
     register,
     handleSubmit,
@@ -42,81 +43,19 @@ const ForgotPassword = () => {
 
     });
 
-
     router.push("/api/auth/verify-request?provider=email&type=email");
   };
 
   return (
     <>
       <Layout>
-        <Flex
-          height="100vh"
-          alignItems="center"
-          justifyContent="flex-start"
-          direction="column"
-        >
-          <Avatar bg={useColorModeValue("brand.700", "brand.600")} m={10} />
-          <Flex
-            maxW={"94%"}
-            w={"full"}
-            direction="column"
-            alignItems="center"
-            background="#FFFFFB"
-            boxShadow={"2xl"}
-            p={6}
-            rounded={"lg"}
-          >
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.email} color={"black"}>
-                <Stack spacing={3}>
-                  <InputGroup marginY={"2vh"} size="md">
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                    />
-                    <Input
-                      type="email"
-                      placeholder="Please enter your E-mail"
-                      _placeholder={{ color: "gray.500" }}
-                      id="email"
-                      variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
-                      borderColor={"gray.200"}
-                      errorBorderColor="none"
-                      color={"black"}
-                      {...register("email", {
-                        required: "E-mail is required",
-                      })}
-                    />
-                    <FormErrorMessage>
-                      {errors.email && errors.email.message}
-                    </FormErrorMessage>
-                  </InputGroup>
-                  <Button
-                  type="submit"
-                  bg={useColorModeValue("brand.700", "brand.600")}
-                  color={"white"}
-                  w="md"
-                  _hover={{
-                    bg: useColorModeValue("brand.600", "brand.700"),
-                  }}
-                  >
-                    Reset Password
-                  </Button>
-                </Stack>
-              </FormControl>
-            </form>
-          </Flex>
-        </Flex>
+        <ForgotPassword />
       </Layout>
     </>
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordPage;
 
 // Para proteger la ruta del perfil desde el servidor:
 export async function getServerSideProps(context) {
@@ -138,5 +77,4 @@ export async function getServerSideProps(context) {
   return {
     props: { session }
   }
-
 }
