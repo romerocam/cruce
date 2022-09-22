@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ViewIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 import {
   Table,
@@ -17,7 +17,11 @@ import {
 
 export default function ManageUsers({users}) {
     const router = useRouter()
-    console.log("los usuarios", users)
+
+    const [enteredSearchInput, setEnteredSearchInput] = useState("");
+    const enteredSearchHandler = (event) => {
+      setEnteredSearchInput(event.target.value);
+    };
   return (
     <Box>
       <Box display="flex" justifyContent="center">
@@ -25,6 +29,7 @@ export default function ManageUsers({users}) {
           placeholder="Search user by Name"
           width="auto"
           marginTop="5px"
+          onChange={enteredSearchHandler}
         />
       </Box>
       <Box display="flex" justifyContent="center">
@@ -36,7 +41,7 @@ export default function ManageUsers({users}) {
           boxShadow="md"
           m={5}
         >
-          <Table variant="striped" colorScheme="teal" size="sm">
+          <Table variant="striped" colorScheme="blue" size="sm">
             <Thead>
               <Tr>
                 <Th>Name</Th>
@@ -48,7 +53,13 @@ export default function ManageUsers({users}) {
               </Tr>
             </Thead>
             <Tbody>
-              {users.map((user) => (
+              {users
+                 .filter((user) =>
+                 user.name
+                   .toLowerCase()
+                   .includes(enteredSearchInput.toLowerCase())
+               )
+              .map((user) => (
                 <Tr key={user._id}>
                   <Td>{user.name}</Td>
                   <Td>{user.lastname}</Td>
