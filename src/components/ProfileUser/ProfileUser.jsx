@@ -230,9 +230,24 @@ const ProfileUser = () => {
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
-
                 <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
                   <Button
+                    id="changePassword"
+                    onClick={() => router.push('/users/change-password')}
+                    // type="submit"
+                    bg={useColorModeValue("brand.700", "brand.600")}
+                    color={"white"}
+                    w="full"
+                    _hover={{
+                      bg: useColorModeValue("brand.600", "brand.700"),
+                    }}
+                  >
+                    Change Password
+                  </Button>
+                </Stack>
+                <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
+                  <Button
+                    id="save"
                     type="submit"
                     bg={useColorModeValue("brand.700", "brand.600")}
                     color={"white"}
