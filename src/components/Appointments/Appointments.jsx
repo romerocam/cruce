@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import {
   Table,
   Thead,
@@ -18,6 +22,21 @@ import {
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
+  const { data: session, status } = useSession();
+  const id = session?.user;
+
+  console.log("user ------> ", id);
+
+  const [userBooking, setUserBooking] = useState({});
+
+  useEffect(() => {
+    axios.get(`/api/bookings`, { data: { userId: id } }).then((bookings) => {
+      setUserBooking(bookings);
+    });
+  }, []);
+
+  console.log("Bookings --------->", userBooking);
+
   return (
     <>
       <Center py={6}>
@@ -41,86 +60,27 @@ const Appointments = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>30/10/2022</Td>
-                  <Td>10:15 am</Td>
-                  <Td>
-                    Sede Y{" "}
-                    <Button
-                      marginLeft={6}
-                      bg={useColorModeValue("brand.700", "brand.600")}
-                    >
-                      <Icon
-                        as={HiArrowNarrowRight}
-                        color={useColorModeValue("white", "black")}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>30/10/2022</Td>
-                  <Td>10:15 am</Td>
-                  <Td>
-                    Sede Y{" "}
-                    <Button
-                      marginLeft={6}
-                      bg={useColorModeValue("brand.700", "brand.600")}
-                    >
-                      <Icon
-                        as={HiArrowNarrowRight}
-                        color={useColorModeValue("white", "black")}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>30/10/2022</Td>
-                  <Td>10:15 am</Td>
-                  <Td>
-                    Sede Y{" "}
-                    <Button
-                      marginLeft={6}
-                      bg={useColorModeValue("brand.700", "brand.600")}
-                    >
-                      <Icon
-                        as={HiArrowNarrowRight}
-                        color={useColorModeValue("white", "black")}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>30/10/2022</Td>
-                  <Td>10:15 am</Td>
-                  <Td>
-                    Sede Y{" "}
-                    <Button
-                      marginLeft={6}
-                      bg={useColorModeValue("brand.700", "brand.600")}
-                    >
-                      <Icon
-                        as={HiArrowNarrowRight}
-                        color={useColorModeValue("white", "black")}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>30/10/2022</Td>
-                  <Td>10:15 am</Td>
-                  <Td>
-                    Sede Y{" "}
-                    <Button
-                      marginLeft={6}
-                      bg={useColorModeValue("brand.700", "brand.600")}
-                    >
-                      <Icon
-                        as={HiArrowNarrowRight}
-                        color={useColorModeValue("white", "black")}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
+                {userBooking?.data?.data.map((bookings) => {
+                  console.log(bookings.office);
+                  return (
+                    <Tr key={bookings._id}>
+                      <Td>{bookings.date}</Td>
+                      <Td>{bookings.startAt}</Td>
+                      <Td>
+                        {bookings.office ? bookings.office.name : "--"}                        
+                        <Button
+                          marginLeft={6}
+                          //bg={useColorModeValue("brand.700", "brand.600")}
+                        >
+                          <Icon
+                            as={HiArrowNarrowRight}
+                            //color={useColorModeValue("white", "black")}
+                          />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  );
+                })}
               </Tbody>
             </Table>
           </TableContainer>
