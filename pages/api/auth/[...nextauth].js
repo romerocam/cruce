@@ -132,7 +132,7 @@ export default NextAuth({
              * para que agregue las propiedades role e id
              */
 
-            return { email: foundUser.email, role: foundUser.role, name: foundUser.name, id: foundUser._id };
+            return { email: foundUser.email, role: foundUser.role, name: foundUser.name, id: foundUser._id, office: foundUser.office, lastname: foundUser.lastname };
         }
     }),
     ]

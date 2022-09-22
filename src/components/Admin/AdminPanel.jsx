@@ -12,9 +12,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const AdminPanel = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
+
+  const name = session && session.user.name;
+  const lastname = session && session.user.lastname;
+  const role = session && session.user.role;
 
   return (
     <>
@@ -50,7 +57,7 @@ const AdminPanel = () => {
               }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
-              Stanislava Berberova
+            {`${name} ${lastname}`}
             </Heading>
 
             <Text
@@ -60,7 +67,7 @@ const AdminPanel = () => {
               color={"#000505"}
               px={3}
             >
-              Admin/Manager
+              {role}
             </Text>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
@@ -116,3 +123,4 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
+
