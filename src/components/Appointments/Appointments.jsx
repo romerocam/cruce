@@ -54,13 +54,13 @@ const Appointments = () => {
               <Thead>
                 <Tr>
                   <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Date
+                  </Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
                     Time
                   </Th>
                   <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
                     Office
-                  </Th>
-                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
-                    Date
                   </Th>
                 </Tr>
               </Thead>
@@ -72,7 +72,7 @@ const Appointments = () => {
                         {dayjs(bookings.date).format("DD/MM/YYYY")}
                       </Td>
                       <Td style={{ borderBottomColor: "#E0E0E0" }}>
-                        {dayjs(bookings.startAt).format("LT")}
+                        {bookings.startAt}
                       </Td>
                       <Td
                         style={{
