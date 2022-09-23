@@ -115,6 +115,7 @@ export default async function handler(req, res) {
                 res.status(200).json(
                     {
                         success: true,
+                        title:"Actualización",
                         data: {
                             name: updatedUser.name,
                             lastname: updatedUser.lastname,
