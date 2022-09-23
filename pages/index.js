@@ -3,37 +3,61 @@ import { useRouter } from "next/router";
 //components
 import Layout from "../src/components/common/Layout/Layout";
 //styles
-import { Flex, Box, Button } from "@chakra-ui/react";
+import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
 
 const HomePage = () => {
   const router = useRouter();
   return (
     <>
       <Layout>
-        <Flex
-          direction="column"
-          align="center"
-          justify="center"
-          height="80"
+        <Grid
+          templateColumns="repeat(4, 1fr)"
+          templateRows="repeat(1, 1fr)"
           width="100"
           margin="20px"
           background="teal.400"
+          rounded="lg"
         >
-          <Box color="white" fontSize="50px" fontWeight="bold">
-            Appointment Booking
-          </Box>
-          <Box color="white" fontSize="30px" fontWeight="bold">
-            Made Easy!!!
-          </Box>
-          <Button
-            mt="80px"
-            onClick={() => {
-              router.push("/users/register");
-            }}
+          <GridItem
+            colSpan={{ base: "2", md: "1", lg: "1" }}
+            rowSpan={1}
+            alignSelf="center"
           >
-            Get Started
-          </Button>
-        </Flex>
+            <img src="/calendar.png" alt="image" />
+          </GridItem>
+          <GridItem
+            colSpan={{ base: "2", md: "3", lg: "3" }}
+            rowSpan={1}
+            alignSelf="center"
+          >
+            <Flex direction="column" align="center" justify="center" gap={10}>
+              <Text
+                textAlign="-webkit-center"
+                color="white"
+                fontWeight="bold"
+                fontSize={{ base: "24px", md: "40px", lg: "56px" }}
+              >
+                Appointment Booking
+              </Text>
+              <Text
+                color="white"
+                fontWeight="bold"
+                fontSize={{ base: "18px", md: "34px", lg: "50px" }}
+              >
+                Made Easy!!!
+              </Text>
+              <Button
+                m={5}
+                backgroundColor="yellow.400"
+                onClick={() => {
+                  router.push("/users/register");
+                }}
+              >
+                Get Started
+              </Button>
+            </Flex>
+          </GridItem>
+        </Grid>
       </Layout>
     </>
   );
