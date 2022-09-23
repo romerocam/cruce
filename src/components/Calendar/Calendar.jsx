@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import classes from "./Calendar.module.css";
-import { Button, Select } from "@chakra-ui/react";
+import { Button, Select, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -29,11 +29,15 @@ export default function NewBookingCalendar() {
 
   // TODO: replace axios request by getServerSideProps
   useEffect(() => {
-    axios
-      .get(`/api/offices/${idOffice}/availableslots/${idMonth}/${idYear}`)
-      .then((availableSlots) => {
-        setAvailableSlotsPerMonth(availableSlots.data.data);
-      });
+    if (idOffice && idMonth && idYear) {
+      axios
+        .get(`/api/offices/${idOffice}/availableslots/${idMonth}/${idYear}`)
+        .then((availableSlots) => {
+          setAvailableSlotsPerMonth(availableSlots.data.data);
+        });
+    } else {
+      cleanSlots();
+    }
   }, [idOffice, idMonth, idYear]);
 
   const setAppointment = () => {
@@ -68,30 +72,52 @@ export default function NewBookingCalendar() {
   };
 
   const onChangeOffice = (event) => {
+    cleanSlots();
     setIdOffice(event.target.value);
-    if (!event.target.value) {
-      setAvailableSlotsPerMonth([]);
-    }
   };
 
   const onActiveStartDateChangeHandler = ({ activeStartDate, value, view }) => {
     setIdMonth(activeStartDate.getMonth() + 1);
     setIdYear(activeStartDate.getFullYear());
+    cleanSlots();
   };
 
   const onClickSlotHandler = (slot) => {
     setSelectedSlot(slot);
   };
 
+  const cleanSlots = () => {
+    setAvailableSlotsPerMonth([]);
+    setAvailableSlotsPerDay([]);
+    setSelectedSlot(null);
+  };
+
   return (
-    <div className={classes.mainContainer}>
-      <div className={classes.itemMainContainer}>
-        <Select placeholder="Select office" onChange={onChangeOffice} mb={10}>
+    <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(2, 1fr)">
+      <GridItem
+        colSpan={{ base: "2", md: "1", lg: "1" }}
+        rowSpan="1"
+        alignSelf="auto"
+        m={5}
+      >
+        <Text fontSize="xl" as="b" color="teal">
+          Select office and day
+        </Text>
+        <Select
+          placeholder="Select office"
+          onChange={onChangeOffice}
+          mb={10}
+          maxWidth="350px"
+          mt={5}
+        >
           {listOfOffices.map((office, i) => {
-            return <option key={i} value={office._id}>{office.name}</option>;
+            return (
+              <option key={i} value={office._id}>
+                {office.name}
+              </option>
+            );
           })}
         </Select>
-
         {idOffice && (
           <Calendar
             minDetail="month"
@@ -111,64 +137,80 @@ export default function NewBookingCalendar() {
 
               if (availableDay) {
                 let totalAvailable = 0;
-                availableDay.slots.forEach(slot => {
-                  totalAvailable += slot.capacity
+                availableDay.slots.forEach((slot) => {
+                  totalAvailable += slot.capacity;
                 });
 
-                if (totalAvailable>=10) {
-                  return classes.tenOrMoreSlots
+                if (totalAvailable >= 10) {
+                  return classes.tenOrMoreSlots;
                 }
 
-                if (totalAvailable>=5) {
-                  return classes.fiveOrMoreSlots
+                if (totalAvailable >= 5) {
+                  return classes.fiveOrMoreSlots;
                 }
 
-                if (totalAvailable>=2) {
-                  return classes.twoOrMoreSlots
-                }
-                
-                if (totalAvailable===1) {
-                  return classes.lastSlot
+                if (totalAvailable >= 2) {
+                  return classes.twoOrMoreSlots;
                 }
 
+                if (totalAvailable === 1) {
+                  return classes.lastSlot;
+                }
               } else {
-                return classes.noSlots
+                return classes.noSlots;
               }
             }}
           />
         )}
-      </div> {availableSlotsPerMonth.length? 
-      <div className={classes.itemMainContainer}>
-        <h1>Select slot</h1>
-        <div className={classes.slotsContainer}>
-          {availableSlotsPerDay.map((slot,i) => {
-            return (
-              <div key={i} className={classes.itemSlot}>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    onClickSlotHandler(slot);
-                  }}
-                >
-                  {slot}
+      </GridItem>
+      <GridItem
+        colSpan={{ base: "2", md: "1", lg: "1" }}
+        rowSpan="1"
+        alignSelf="auto"
+        m={5}
+      >
+        {availableSlotsPerMonth.length ? (
+          <div className={classes.itemMainContainer}>
+            <Text fontSize="xl" as="b" color="teal">
+              Select slot
+            </Text>
+            <div className={classes.slotsContainer}>
+              {availableSlotsPerDay.map((slot, i) => {
+                return (
+                  <div key={i} className={classes.itemSlot}>
+                    <Button
+                      colorScheme="teal"
+                      onClick={() => {
+                        onClickSlotHandler(slot);
+                      }}
+                    >
+                      {slot}
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+            {selectedSlot && (
+              <div style={{ marginTop: 20 }}>
+                <Text fontSize="xl" as="b" color="green">
+                  You selected the following slot: {selectedSlot}; please
+                  confirm!
+                </Text>
+              </div>
+            )}
+            {availableSlotsPerDay.length > 0 && (
+              <div style={{ marginTop: 20 }}>
+                <Button colorScheme="green" onClick={setAppointment}>
+                  Confirm
                 </Button>
               </div>
-            );
-          })}
-        </div>
-        {selectedSlot && (
-          <p>
-            You selected the following slot: {selectedSlot}; please confirm!
-          </p>
-        )}
-        {availableSlotsPerDay.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <Button colorScheme="green" onClick={setAppointment}>
-              Confirm
-            </Button>
+            )}
           </div>
+        ) : (
+          ""
         )}
-      </div>:""}
-    </div>
+      </GridItem>
+    </Grid>
+
   );
 }
