@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import dayJs from "dayjs"
 
 import {
   Table,
@@ -17,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-export default function BranchTable({offices}) {
+export default function BranchTable({ bookings, officeName }) {
   const [enteredSearchInput, setEnteredSearchInput] = useState("");
 
   const enteredSearchHandler = (event) => {
@@ -33,7 +34,7 @@ export default function BranchTable({offices}) {
   return (
     <Box>
       <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
-        {`${office}`}
+        {`${officeName}`}
       </Heading>
       <Box display="flex" justifyContent="center">
         <Input
@@ -56,38 +57,38 @@ export default function BranchTable({offices}) {
           <Table variant="striped" colorScheme="blue" size="sm">
             <Thead>
               <Tr>
-                <Th>Name</Th>
+                <Th>Last Name</Th>
                 <Th>Date</Th>
                 <Th>Hour</Th>
                 <Th>Booking Status</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {offices.map((office) => (
-                  <Tr key={office._id}>
-                    <Td>{office.user}</Td>
-                    <Td>{office.date}</Td>
-                    <Td>{office.startAt}</Td>
-                    <Td>
-                      <Box>
-                        <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                          <Checkbox size="md" colorScheme="red" defaultChecked>
-                            {office.attendance}
-                          </Checkbox>
-                          <Checkbox
-                            size="md"
-                            colorScheme="green"
-                          >
-                            Cancelled
-                          </Checkbox>
-                          <Checkbox size="md" colorScheme="orange">
-                            Attended
-                          </Checkbox>
-                        </Stack>
-                      </Box>
-                    </Td>
-                  </Tr>
-                ))}
+              {bookings.map((booking) => (
+                <Tr key={booking._id}>
+                  <Td>{booking.user.lastname}</Td>
+                  <Td>{dayJs(booking.date).format("DD/MM/YYYY")}</Td>
+                  <Td>{booking.startAt}</Td>
+                  <Td>
+                    <Box>
+                      <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                        <Checkbox size="md" colorScheme="red" defaultChecked>
+                          {booking.attendance}
+                        </Checkbox>
+                        <Checkbox
+                          size="md"
+                          colorScheme="green"
+                        >
+                          Cancelled
+                        </Checkbox>
+                        <Checkbox size="md" colorScheme="orange">
+                          Attended
+                        </Checkbox>
+                      </Stack>
+                    </Box>
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
