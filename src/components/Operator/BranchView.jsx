@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { ViewIcon } from "@chakra-ui/icons";
-import { EditIcon } from "@chakra-ui/icons";
+
 import {
   Table,
   Thead,
@@ -18,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-export default function BranchTable(props) {
+export default function BranchTable({offices}) {
   const [enteredSearchInput, setEnteredSearchInput] = useState("");
 
   const enteredSearchHandler = (event) => {
@@ -34,7 +33,7 @@ export default function BranchTable(props) {
   return (
     <Box>
       <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
-        {`${office} ${role}`}
+        {`${office}`}
       </Heading>
       <Box display="flex" justifyContent="center">
         <Input
@@ -58,28 +57,22 @@ export default function BranchTable(props) {
             <Thead>
               <Tr>
                 <Th>Name</Th>
-                <Th>Lastname</Th>
-                <Th>Email</Th>
+                <Th>Date</Th>
+                <Th>Hour</Th>
                 <Th>Booking Status</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {props.users
-                .filter((users) =>
-                  users.email
-                    .toLowerCase()
-                    .includes(enteredSearchInput.toLowerCase())
-                )
-                .map((users) => (
-                  <Tr key={users.name}>
-                    <Td>{users.name}</Td>
-                    <Td>{users.lastname}</Td>
-                    <Td>{users.email}</Td>
+              {offices.map((office) => (
+                  <Tr key={office._id}>
+                    <Td>{office.user}</Td>
+                    <Td>{office.date}</Td>
+                    <Td>{office.startAt}</Td>
                     <Td>
                       <Box>
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
                           <Checkbox size="md" colorScheme="red" defaultChecked>
-                            Pending
+                            {office.attendance}
                           </Checkbox>
                           <Checkbox
                             size="md"

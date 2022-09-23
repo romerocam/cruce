@@ -87,8 +87,8 @@ export default function NewBookingCalendar() {
     <div className={classes.mainContainer}>
       <div className={classes.itemMainContainer}>
         <Select placeholder="Select office" onChange={onChangeOffice} mb={10}>
-          {listOfOffices.map((office) => {
-            return <option value={office._id}>{office.name}</option>;
+          {listOfOffices.map((office, i) => {
+            return <option key={i} value={office._id}>{office.name}</option>;
           })}
         </Select>
 
@@ -141,9 +141,9 @@ export default function NewBookingCalendar() {
       <div className={classes.itemMainContainer}>
         <h1>Select slot</h1>
         <div className={classes.slotsContainer}>
-          {availableSlotsPerDay.map((slot) => {
+          {availableSlotsPerDay.map((slot,i) => {
             return (
-              <div className={classes.itemSlot}>
+              <div key={i} className={classes.itemSlot}>
                 <Button
                   colorScheme="teal"
                   onClick={() => {
