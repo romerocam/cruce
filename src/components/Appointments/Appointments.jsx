@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 import {
   Table,
   Thead,
@@ -18,24 +19,22 @@ import {
   Icon,
   Button,
   useColorModeValue,
+  Flex,
+  background,
 } from "@chakra-ui/react";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
   const { data: session, status } = useSession();
-  const id = session?.user;
-
-  console.log("user ------> ", id);
+  const id = session?.user.id;
 
   const [userBooking, setUserBooking] = useState({});
 
   useEffect(() => {
-    axios.get(`/api/bookings`, { data: { userId: id } }).then((bookings) => {
+    axios.get(`/api/bookings/user/${id}`).then((bookings) => {
       setUserBooking(bookings);
     });
   }, []);
-
-  console.log("Bookings --------->", userBooking);
 
   return (
     <>
@@ -54,28 +53,44 @@ const Appointments = () => {
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th>Date</Th>
-                  <Th>Time</Th>
-                  <Th>Office</Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Date
+                  </Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Time
+                  </Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Office
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {userBooking?.data?.data.map((bookings) => {
-                  console.log(bookings.office);
                   return (
                     <Tr key={bookings._id}>
-                      <Td>{bookings.date}</Td>
-                      <Td>{bookings.startAt}</Td>
-                      <Td>
-                        {bookings.office ? bookings.office.name : "--"}                        
+                      <Td style={{ borderBottomColor: "#E0E0E0" }}>
+                        {dayjs(bookings.date).format("DD/MM/YYYY")}
+                      </Td>
+                      <Td style={{ borderBottomColor: "#E0E0E0" }}>
+                        {bookings.startAt}
+                      </Td>
+                      <Td
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          borderBottomColor: "#E0E0E0",
+                        }}
+                      >
+                        <span>{bookings.office.name}</span>
                         <Button
                           marginLeft={6}
-                          //bg={useColorModeValue("brand.700", "brand.600")}
+                          bg="brand.700"
+                          _dark={{ bg: "brand.600" }}
+                          //onClick={""}
                         >
-                          <Icon
-                            as={HiArrowNarrowRight}
-                            //color={useColorModeValue("white", "black")}
-                          />
+                          <Icon as={HiArrowNarrowRight} color="white" />
                         </Button>
                       </Td>
                     </Tr>
