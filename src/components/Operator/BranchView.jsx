@@ -66,7 +66,7 @@ export default function BranchTable({ bookings, officeName }) {
             <Tbody>
               {bookings.map((booking) => (
                 <Tr key={booking._id}>
-                  <Td>{booking.user.lastname}</Td>
+                  <Td>{booking.user?.lastname}</Td>
                   <Td>{dayJs(booking.date).format("DD/MM/YYYY")}</Td>
                   <Td>{booking.startAt}</Td>
                   <Td>
