@@ -19,13 +19,16 @@ import {
   Container,
   useColorModeValue,
   Icon,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
+import { HiUser, HiMail } from "react-icons/hi";
 
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+
+import ModalComponent from "../common/ModalComponet/ModalComponent";
 
 const ProfileUser = () => {
   const { data: session, status } = useSession();
@@ -35,6 +38,10 @@ const ProfileUser = () => {
 
   const [profile, setProfile] = useState({});
   const router = useRouter();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const {
     register,
@@ -60,14 +67,23 @@ const ProfileUser = () => {
     axios
       .put(`/api/users/${id}`, formData)
       .then((response) => {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response.data);
+        setTitle(response.data.title);
+        setMessage(response.data.message);
+        onOpen();
         router.push("/users/profile-user");
         return response.data;
       })
       .catch((error) => console.log(error));
   };
-    
+
   return (
     <>
+      <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box
@@ -86,7 +102,7 @@ const ProfileUser = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}             
+              pos={"relative"}
             />
             <Heading fontSize={"2xl"} fontFamily={"body"} color={"#000505"}>
               Profile
@@ -115,7 +131,7 @@ const ProfileUser = () => {
                     pointerEvents="none"
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
-                  <Input                  
+                  <Input
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -130,9 +146,10 @@ const ProfileUser = () => {
                     {...register("name", {
                       required: "Name is required",
                       pattern: {
-                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                        message: 'Exceeded character limit or special characters' 
-                      }
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,
+                        message:
+                          "Exceeded character limit or special characters",
+                      },
                     })}
                   />
                 </InputGroup>
@@ -161,9 +178,10 @@ const ProfileUser = () => {
                     {...register("lastname", {
                       required: "Last Name is required",
                       pattern: {
-                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                        message: 'Exceeded character limit or special characters' 
-                      }
+                        value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,
+                        message:
+                          "Exceeded character limit or special characters",
+                      },
                     })}
                   />
                 </InputGroup>
@@ -178,7 +196,7 @@ const ProfileUser = () => {
                     children={<Icon as={HiUser} color={"gray.400"}></Icon>}
                   />
                   <Input
-                  type="Number"
+                    type="Number"
                     variant="flushed"
                     focusBorderColor={useColorModeValue(
                       "brand.700",
@@ -199,7 +217,7 @@ const ProfileUser = () => {
                       maxLength: {
                         value: 8,
                         message: "Please enter 8 digits",
-                      },                     
+                      },
                     })}
                   />
                 </InputGroup>
@@ -238,7 +256,7 @@ const ProfileUser = () => {
                 <Stack spacing={6} direction={["column", "row"]} paddingTop={2}>
                   <Button
                     id="changePassword"
-                    onClick={() => router.push('/users/change-password')}
+                    onClick={() => router.push("/users/change-password")}
                     // type="submit"
                     bg={useColorModeValue("brand.700", "brand.600")}
                     color={"white"}
