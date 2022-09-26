@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
 
                 const users = await User.find({}, 'name lastname dni address email role office');
-                console.log("useeeeers:", users)
+                console.log("USERS:", users)
                 res.status(200).json({ success: true, data: users });
             } catch (error) {
                 res
@@ -50,16 +50,21 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User has not been created`,
+                        message: `Could not find User.`,
                     });
             }
             break;
 
-        case "POST": // si ya existe el usuario responde con 409 y un mensaje, sino lo crea:
+        /* 
+         * Si ya existe el usuario responde con 409 y un mensaje, sino lo crea.
+         * No protegemos esta ruta porque sino no se pueden registrar usuarios nuevos.
+         */
+
+        case "POST":
             try {
                 const existingUser = await User.findOne({ email: email })
                 if (existingUser) {
-                    res.status(409).json({ success: false, data: `user already exist` })
+                    res.status(409).json({ success: false, data: `User already exist` })
                 } else {
 
                     const newUser = await User.create(reqBody)
@@ -70,7 +75,7 @@ export default async function handler(req, res) {
                             id: newUser._id,
                             email: newUser.email,
                         },
-                        message: `User ${newUser.email} has been created`,
+                        message: `User ${newUser.email} registered`,
                     })
                 }
             } catch (error) {
@@ -79,7 +84,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User has not been created`,
+                        message: `Could not register ${newUser.email}.`,
                     });
             }
             break;
