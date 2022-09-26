@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const session = await getSession({ req: req });
 
     if (!session) {
-        res.status(401).json({ message: 'Not Authenticated!' })
+        res.status(401).json({ title: 'Reset Password', message: 'Not Authenticated!' })
         return
     }
 
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
         if (!foundUser) {
 
-            res.status(404).json({ message: 'user not found!' });
+            res.status(404).json({ title: 'Reset Password', message: 'user not found!' });
             return;
             // client.close();
         }
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
 
         changePasswordEmail(foundUser)
 
-        res.status(200).json({ message: 'password updated' });
+        res.status(200).json({ title: 'Reset Password', message: 'password updated' });
         // client.close();
 
     } catch (error) {
@@ -63,6 +63,7 @@ export default async function handler(req, res) {
             .json({
                 success: false,
                 data: error,
+                title: 'Reset Password',
                 message: 'could not update password',
             });
 
