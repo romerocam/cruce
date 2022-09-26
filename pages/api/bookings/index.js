@@ -4,7 +4,7 @@
  * ***************/
 
 import { getSession } from "next-auth/react";
-
+import Office from "../../../models/Office";
 import connectMongo from "../../../util/dbConnect";
 import Booking from "../../../models/Booking";
 import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   const { method } = req;
   const reqBody = req.body;
   const userId = reqBody.userId;
+  const officeId = req.body.officeId;
 
   // verifica que el usuario este logeado:
   const session = await getSession({ req: req });
@@ -47,6 +48,18 @@ export default async function handler(req, res) {
       try {
         //const newId = await Booking.estimatedDocumentCount() + 1;
         //console.log("ID", newId)
+
+        /*** Validation to ensure there are available slots before posting the booking ***/
+        // 1st step: Get max capacity of the selected slot, per selected office, per selected date
+        const capacityPerSelection = await Office.findOne({_id: officeId}).capacityPerSlot;
+
+
+        // 2nd step: Get already booked appointments on the selected slot
+        
+        
+        // 3rd step: Validate that the remainder is positive before posting the booking.
+
+
 
         const newBooking = await Booking.create({
           //_id: newId,
