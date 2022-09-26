@@ -65,8 +65,8 @@ export default async function handler(req, res) {
         const bookedSlots = await Booking.find({office: officeId, startAt: startAt, date: dateId}).count()
         
         // 3rd step: Validate that the remainder is positive before posting the booking.
-        console.log("CapacityPerSelection", capacityPerSelection);
-        console.log("AlreadyBookedSlotsPerSelection", bookedSlots);
+        //console.log("CapacityPerSelection", capacityPerSelection);
+        //console.log("AlreadyBookedSlotsPerSelection", bookedSlots);
 
         const remainingAppointmentsPerSlot = capacityPerSelection - bookedSlots
 
@@ -90,6 +90,8 @@ export default async function handler(req, res) {
             data: newBooking,
             message: `Booking has been confirmed, check your email for details`, //${newBooking._id}
           });
+        } else {
+          res.status(409).json({ success: false, message: `No remaining appointments` , title: `Create booking`})
         }
 
       } catch (error) {
