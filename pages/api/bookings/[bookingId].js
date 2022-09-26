@@ -8,6 +8,7 @@ import { getSession } from "next-auth/react";
 import connectMongo from "../../../util/dbConnect";
 // import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
 import Booking from "../../../models/Booking";
+import Office from "../../../models/Office"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET": // busca el booking del bookingId pasado por params:
             try {
-                const foundBooking = await Booking.findOne({ _id: bookingId });   // ObjectId convierte el string a ObjetId de mongo
+                const foundBooking = await Booking.findOne({ _id: bookingId }).populate("office", "name address phone");   // ObjectId convierte el string a ObjetId de mongo
 
                 if (!foundBooking) res.status(404).json({ success: false, data: `Booking N° ${bookingId} does not exist` })
 

@@ -25,6 +25,7 @@ import {
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
+  const router = useRouter()
   const { data: session, status } = useSession();
   const id = session?.user.id;
 
@@ -88,7 +89,7 @@ const Appointments = () => {
                           marginLeft={6}
                           bg="brand.700"
                           _dark={{ bg: "brand.600" }}
-                          //onClick={""}
+                          onClick={()=>{router.push(`/users/my-appointments/${bookings._id}`)}}
                         >
                           <Icon as={HiArrowNarrowRight} color="white" />
                         </Button>
