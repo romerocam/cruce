@@ -28,7 +28,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import ModalComponet from "../common/ModalComponet/ModalComponet";
+import ModalComponent from "../common/ModalComponet/ModalComponent";
 
 const ProfileUser = () => {
   const { data: session, status } = useSession();
@@ -79,7 +79,7 @@ const ProfileUser = () => {
 
   return (
     <>
-      <ModalComponet
+      <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
         props={{ title, message }}
