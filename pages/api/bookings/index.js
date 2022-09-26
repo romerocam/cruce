@@ -4,10 +4,12 @@
  * ***************/
 
 import { getSession } from "next-auth/react";
+import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
 import Office from "../../../models/Office";
+import { bookingEmail } from "../../../util/mailer"
 import connectMongo from "../../../util/dbConnect";
 import Booking from "../../../models/Booking";
-import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
+import User from "../../../models/User";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -20,7 +22,7 @@ export default async function handler(req, res) {
   if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
 
   await connectMongo();
-  console.log("BODY", reqBody);
+  // console.log("BODY", reqBody);
 
   switch (method) {
     case "GET": // busca todos los bookings de la db:
@@ -70,14 +72,19 @@ export default async function handler(req, res) {
           attendance: reqBody.attendance,
         });
         console.log("CREATED BOOKING >>>>>", newBooking);
+
+        const populatedNewBooking = await Booking.find({ _id: newBooking._id }).populate('office').populate('user', 'name lastname email dni')
+
+        bookingEmail(populatedNewBooking[0], populatedNewBooking[0].user, populatedNewBooking[0].office)
+
         res.status(201).json({
           success: true,
           data: newBooking,
-          message: `Booking has been created`, //${newBooking._id}
+          message: `Booking has been confirmed, check your email for details`, //${newBooking._id}
         });
       } catch (error) {
         // console.log(reqBody)
-        //console.log(error)
+        console.log(error)
         res.status(400).json({
           success: false,
           data: error,

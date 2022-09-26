@@ -35,7 +35,7 @@ const ForgotPassword = () => {
 
     const loginResult = await signIn("email", {
       redirect: false, // para que no redirija a otra pagina cuando da error el login
-
+      callbackUrl: '/users/set-password',
       // le paso las credenciales al pedido (signIn)
       email: formData.email,
     });
@@ -99,9 +99,9 @@ const ForgotPassword = () => {
                   _hover={{
                     bg: useColorModeValue("brand.600", "brand.700"),
                   }}
-                  >
-                    Reset Password
-                  </Button>
+                >
+                  Reset Password
+                </Button>
               </Stack>
             </FormControl>
           </form>
