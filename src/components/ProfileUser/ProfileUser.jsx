@@ -28,7 +28,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import ModalComponent from "../common/ModalComponet/ModalComponent";
+import ModalComponent from "../common/ModalComponent/ModalComponent";
 
 const ProfileUser = () => {
   const { data: session, status } = useSession();
