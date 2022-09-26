@@ -18,7 +18,7 @@ const ForgotPasswordPage = () => {
 
 export default ForgotPasswordPage;
 
-// Para proteger la ruta del perfil desde el servidor:
+// Para proteger la ruta desde el servidor:
 export async function getServerSideProps(context) {
 
   // console.log("CONTEXT", context)
@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/users/set-password',
+        destination: '/users/profile-user',
         permanent: false,
       }
     }
