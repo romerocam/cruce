@@ -73,13 +73,19 @@ export default NextAuth({
         // async decode() { },
         // updateAge: 2 * 60 * 60,
     },
-    debug: true,
+    debug: false, // poner en true para ver info del login
     adapter: MongoDBAdapter(clientPromise),
     providers: [EmailProvider({
-        server: process.env.EMAIL_SERVER,
+        server: {
+            host: process.env.EMAIL_SERVER_HOST,
+            port: process.env.EMAIL_SERVER_PORT,
+            auth: {
+                user: process.env.EMAIL_SERVER_USER,
+                pass: process.env.EMAIL_SERVER_PASSWORD,
+            }
+        },
         from: process.env.EMAIL_FROM,
         maxAge: 60 * 60, // Seconds - How long email links are valid for (default 24h)
-
     }),
     CredentialsProvider({
 
