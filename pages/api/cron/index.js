@@ -8,7 +8,7 @@ const SECRET = process.env.NEXTAUTH_SECRET
 
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === 'GET') {
         try {
             const { authorization } = req.headers;
 
