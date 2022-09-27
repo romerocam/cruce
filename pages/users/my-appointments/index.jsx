@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
-import Appointments from "../../src/components/Appointments/Appointments";
-import Layout from "../../src/components/common/Layout/Layout";
+import Appointments from "../../../src/components/Appointments/Appointments";
+import Layout from "../../../src/components/common/Layout/Layout";
 
 export default function MyAppointments() {
   return (

@@ -53,11 +53,11 @@ export async function bookingEmail(booking, user, office) {
         from: `no-reply - Booking Confirmation Email  <${process.env.EMAIL_FROM}>`,
         to: user.email,
         subject: `Booking # ${booking.id} Confirmed!`,
-        icalEvent: {
-            filename: 'booking.ics',
-            method: 'request',
-            content: booking
-        },
+        // icalEvent: {
+        //     filename: 'booking.ics',
+        //     method: 'request',
+        //     content: booking
+        // },
         text: `Thank you ${user.name}. Your booking is confirmed: Date: ${booking.date}, Time: ${booking.startAt},Office Address: ${office.address}, Phone Number: ${office.phone}`,
         html: `<p>Thank you ${user.name} ${user.lastname} (${user.email}), your booking is now confirmed :D</p>
         <p>Please save this details for future reference:</p>
