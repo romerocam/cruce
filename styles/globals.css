@@ -29,4 +29,16 @@ a {
     background: white;
   }
 }
+footer {
+  position: fixed;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.14);
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
 
+footer button {
+  padding: 1rem;
+}
