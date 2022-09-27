@@ -9,5 +9,5 @@ jobs:
       - name: Send Email Reminders
         run: |
           curl --request GET \
-          --url '/api/cron' \
+          --url 'http://example.com/api/cron' \
           --header 'Authorization: Bearer ${{ secrets.NEXTAUTH_SECRET }}'
