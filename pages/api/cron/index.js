@@ -3,11 +3,22 @@
  *   api/cron/  *
  * ***************/
 
-export default async function handler(req, res
-) {
-    if (req.method === 'GET') {
+const SECRET = process.env.NEXTAUTH_SECRET
+
+
+
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
         try {
-            console.log("HELLO WORLD")
+            const { authorization } = req.headers;
+
+            console.log("-----------------FUNCIONA_CRON_JOB---------------")
+
+            if (authorization === `Bearer ${SECRET}`) {
+                res.status(200).json({ success: true });
+            } else {
+                res.status(401).json({ success: false });
+            }
         } catch (err) {
             res.status(500).json({ statusCode: 500, message: err.message });
         }

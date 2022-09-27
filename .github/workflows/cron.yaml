@@ -10,4 +10,4 @@ jobs:
         run: |
           curl --request GET \
           --url '/api/cron' \
-          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
+          --header 'Authorization: Bearer ${{ secrets.NEXTAUTH_SECRET }}'
