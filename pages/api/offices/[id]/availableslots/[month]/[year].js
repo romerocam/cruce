@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         for (let index = 0; index < slotsCount; index++) {
           officeDataArr.push({
             capacity: capacity,
-            time: `${fromHour}:${fromMinute ? fromMinute : "00"}`,
+            time: `${fromHour<10?"0"+fromHour:fromHour}:${fromMinute ? fromMinute : "00"}`,
           });
           if (fromMinute === 45) {
             fromMinute = 0;
