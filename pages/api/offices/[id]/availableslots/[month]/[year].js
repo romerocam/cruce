@@ -9,10 +9,6 @@ export default async function handler(req, res) {
   const monthId = Number(req.query.month);
   const yearId = Number(req.query.year);
 
-  console.log(officeId, "officeId");
-  console.log(monthId, "monthId");
-  console.log(yearId, "yearId");
-
   await connectMongo();
 
   switch (method) {
@@ -47,7 +43,9 @@ export default async function handler(req, res) {
         for (let index = 0; index < slotsCount; index++) {
           officeDataArr.push({
             capacity: capacity,
-            time: `${fromHour<10?"0"+fromHour:fromHour}:${fromMinute ? fromMinute : "00"}`,
+            time: `${fromHour < 10 ? "0" + fromHour : fromHour}:${
+              fromMinute ? fromMinute : "00"
+            }`,
           });
           if (fromMinute === 45) {
             fromMinute = 0;
@@ -75,19 +73,13 @@ export default async function handler(req, res) {
           initDay = currentDay;
         }
 
-        console.log("currentYear", currentYear);
-        console.log("currentMonth", currentMonth);
-
         let officeDataArrPerDay = [];
         for (initDay; initDay <= daysInMonth; initDay++) {
           if (
             new Date(yearId, monthId - 1, initDay).getDay() !== 6 &&
             new Date(yearId, monthId - 1, initDay).getDay() !== 0 &&
-            new Date(yearId, monthId - 1, initDay)>currentDate
+            new Date(yearId, monthId - 1, initDay) > currentDate
           ) {
-            console.log(new Date(yearId, monthId - 1, initDay).getDay(), "día");
-            console.log(new Date(yearId, monthId - 1, initDay), "fecha entera");
-
             officeDataArrPerDay.push({
               day: initDay,
               slots: JSON.parse(
@@ -126,8 +118,7 @@ export default async function handler(req, res) {
             },
           },
         ]);
-       
-        
+
         // Logic to obtain remaining slots available
         let availableSlots = JSON.parse(JSON.stringify(officeDataArrPerDay)); //We need to copy the array/objects this way because there are nested elements and then we get a shallow copy otherwise. What we need is a deep copy.
         /* This was another way of getting the remaining slots but not so efficient and more difficult to delete the zero value objects inside it.
@@ -167,11 +158,6 @@ export default async function handler(req, res) {
             availableSlots.splice(index, 1);
           }
         });
-
-        console.log(officeDataArr, "officeDataArray");
-        console.log(bookedSlots, "bookedSlots");
-        console.log(JSON.stringify(availableSlots), "availableSlots");
-        console.log(JSON.stringify(officeDataArrPerDay), "officeDataArrPerDay");
 
         res.status(200).json({
           success: true,
