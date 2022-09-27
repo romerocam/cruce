@@ -14,6 +14,7 @@ import { getSession } from "next-auth/react";
 
 import connectMongo from "../../../util/dbConnect";
 import User from "../../../models/User";
+import { registerEmail } from "../../../util/mailer";
 
 /*
 export const getAllUsers = async function(){
@@ -37,8 +38,8 @@ export default async function handler(req, res) {
                 // verifica que el usuario este logeado y que sea admin:
                 const session = await getSession({ req: req });
                 console.log("session:", session)
-                if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
-                if (session.user.role === 'customer') res.status(403).json({ message: 'Forbidden' }); // return implicito
+                if (!session) res.status(401).json({ title: `Get Users`, message: 'Not Authenticated!' }); // return implicito
+                if (session.user.role === 'customer') res.status(403).json({ title: `Get Users`, message: 'Forbidden' }); // return implicito
 
 
                 const users = await User.find({}, 'name lastname dni address email role office');
@@ -50,6 +51,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
+                        title: `Get Users`,
                         message: `Could not find User.`,
                     });
             }
@@ -64,17 +66,21 @@ export default async function handler(req, res) {
             try {
                 const existingUser = await User.findOne({ email: email })
                 if (existingUser) {
-                    res.status(409).json({ success: false, data: `User already exist` })
+                    res.status(409).json({ success: false, title: `Sign Up`, message: `Email already in use.` })
                 } else {
 
                     const newUser = await User.create(reqBody)
                     console.log("CREATED USER >>>>>", newUser)
+
+                    registerEmail(newUser)
+
                     res.status(201).json({
                         success: true,
                         data: {
                             id: newUser._id,
                             email: newUser.email,
                         },
+                        title: `Sign Up`,
                         message: `User ${newUser.email} registered`,
                     })
                 }
@@ -84,6 +90,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
+                        title: `Sign Up`,
                         message: `Could not register ${newUser.email}.`,
                     });
             }
