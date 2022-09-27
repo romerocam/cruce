@@ -4,7 +4,7 @@ import Layout from "../../src/components/common/Layout/Layout";
 import React from 'react'
 import { getSession } from "next-auth/react";
 
-export default function MyAppointments () {
+export default function MyAppointments() {
   return (
     <Layout>
       <AdminPanel />
@@ -12,24 +12,24 @@ export default function MyAppointments () {
   )
 }
 
-// export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {
 
-//   // console.log("CONTEXT", context)
+  // console.log("CONTEXT", context)
 
-//   const session = await getSession({ req: context.req })
+  const session = await getSession({ req: context.req })
 
-//   //console.log("SESSION", session)
+  //console.log("SESSION", session)
 
-//   if (session === null || session.user.role !== "admin") {
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       }
-//     }
-//   }
-//   return {
-//     props: { session }
-//   }
+  if (session === null || session.user.role !== "admin") {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+  return {
+    props: { session }
+  }
 
-// }
+}

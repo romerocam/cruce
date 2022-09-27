@@ -57,7 +57,7 @@ const AdminPanel = () => {
               }}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
-            {`${name} ${lastname}`}
+              {`${name} ${lastname}`}
             </Heading>
 
             <Text
@@ -96,7 +96,7 @@ const AdminPanel = () => {
                   router.push("/offices");
                 }}
               >
-                View Branch Office
+                View / Edit Offices
               </Button>
             </Stack>
 
