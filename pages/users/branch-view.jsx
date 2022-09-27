@@ -24,7 +24,7 @@ export default function OperatorBranchView() {
       .then((office) => setOfficeName(office.data.data.name))
       .then(() => {
         axios
-          .get(`http://localhost:3000/api/bookings/office/${officeId}`)
+          .get(`http://localhost:3000/api/bookings/office/${officeId}/2`)
           .then((response) => {
             setBookings(response.data.data.bookings);
             setPagination(response.data.data.pagination)

@@ -5,16 +5,18 @@
 
 import { getSession } from "next-auth/react";
 
-import connectMongo from "../../../../util/dbConnect";
-import Booking from "../../../../models/Booking";
-import User from "../../../../models/User";
-import Office from "../../../../models/Office";
+import connectMongo from "../../../../../util/dbConnect";
+import Booking from "../../../../../models/Booking";
+import User from "../../../../../models/User";
+import Office from "../../../../../models/Office";
 import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
 
 export default async function handler(req, res) {
   const { method } = req;
   const reqBody = req.body;
   const officeId = req.query.officeId;
+  const pages = req.query.pages || 1;
+  const bookingsPerPage = 3;
 
   // verifica que el usuario este logeado:
   //   const session = await getSession({ req: req });
@@ -22,24 +24,31 @@ export default async function handler(req, res) {
 
   await connectMongo();
   console.log("BODY", reqBody);
-  const pages = req.query.pages || 1;
-  console.log('req query',req.query.pages)
-  const productsPerPage = 10;
+  console.log("req query", req.query.pages);
 
   switch (method) {
     case "GET": // busca todos de la officeId pasada por params:
       try {
-        const countPromise = Booking.estimatedDocumentCount({
+        const skip = (pages - 1) * bookingsPerPage;
+        // const countPromise = Booking.estimatedDocumentCount({office:officeId});
+        // console.log('CountPromise',countPromise)
+        const bookingsAmount = await Booking.find({
           office: ObjectId(officeId),
         });
+        console.log("-----BookingsAmount>", bookingsAmount.length);
         const bookings = await Booking.find({ office: ObjectId(officeId) })
           .populate("user office", "lastname name")
-          .skip(pages * productsPerPage)
-          .limit(productsPerPage);
-        const [count, items] = await Promise.all([countPromise, bookings]);
-        console.log("-----Count>", count);
-        console.log("-----Items>", items);
-        const pageCount = Math.ceil(count / productsPerPage);
+          .limit(bookingsPerPage)
+          .skip(skip);
+        // const [count, bookings] = await Promise.all([
+        //   countPromise,
+        //   itemsPromise,
+        // ]);
+        // const amount = bookings.length;
+        // console.log("amount", amount);
+        console.log("-----Bookings>", bookings);
+        const pageCount = Math.ceil(bookingsAmount.length / bookingsPerPage);
+        // console.log("-----pageCount>", pageCount);
 
         if (!bookings)
           res.status(404).json({
@@ -53,10 +62,10 @@ export default async function handler(req, res) {
           data: {
             bookings,
             pagination: {
-              count,
+              // amount,
               pageCount,
             },
-            items,
+            // items,
           },
         });
       } catch (error) {

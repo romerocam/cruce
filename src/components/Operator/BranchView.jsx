@@ -11,7 +11,6 @@ import {
   Td,
   TableContainer,
   Box,
-  Input,
   Heading,
   Stack,
   Checkbox,
@@ -19,12 +18,9 @@ import {
 import { useSession } from "next-auth/react";
 
 export default function BranchTable({ bookings, officeName, pagination }) {
-  const [enteredSearchInput, setEnteredSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
-  const enteredSearchHandler = (event) => {
-    setEnteredSearchInput(event.target.value);
-  };
+
   const { data: session, status } = useSession();
   console.log("bookings--->", bookings);
   const office = session && session.user.office;
@@ -50,6 +46,9 @@ export default function BranchTable({ bookings, officeName, pagination }) {
       return p + 1;
     });
   }
+  if (!bookings) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -57,15 +56,7 @@ export default function BranchTable({ bookings, officeName, pagination }) {
         <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
           {`${officeName}`}
         </Heading>
-        <Box display="flex" justifyContent="center">
-          <Input
-            placeholder="Search by name of the office"
-            width="auto"
-            marginTop="5px"
-            value={enteredSearchInput}
-            onChange={enteredSearchHandler}
-          />
-        </Box>
+
         <Box display="flex" justifyContent="center">
           <TableContainer
             w="60rem"
