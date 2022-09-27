@@ -1,11 +1,16 @@
 /* ***************
  *      RUTA:    *
- *   api/cron/  *
+ *   api/cron/   *
  * ***************/
+
+import { testEmail } from "../../../util/mailer";
 
 const SECRET = process.env.NEXTAUTH_SECRET
 
-
+const user = {
+    name: "Mati",
+    email: "agrossio@hotmail.com"
+}
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -13,6 +18,8 @@ export default async function handler(req, res) {
             const { authorization } = req.headers;
 
             console.log("-----------------FUNCIONA_CRON_JOB---------------")
+
+            testEmail(user)
 
             if (authorization === `Bearer ${SECRET}`) {
                 res.status(200).json({ success: true });
