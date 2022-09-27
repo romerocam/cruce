@@ -26,7 +26,6 @@ export default function BranchTable({}) {
   const [officeName, setOfficeName] = useState({});
   const { data: session, status } = useSession();
   const officeId = session && session.user.office;
-  // console.log("bookings--->", bookings);
   const office = session && session.user.office;
   const role = session && session.user.role;
   const router = useRouter();
@@ -48,7 +47,7 @@ export default function BranchTable({}) {
   useEffect(() => {
     if (bookings) {
       setPageCount(pagination.pageCount);
-      console.log("--pageCount", pageCount);
+      
     }
   }, [bookings]);
   function handlePrevious() {
@@ -60,8 +59,8 @@ export default function BranchTable({}) {
 
   function handleNext() {
     setPage((p) => {
-      if (p === pageCount) return p;
-      return p + 1;
+      if (parseInt(p) === pageCount) return parseInt(p);
+      return parseInt(p) + 1;
     });
   }
   if (!bookings) {
@@ -142,7 +141,7 @@ export default function BranchTable({}) {
           {Array(pageCount)
             .fill(null)
             .map((_, index) => {
-              return <option key={index}>{index + 1}</option>;
+              return <option key={index}>{index+1}</option>;
             })}
         </select>
       </footer>

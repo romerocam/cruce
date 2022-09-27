@@ -16,39 +16,30 @@ export default async function handler(req, res) {
   const reqBody = req.body;
   const officeId = req.query.officeId;
   const pages = req.query.pages || 1;
-  const bookingsPerPage = 3;
+  const bookingsPerPage = 10;
 
   // verifica que el usuario este logeado:
-  //   const session = await getSession({ req: req });
-  //   if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
+  const session = await getSession({ req: req });
+  if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
 
   await connectMongo();
-  console.log("BODY", reqBody);
-  console.log("req query", req.query.pages);
+ 
 
   switch (method) {
     case "GET": // busca todos de la officeId pasada por params:
       try {
         const skip = (pages - 1) * bookingsPerPage;
-        // const countPromise = Booking.estimatedDocumentCount({office:officeId});
-        // console.log('CountPromise',countPromise)
+        if (session.role === "customer")
+          res.status(403).json({ message: "Not Authorized!" });
         const bookingsAmount = await Booking.find({
           office: ObjectId(officeId),
         });
-        console.log("-----BookingsAmount>", bookingsAmount.length);
         const bookings = await Booking.find({ office: ObjectId(officeId) })
           .populate("user office", "lastname name")
           .limit(bookingsPerPage)
           .skip(skip);
-        // const [count, bookings] = await Promise.all([
-        //   countPromise,
-        //   itemsPromise,
-        // ]);
-        // const amount = bookings.length;
-        // console.log("amount", amount);
-        console.log("-----Bookings>", bookings);
+
         const pageCount = Math.ceil(bookingsAmount.length / bookingsPerPage);
-        // console.log("-----pageCount>", pageCount);
 
         if (!bookings)
           res.status(404).json({
@@ -62,10 +53,8 @@ export default async function handler(req, res) {
           data: {
             bookings,
             pagination: {
-              // amount,
               pageCount,
             },
-            // items,
           },
         });
       } catch (error) {
