@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import classes from "../Appointments/EditAppointment.module.css";
-import { Button, Select, Grid, GridItem, Text, Box, Divider } from "@chakra-ui/react";
+import {
+  Button,
+  Select,
+  Grid,
+  GridItem,
+  Text,
+  Box,
+  Divider,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-export default function NewBookingCalendar() {
+export default function EditAppointment({ booking }) {
   const [date, setDate] = useState(new Date());
   const [availableSlotsPerMonth, setAvailableSlotsPerMonth] = useState([]);
   const [availableSlotsPerDay, setAvailableSlotsPerDay] = useState([]);
@@ -19,6 +33,13 @@ export default function NewBookingCalendar() {
   const { data: session, status } = useSession();
   const id = session && session.user.id;
   const router = useRouter();
+
+  //setup para alerta de confirmacion
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => {
+    setIsOpen(false);
+  };
+  const cancelRef = useRef();
 
   // TODO: replace axios request by getServerSideProps
   useEffect(() => {
@@ -51,7 +72,17 @@ export default function NewBookingCalendar() {
       },
       url: "/api/bookings",
     })
+      .then((response) => {
+        console.log("created booking", response.data)
+        axios
+          .delete(`/api/bookings/${booking._id}`)
+          .then((response) => {
+            console.log("deleted booking", response.data);
+          })
+          .catch((error) => console.log(error));
+      })
       .then(() => {
+        alert("Your appointment has been modified successfully!")
         router.push("/users/my-appointments");
       })
       .catch((error) => console.log(error));
@@ -110,8 +141,8 @@ export default function NewBookingCalendar() {
             Edit Your Appointment
           </Text>
         </Box>
-        <Divider  mb="20px"/>
-        <Text fontSize="md" as="b" >
+        <Divider mb="20px" />
+        <Text fontSize="md" as="b">
           Select office and day
         </Text>
         <Select
@@ -182,7 +213,7 @@ export default function NewBookingCalendar() {
       >
         {availableSlotsPerMonth.length ? (
           <div className={classes.itemMainContainer}>
-            <Text fontSize="md" as="b" >
+            <Text fontSize="md" as="b">
               Select slot
             </Text>
             <div className={classes.slotsContainer}>
@@ -203,7 +234,7 @@ export default function NewBookingCalendar() {
             </div>
             {selectedSlot && (
               <div style={{ marginTop: 20 }}>
-                <Text fontSize="xl" as="b" >
+                <Text fontSize="xl" as="b">
                   You selected the following slot: {selectedSlot} please
                   confirm!
                 </Text>
@@ -211,9 +242,44 @@ export default function NewBookingCalendar() {
             )}
             {availableSlotsPerDay.length > 0 && (
               <div style={{ marginTop: 20 }}>
-                <Button colorScheme="teal" onClick={setAppointment}>
+                <Button
+                  colorScheme="teal"
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
                   Confirm
                 </Button>
+                <AlertDialog
+                  isOpen={isOpen}
+                  leastDestructiveRef={cancelRef}
+                  onClose={onClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent>
+                      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Edit Appointment
+                      </AlertDialogHeader>
+
+                      <AlertDialogBody>
+                        Are you sure? You can't undo this action afterwards.
+                      </AlertDialogBody>
+
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          Go Back
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={setAppointment}
+                          ml={3}
+                        >
+                          Confirm Modifications
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
               </div>
             )}
           </div>

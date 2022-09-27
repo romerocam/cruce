@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -13,13 +14,24 @@ import {
   Tr,
   Td,
   TableContainer,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 
 const CancelAppointment = ({ booking, offices }) => {
   const router = useRouter();
 
+  const  [isOpen, setIsOpen] = useState(false)
+  const onClose = ()=> {setIsOpen(false)}
+  const cancelRef = useRef()
+
   const cancelAppointment = (e) => {
     e.preventDefault();
+    onClose()
     console.log("estoy cancelando");
     axios
       .delete(`/api/bookings/${booking._id}`)
@@ -73,9 +85,36 @@ const CancelAppointment = ({ booking, offices }) => {
             </Tbody>
           </Table>
         </TableContainer>
-        <Button variant="solid" colorScheme="red" onClick={cancelAppointment}>
+        <Button variant="solid" colorScheme="red" onClick={()=>{setIsOpen(true)}}>
           Cancel Appointment
         </Button>
+
+        <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Cancel Appointment
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Go Back
+              </Button>
+              <Button colorScheme='red' onClick={cancelAppointment} ml={3}>
+                Cancel Appointment
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
       </Stack>
     </Container>
   );

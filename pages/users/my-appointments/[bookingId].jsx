@@ -45,7 +45,7 @@ const SingleAppointmentPage = () => {
             alignItems="center"
           >
             <CancelAppointment booking={booking} offices={offices} />
-            <EditAppointment />
+            <EditAppointment booking={booking} />
           </Stack>
         </Box>
       </Container>
