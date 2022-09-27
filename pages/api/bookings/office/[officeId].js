@@ -12,41 +12,64 @@ import Office from "../../../../models/Office";
 import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
 
 export default async function handler(req, res) {
-    const { method } = req;
-    const reqBody = req.body;
-    const officeId = req.query.officeId;
+  const { method } = req;
+  const reqBody = req.body;
+  const officeId = req.query.officeId;
 
-    // verifica que el usuario este logeado:
-    const session = await getSession({ req: req });
-    if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
+  // verifica que el usuario este logeado:
+  //   const session = await getSession({ req: req });
+  //   if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
 
-    await connectMongo();
-    console.log("BODY", reqBody);
+  await connectMongo();
+  console.log("BODY", reqBody);
+  const pages = req.query.pages || 1;
+  console.log('req query',req.query.pages)
+  const productsPerPage = 10;
 
-    switch (method) {
-        case "GET": // busca todos de la officeId pasada por params:
-            try {
-                const bookings = await Booking.find({ office: ObjectId(officeId) }).populate('user', 'lastname');
+  switch (method) {
+    case "GET": // busca todos de la officeId pasada por params:
+      try {
+        const countPromise = Booking.estimatedDocumentCount({
+          office: ObjectId(officeId),
+        });
+        const bookings = await Booking.find({ office: ObjectId(officeId) })
+          .populate("user office", "lastname name")
+          .skip(pages * productsPerPage)
+          .limit(productsPerPage);
+        const [count, items] = await Promise.all([countPromise, bookings]);
+        console.log("-----Count>", count);
+        console.log("-----Items>", items);
+        const pageCount = Math.ceil(count / productsPerPage);
 
-                if (!bookings)
-                    res.status(404).json({
-                        success: false,
-                        data: error,
-                        message: `There are no bookings on the Database yet!`,
-                    });
+        if (!bookings)
+          res.status(404).json({
+            success: false,
+            data: error,
+            message: `There are no bookings on the Database yet!`,
+          });
 
-                res.status(200).json({ success: true, data: bookings });
-            } catch (error) {
-                res.status(400).json({
-                    success: false,
-                    data: error,
-                    message: `Bookings not found`,
-                });
-            }
-            break;
+        res.status(200).json({
+          success: true,
+          data: {
+            bookings,
+            pagination: {
+              count,
+              pageCount,
+            },
+            items,
+          },
+        });
+      } catch (error) {
+        res.status(400).json({
+          success: false,
+          data: error,
+          message: `Bookings not found`,
+        });
+      }
+      break;
 
-        // EL POST Y DELETE HABRIA QUE BORRARLO?
-        /*
+    // EL POST Y DELETE HABRIA QUE BORRARLO?
+    /*
                 case "POST": // crear Booking:
                     try {
                         //const newId = await Booking.estimatedDocumentCount() + 1;
@@ -104,12 +127,12 @@ export default async function handler(req, res) {
                     break;
                     */
 
-        default:
-            res.status(400).json({
-                success: false,
-                data: error,
-                message: `Function not working`,
-            });
-            break;
-    }
+    default:
+      res.status(400).json({
+        success: false,
+        data: error,
+        message: `Function not working`,
+      });
+      break;
+  }
 }
