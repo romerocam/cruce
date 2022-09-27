@@ -16,17 +16,35 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
-export default function BranchTable({ bookings, officeName, pagination }) {
+export default function BranchTable({}) {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
-
+  const [bookings, setBookings] = useState([]);
+  const [pagination, setPagination] = useState([]);
+  const [officeName, setOfficeName] = useState({});
   const { data: session, status } = useSession();
-  console.log("bookings--->", bookings);
+  const officeId = session && session.user.office;
+  // console.log("bookings--->", bookings);
   const office = session && session.user.office;
   const role = session && session.user.role;
-
   const router = useRouter();
+
+  useEffect(() => {
+    axios
+      .get(`/api/offices/${officeId}`)
+      .then((office) => setOfficeName(office.data.data.name))
+      .then(() => {
+        axios
+          .get(`http://localhost:3000/api/bookings/office/${officeId}/${page}`)
+          .then((response) => {
+            setBookings(response.data.data.bookings);
+            setPagination(response.data.data.pagination);
+          });
+      });
+  }, [page]);
+
   useEffect(() => {
     if (bookings) {
       setPageCount(pagination.pageCount);
