@@ -1,23 +1,23 @@
 import ManageUsers from "../../src/components/Admin/ManageUsers";
 //import {getAllUsers} from "../api/users/index"
-import axios from "axios";
+// import axios from "axios";
 import Layout from "../../src/components/common/Layout/Layout";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 
 function ManageUsersPage() {
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/users")
-      .then((response) => setUsers(response.data.data))
-      .catch((error) => error.message);
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3000/api/users")
+  //     .then((response) => setUsers(response.data.data))
+  //     .catch((error) => error.message);
+  // }, []);
 
   return (
     <Layout>
-      <ManageUsers users={users} />
+      <ManageUsers /* users={users}  *//>
     </Layout>
   );
 }
