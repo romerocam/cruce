@@ -49,8 +49,9 @@ export default function ManageUsers() {
   }, [users]);
   function handlePrevious() {
     setPage((p) => {
-      if (p === 1) return p;
-      return p - 1;
+      
+      if (parseInt(p) === 1) return parseInt(p);
+      return parseInt(p) - 1;
     });
   }
 

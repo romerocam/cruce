@@ -3,11 +3,20 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import classes from "./Calendar.module.css";
-import { Button, Select, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Select,
+  Grid,
+  GridItem,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import ModalComponent from "../common/ModalComponent/ModalComponent";
 
 export default function NewBookingCalendar() {
+  //States
   const [date, setDate] = useState(new Date());
   const [availableSlotsPerMonth, setAvailableSlotsPerMonth] = useState([]);
   const [availableSlotsPerDay, setAvailableSlotsPerDay] = useState([]);
@@ -16,7 +25,12 @@ export default function NewBookingCalendar() {
   const [idOffice, setIdOffice] = useState(null);
   const [listOfOffices, setListOfOffices] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
+  //Constants
   const { data: session, status } = useSession();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const id = session && session.user.id;
   const router = useRouter();
 
@@ -54,7 +68,12 @@ export default function NewBookingCalendar() {
       .then(() => {
         router.push("/users/my-appointments");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setTitle(error.response.data.title);
+        setMessage(error.response.data.message);
+        onOpen();
+        console.log(error);
+      });
   };
 
   const onChange = (date) => {
@@ -93,7 +112,13 @@ export default function NewBookingCalendar() {
   };
 
   return (
-    <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(2, 1fr)">
+    <>
+    <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
+      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(2, 1fr)">
       <GridItem
         colSpan={{ base: "2", md: "1", lg: "1" }}
         rowSpan="1"
@@ -211,6 +236,7 @@ export default function NewBookingCalendar() {
         )}
       </GridItem>
     </Grid>
-
+    </>
+    
   );
 }
