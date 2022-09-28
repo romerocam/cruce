@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
   dni: {
     type: Number,
     required: true,
+    // unique: true,
   },
   address: {
     type: String,
