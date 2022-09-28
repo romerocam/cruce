@@ -60,14 +60,12 @@ const ProfileUser = () => {
     });
   }, []);
 
-  const onSubmit = (formData) => {
-    console.log(">>>>>>>>>>esta es la form data<<<<<<<<<<<<<", formData);
+  const onSubmit = (formData) => {    
     formData.name = formData.name.replace(/\s+/g, " ");
     formData.lastname = formData.lastname.replace(/\s+/g, " ");
     axios
       .put(`/api/users/${id}`, formData)
-      .then((response) => {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", response.data);
+      .then((response) => {      
         setTitle(response.data.title);
         setMessage(response.data.message);
         onOpen();
