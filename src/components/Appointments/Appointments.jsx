@@ -32,9 +32,8 @@ const Appointments = () => {
   const [userBooking, setUserBooking] = useState({});
 
   useEffect(() => {
-    axios.get(`/api/bookings/user/${id}`).then((bookings) => {
-      let bookingsSorted = bookings?.data?.data.sort((a,b) => a.date < b.date)      
-      setUserBooking(bookingsSorted);
+    axios.get(`/api/bookings/user/${id}`).then((bookings) => {     
+      setUserBooking(bookings);
     });
   }, []);
 
@@ -67,7 +66,7 @@ const Appointments = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {userBooking.map((bookings) => {
+                {userBooking?.data?.data.map((bookings) => {
                   return (
                     <Tr key={bookings._id}>
                       <Td style={{ borderBottomColor: "#E0E0E0" }}>
