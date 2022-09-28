@@ -8,34 +8,58 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Box,
   Center,
   Icon,
   Button,
-  useColorModeValue,
-  Flex,
-  background,
+  Stack,
+  Container,
 } from "@chakra-ui/react";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { data: session, status } = useSession();
   const id = session?.user.id;
-
-  const [userBooking, setUserBooking] = useState({});
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [pagination, setPagination] = useState([]);
+  const [userBooking, setUserBooking] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/bookings/user/${id}`).then((bookings) => {
-      setUserBooking(bookings);
+    axios.get(`/api/bookings/user/${id}/${page}`).then((response) => {
+      setUserBooking(response.data.data.foundBookingsUser);
+      setPagination(response.data.data.pagination);
     });
-  }, []);
+  }, [page]);
+  console.log("----pagination", pagination);
+  console.log("----userBooking", userBooking);
+
+  useEffect(() => {
+    if (userBooking) {
+      setPageCount(pagination.pageCount);
+    }
+  }, [userBooking]);
+  function handlePrevious() {
+    setPage((p) => {
+      if (parseInt(p) === 1) return parseInt(p);
+      return parseInt(p) - 1;
+    });
+  }
+
+  function handleNext() {
+    setPage((p) => {
+      if (parseInt(p) === pageCount) return parseInt(p);
+      return parseInt(p) + 1;
+    });
+  }
+  if (!userBooking) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -66,7 +90,7 @@ const Appointments = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {userBooking?.data?.data.map((bookings) => {
+                {userBooking?.map((bookings) => {
                   return (
                     <Tr key={bookings._id}>
                       <Td style={{ borderBottomColor: "#E0E0E0" }}>
@@ -89,7 +113,11 @@ const Appointments = () => {
                           marginLeft={6}
                           bg="brand.700"
                           _dark={{ bg: "brand.600" }}
-                          onClick={()=>{router.push(`/users/my-appointments/${bookings._id}`)}}
+                          onClick={() => {
+                            router.push(
+                              `/users/my-appointments/${bookings._id}`
+                            );
+                          }}
                         >
                           <Icon as={HiArrowNarrowRight} color="white" />
                         </Button>
@@ -102,6 +130,39 @@ const Appointments = () => {
           </TableContainer>
         </Box>
       </Center>
+      <Container maxW="2xl" centerContent>
+        <Stack direction="row column" spacing={4} align="center">
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === 1}
+            onClick={handlePrevious}
+          >
+            Previous
+          </Button>
+          {}
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === pageCount}
+            onClick={handleNext}
+          >
+            Next ---
+          </Button>
+          <select
+            value={page}
+            onChange={(event) => {
+              setPage(event.target.value);
+            }}
+          >
+            {Array(pageCount)
+              .fill(null)
+              .map((_, index) => {
+                return <option key={index}>{index + 1}</option>;
+              })}
+          </select>
+        </Stack>
+      </Container>
     </>
   );
 };
