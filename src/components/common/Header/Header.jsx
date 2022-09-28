@@ -83,7 +83,6 @@ const Header = () => {
                 router.push("/");
               }}
               variant={Link}
-              padd={"true"}
             >
               <div style={{ width: "40px", height: "40px", padding: "0px" }} >
                 <Image
