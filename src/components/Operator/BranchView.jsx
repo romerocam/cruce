@@ -13,6 +13,7 @@ import {
   Box,
   Heading,
   Stack,
+  Select,
   Checkbox,
   Button,
   Container,
@@ -64,6 +65,17 @@ export default function BranchTable({}) {
       return parseInt(p) + 1;
     });
   }
+ 
+  const changeBookingStatus = (e,bookingId)=>{
+    e.preventDefault()
+    const attendance = e.target.value
+    axios.put(`/api/bookings/${bookingId}`, {attendance})
+    .then(response=>response.data)
+    .catch(error=>console.log(error))
+  }
+
+  
+
   if (!bookings) {
     return <p>Loading...</p>;
   }
@@ -102,7 +114,16 @@ export default function BranchTable({}) {
                     <Td>
                       <Box>
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                          <Checkbox size="md" colorScheme="red" defaultChecked>
+                          <Select 
+                          defaultValue={booking.attendance}
+                          onChange={(e)=>changeBookingStatus(e,booking._id)}
+                          >
+                            <option>pending</option>
+                            <option>present</option>
+                            <option>absent</option>
+                           
+                          </Select>
+                          {/* <Checkbox size="md" colorScheme="red" defaultChecked>
                             {booking.attendance}
                           </Checkbox>
                           <Checkbox size="md" colorScheme="green">
@@ -110,7 +131,7 @@ export default function BranchTable({}) {
                           </Checkbox>
                           <Checkbox size="md" colorScheme="orange">
                             Attended
-                          </Checkbox>
+                          </Checkbox> */}
                         </Stack>
                       </Box>
                     </Td>
