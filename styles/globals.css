@@ -29,7 +29,7 @@ a {
     background: white;
   }
 }
-footer {
+/* footer {
   position: fixed;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.14);
@@ -41,4 +41,4 @@ footer {
 
 footer button {
   padding: 1rem;
-}
+} */
