@@ -97,7 +97,7 @@ export default async function handler(req, res) {
           success: false,
           data: error,
           title: `Sign Up`,
-          message: `Could not register ${newUser.email}.`,
+          message: `Could not register ${email}.`,
         });
       }
       break;
