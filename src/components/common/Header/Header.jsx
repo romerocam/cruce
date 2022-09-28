@@ -24,7 +24,7 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Icon from "../../../assets/Icon/logo_iso-black.svg";
+import Icon from "../../../assets/Icon/logo_iso-white.svg";
 import { icons } from "react-icons";
 
 const Header = () => {
@@ -83,15 +83,15 @@ const Header = () => {
                 router.push("/");
               }}
               variant={Link}
-              padd
+              padd={"true"}
             >
-              <div style={{width:"40px",height:"40px", padding:"0px"}} >
+              <div style={{ width: "40px", height: "40px", padding: "0px" }} >
                 <Image
                   src={Icon}
                   alt={"logo"}
                   width={Icon.width}
                   height={Icon.height}
-                  hovered={"red"}                                    
+                  hovered={"red"}
                 />
               </div>
             </Button>
