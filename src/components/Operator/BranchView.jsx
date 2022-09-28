@@ -13,6 +13,7 @@ import {
   Box,
   Heading,
   Stack,
+  Select,
   Checkbox,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
@@ -63,6 +64,19 @@ export default function BranchTable({}) {
       return parseInt(p) + 1;
     });
   }
+ 
+  const changeBookingStatus = (e,bookingId)=>{
+    e.preventDefault()
+    console.log("e.target.value es:", e.target.value)
+    console.log("booking id: ", bookingId)
+    const attendance = e.target.value
+    axios.put(`/api/bookings/${bookingId}`, {attendance})
+    .then(response=>{console.log("response de modif. de attendance", response.data)})
+    .catch(error=>console.log(error))
+  }
+
+  
+
   if (!bookings) {
     return <p>Loading...</p>;
   }
@@ -101,7 +115,16 @@ export default function BranchTable({}) {
                     <Td>
                       <Box>
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                          <Checkbox size="md" colorScheme="red" defaultChecked>
+                          <Select 
+                          defaultValue={booking.attendance}
+                          onChange={(e)=>changeBookingStatus(e,booking._id)}
+                          >
+                            <option>pending</option>
+                            <option>present</option>
+                            <option>absent</option>
+                           
+                          </Select>
+                          {/* <Checkbox size="md" colorScheme="red" defaultChecked>
                             {booking.attendance}
                           </Checkbox>
                           <Checkbox size="md" colorScheme="green">
@@ -109,7 +132,7 @@ export default function BranchTable({}) {
                           </Checkbox>
                           <Checkbox size="md" colorScheme="orange">
                             Attended
-                          </Checkbox>
+                          </Checkbox> */}
                         </Stack>
                       </Box>
                     </Td>
