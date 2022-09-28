@@ -67,11 +67,9 @@ export default function BranchTable({}) {
  
   const changeBookingStatus = (e,bookingId)=>{
     e.preventDefault()
-    console.log("e.target.value es:", e.target.value)
-    console.log("booking id: ", bookingId)
     const attendance = e.target.value
     axios.put(`/api/bookings/${bookingId}`, {attendance})
-    .then(response=>{console.log("response de modif. de attendance", response.data)})
+    .then(response=>response.data)
     .catch(error=>console.log(error))
   }
 
