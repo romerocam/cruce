@@ -14,6 +14,8 @@ import {
   Heading,
   Stack,
   Checkbox,
+  Button,
+  Container,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -47,7 +49,6 @@ export default function BranchTable({}) {
   useEffect(() => {
     if (bookings) {
       setPageCount(pagination.pageCount);
-      
     }
   }, [bookings]);
   function handlePrevious() {
@@ -120,31 +121,39 @@ export default function BranchTable({}) {
           </TableContainer>
         </Box>
       </Box>
-      <footer>
-        Page: {page}
-        <br />
-        Page count: {pageCount}
-        <br />
-        <button disabled={page === 1} onClick={handlePrevious}>
-          Previous
-        </button>
-        <br></br>
-        <button disabled={page === pageCount} onClick={handleNext}>
-          Next
-        </button>
-        <select
-          value={page}
-          onChange={(event) => {
-            setPage(event.target.value);
-          }}
-        >
-          {Array(pageCount)
-            .fill(null)
-            .map((_, index) => {
-              return <option key={index}>{index+1}</option>;
-            })}
-        </select>
-      </footer>
+      <Container maxW="2xl" centerContent>
+        <Stack direction="row column" spacing={4} align="center">
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === 1}
+            onClick={handlePrevious}
+          >
+            Previous
+          </Button>
+          {}
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === pageCount}
+            onClick={handleNext}
+          >
+            Next --
+          </Button>
+          <select
+            value={page}
+            onChange={(event) => {
+              setPage(event.target.value);
+            }}
+          >
+            {Array(pageCount)
+              .fill(null)
+              .map((_, index) => {
+                return <option key={index}>{index + 1}</option>;
+              })}
+          </select>
+        </Stack>
+      </Container>
     </>
   );
 }
