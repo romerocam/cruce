@@ -13,6 +13,9 @@ import {
   Box,
   Input,
   Heading,
+  Stack,
+  Button,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 export default function OfficesTable(props) {
@@ -21,7 +24,6 @@ export default function OfficesTable(props) {
   const enteredSearchHandler = (event) => {
     setEnteredSearchInput(event.target.value);
   };
-
 
   const router = useRouter();
 
@@ -60,24 +62,20 @@ export default function OfficesTable(props) {
             <Tbody>
               {props.offices
                 .filter((office) =>
-                  office.name
-                    .toLowerCase()
-                    .includes(enteredSearchInput.toLowerCase())
+                  office.name.toLowerCase().includes(enteredSearchInput.toLowerCase()) || office.capacityPerSlot.toString().includes(enteredSearchInput.toLowerCase()) || office.timeRange.from.toString().includes(enteredSearchInput.toLowerCase()) || office.timeRange.to.toString().includes(enteredSearchInput.toLowerCase())
                 )
                 .map((office) => (
                   <Tr key={office.name}>
                     <Td>{office.name}</Td>
                     <Td>{office.capacityPerSlot}</Td>
-                    <Td>
-                      {office.timeRange.from}-{office.timeRange.to}
-                    </Td>
+                    <Td>{office.timeRange.from}-{office.timeRange.to}</Td>
                     <Td>
                       <Box>
-                        <button onClick={() => router.push(`/offices/${office._id}-view`)}>
+                        <button onClick={() => router.push(`/offices/view/${office._id}`)}>
                           <ViewIcon mr="2" w={4} h={4} color="Green" />
                         </button>
                         <button>
-                          <EditIcon onClick={() => router.push(`/offices/${office._id}-edit`)} ml="2" w={4} h={4} color="darkOrange" />
+                          <EditIcon onClick={() => router.push(`/offices/edit/${office._id}`)} ml="2" w={4} h={4} color="darkOrange" />
                         </button>
                       </Box>
                     </Td>
@@ -87,6 +85,19 @@ export default function OfficesTable(props) {
           </Table>
         </TableContainer>
       </Box>
+      <Stack alignItems={"center"} paddingTop={5} paddingBottom={5}>
+        <Button
+          onClick={() => router.push('/users/adminpanel')}
+          bg={useColorModeValue("brand.700", "brand.600")}
+          color={"white"}
+          w="md"
+          _hover={{
+            bg: useColorModeValue("brand.600", "brand.700"),
+          }}
+        >
+          Back
+        </Button>
+      </Stack>
     </Box>
-  );
+  )
 }

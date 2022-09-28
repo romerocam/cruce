@@ -95,7 +95,7 @@ export default async function handler(req, res) {
                 /* 
                  * User.findOneAndUpdate(filter, updateInfo, option)
                  * option = { new: true } hace que retorne el documento actualizado, por defecto
-                 * trae el anterio al update
+                 * trae el anterior al update
                  */
 
                 const updatedUser = await User.findOneAndUpdate(
@@ -119,7 +119,6 @@ export default async function handler(req, res) {
                 res.status(200).json(
                     {
                         success: true,
-                        title: "Actualización",
                         data: {
                             name: updatedUser.name,
                             lastname: updatedUser.lastname,
