@@ -37,7 +37,7 @@ const HomePage = () => {
                 fontWeight="bold"
                 fontSize={{ base: "24px", md: "40px", lg: "56px" }}
               >
-                Appointment Booking
+                e-Cruce Bookings
               </Text>
               <Text
                 color="white"

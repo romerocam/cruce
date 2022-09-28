@@ -15,7 +15,7 @@ import {
   Stack,
   Checkbox,
   Button,
-  useColorModeValue,
+  Container,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -121,7 +121,7 @@ export default function BranchTable({}) {
           </TableContainer>
         </Box>
       </Box>
-      <footer>
+      <Container maxW="2xl" centerContent>
         <Stack direction="row column" spacing={4} align="center">
           <Button
             colorScheme="teal"
@@ -153,7 +153,7 @@ export default function BranchTable({}) {
               })}
           </select>
         </Stack>
-      </footer>
+      </Container>
     </>
   );
 }
