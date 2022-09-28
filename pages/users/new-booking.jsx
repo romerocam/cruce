@@ -3,10 +3,17 @@ import Calendar from "../../src/components/Calendar/Calendar";
 import Countdown from "react-countdown";
 import { Box } from "@chakra-ui/react";
 
-function refreshPage() {
-  window.location.reload(false);
-}
-
+const renderer = ({ minutes, seconds, completed }) => {
+  if (completed) {
+    window.location.reload(false);
+  } else {
+    return (
+      <span>
+        {minutes}:{seconds}
+      </span>
+    );
+  }
+};
 
 function NewBooking() {
   return (
@@ -20,13 +27,10 @@ function NewBooking() {
         color="white"
         fontWeight="700"
         borderRadius="10"
-
       >
         <Countdown
-          date={Date.now() + 1000000}
-          onComplete={() => {
-            refreshPage();
-          }}
+          date={Date.now() + 60000}
+          renderer={renderer}
         ></Countdown>
       </Box>
       <Calendar />
