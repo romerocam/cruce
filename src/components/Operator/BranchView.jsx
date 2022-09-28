@@ -13,7 +13,10 @@ import {
   Box,
   Heading,
   Stack,
+  Select,
   Checkbox,
+  Button,
+  Container,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -47,13 +50,12 @@ export default function BranchTable({}) {
   useEffect(() => {
     if (bookings) {
       setPageCount(pagination.pageCount);
-      
     }
   }, [bookings]);
   function handlePrevious() {
     setPage((p) => {
-      if (p === 1) return p;
-      return p - 1;
+      if (parseInt(p) === 1) return parseInt(p);
+      return parseInt(p) - 1;
     });
   }
 
@@ -63,6 +65,17 @@ export default function BranchTable({}) {
       return parseInt(p) + 1;
     });
   }
+ 
+  const changeBookingStatus = (e,bookingId)=>{
+    e.preventDefault()
+    const attendance = e.target.value
+    axios.put(`/api/bookings/${bookingId}`, {attendance})
+    .then(response=>response.data)
+    .catch(error=>console.log(error))
+  }
+
+  
+
   if (!bookings) {
     return <p>Loading...</p>;
   }
@@ -101,7 +114,16 @@ export default function BranchTable({}) {
                     <Td>
                       <Box>
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                          <Checkbox size="md" colorScheme="red" defaultChecked>
+                          <Select 
+                          defaultValue={booking.attendance}
+                          onChange={(e)=>changeBookingStatus(e,booking._id)}
+                          >
+                            <option>pending</option>
+                            <option>present</option>
+                            <option>absent</option>
+                           
+                          </Select>
+                          {/* <Checkbox size="md" colorScheme="red" defaultChecked>
                             {booking.attendance}
                           </Checkbox>
                           <Checkbox size="md" colorScheme="green">
@@ -109,7 +131,7 @@ export default function BranchTable({}) {
                           </Checkbox>
                           <Checkbox size="md" colorScheme="orange">
                             Attended
-                          </Checkbox>
+                          </Checkbox> */}
                         </Stack>
                       </Box>
                     </Td>
@@ -120,31 +142,39 @@ export default function BranchTable({}) {
           </TableContainer>
         </Box>
       </Box>
-      <footer>
-        Page: {page}
-        <br />
-        Page count: {pageCount}
-        <br />
-        <button disabled={page === 1} onClick={handlePrevious}>
-          Previous
-        </button>
-        <br></br>
-        <button disabled={page === pageCount} onClick={handleNext}>
-          Next
-        </button>
-        <select
-          value={page}
-          onChange={(event) => {
-            setPage(event.target.value);
-          }}
-        >
-          {Array(pageCount)
-            .fill(null)
-            .map((_, index) => {
-              return <option key={index}>{index+1}</option>;
-            })}
-        </select>
-      </footer>
+      <Container maxW="2xl" centerContent>
+        <Stack direction="row column" spacing={4} align="center">
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === 1}
+            onClick={handlePrevious}
+          >
+            Previous
+          </Button>
+          {}
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === pageCount}
+            onClick={handleNext}
+          >
+            Next --
+          </Button>
+          <select
+            value={page}
+            onChange={(event) => {
+              setPage(event.target.value);
+            }}
+          >
+            {Array(pageCount)
+              .fill(null)
+              .map((_, index) => {
+                return <option key={index}>{index + 1}</option>;
+              })}
+          </select>
+        </Stack>
+      </Container>
     </>
   );
 }

@@ -27,7 +27,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({ mode: "onBlur" });
 
   const router = useRouter();
@@ -310,6 +310,7 @@ const Register = () => {
                       _hover={{
                         bg: useColorModeValue("brand.600", "brand.700"),
                       }}
+                      disabled={!isValid}
                     >
                       Submit
                     </Button>
