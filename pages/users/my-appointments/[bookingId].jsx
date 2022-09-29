@@ -5,6 +5,7 @@ import CancelAppointment from "../../../src/components/Appointments/CancelAppoin
 import Layout from "../../../src/components/common/Layout/Layout";
 import EditAppointment from "../../../src/components/Appointments/EditAppointment";
 import { Stack, Box, Container } from "@chakra-ui/react";
+import { getSession } from "next-auth/react";
 
 const SingleAppointmentPage = () => {
   const router = useRouter();
@@ -54,3 +55,20 @@ const SingleAppointmentPage = () => {
 };
 
 export default SingleAppointmentPage;
+
+// Para proteger la ruta de my-appointments desde el servidor:
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/users/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+}

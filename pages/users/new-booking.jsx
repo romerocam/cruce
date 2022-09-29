@@ -2,6 +2,7 @@ import Layout from "../../src/components/common/Layout/Layout";
 import Calendar from "../../src/components/Calendar/Calendar";
 import Countdown from "react-countdown";
 import { Box } from "@chakra-ui/react";
+import { getSession } from "next-auth/react";
 
 const renderer = ({ minutes, seconds, completed }) => {
   if (completed) {
@@ -39,3 +40,25 @@ function NewBooking() {
 }
 
 export default NewBooking;
+
+export async function getServerSideProps(context) {
+
+  // console.log("CONTEXT", context)
+
+  const session = await getSession({ req: context.req })
+
+  //console.log("SESSION", session)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/users/profile-user',
+        permanent: false,
+      }
+    }
+  }
+  return {
+    props: { session }
+  }
+
+}
