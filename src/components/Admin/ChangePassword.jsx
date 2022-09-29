@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from "react";
 
 import {
@@ -16,7 +15,6 @@ import {
   Container,
   useColorModeValue,
   FormErrorMessage,
-
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
@@ -26,7 +24,6 @@ import { useSession } from "next-auth/react";
 import Router from "next/router";
 
 const ChangePassword = () => {
-
   const [credentials, setCredentials] = useState({
     oldPassword: "",
     newPassword: "",
@@ -47,35 +44,21 @@ const ChangePassword = () => {
   const name = session && session.user.name;
   const email = session && session.user.email;
 
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
-  // const handleChange = (e) => {
-
-  //   console.log("VALUES", e.target.value)
-
-  //   setCredentials({
-  //     ...credentials,
-  //     [e.target.id]: e.target.value,
-  //   });
-  // };
-
   const onSubmit = async (formData) => {
-
-    // console.log("CREDENTIALS", formData)
-
-    const response = await axios.post('/api/users/change-password',
-      {
-        oldPassword: formData.oldPassword,
-        newPassword: formData.newPassword,
-      })
-    Router.push('/users/profile-user')
-  }
-
-
+    const response = await axios.post("/api/users/change-password", {
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+    });
+    Router.push("/users/profile-user");
+  };
 
   return (
     <>
@@ -97,7 +80,7 @@ const ChangePassword = () => {
               }
               alt={"Avatar Alt"}
               mb={4}
-              pos={"relative"}             
+              pos={"relative"}
             />
             <Heading fontSize={"xl"} fontFamily={"body"} color={"#000505"}>
               {name}
@@ -114,7 +97,6 @@ const ChangePassword = () => {
             </Text>
 
             <Stack spacing={3}>
-
               <Heading
                 fontSize={"xl"}
                 color={"#000505"}
@@ -125,14 +107,16 @@ const ChangePassword = () => {
                 Change Password
               </Heading>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl marginY={"2vh"} textColor={"black"} isInvalid={errors.newPassword || errors.confirmPassword}>
+                <FormControl
+                  marginY={"2vh"}
+                  textColor={"black"}
+                  isInvalid={errors.newPassword || errors.confirmPassword}
+                >
                   <InputGroup marginY={"2vh"} size="md">
-                    <Input id="oldPassword"
+                    <Input
+                      id="oldPassword"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Current Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -148,18 +132,20 @@ const ChangePassword = () => {
                       })}
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClickShowOld}>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClickShowOld}
+                      >
                         {showOld ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
                   </InputGroup>
                   <InputGroup marginY={"1vh"} size="md">
-                    <Input id="newPassword"
+                    <Input
+                      id="newPassword"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="New Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -175,7 +161,11 @@ const ChangePassword = () => {
                       })}
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClickShowNew}>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClickShowNew}
+                      >
                         {showNew ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
@@ -184,12 +174,10 @@ const ChangePassword = () => {
                     {errors.newPassword && errors.newPassword.message}
                   </FormErrorMessage>
                   <InputGroup marginY={"1vh"} size="md">
-                    <Input id="confirmPassword"
+                    <Input
+                      id="confirmPassword"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Confirm New Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -203,7 +191,11 @@ const ChangePassword = () => {
                       })}
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClickShowConfirm}>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClickShowConfirm}
+                      >
                         {showConfirm ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
@@ -211,14 +203,18 @@ const ChangePassword = () => {
                   <FormErrorMessage>
                     {errors.confirmPassword && errors.confirmPassword.message}
                   </FormErrorMessage>
-                  <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
+                  <Stack
+                    spacing={6}
+                    direction={["column", "row"]}
+                    paddingTop={5}
+                  >
                     <Button
                       type="submit"
-                      bg={useColorModeValue("brand.700", "brand.600")}
+                      bg={colorBg}
                       color={"white"}
                       w="full"
                       _hover={{
-                        bg: useColorModeValue("brand.600", "brand.700"),
+                        bg: colorBg,
                       }}
                     >
                       Submit
@@ -226,7 +222,6 @@ const ChangePassword = () => {
                   </Stack>
                 </FormControl>
               </form>
-
             </Stack>
           </Box>
         </Center>
