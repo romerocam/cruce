@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { useEffect } from "react";
 //react
 import { useForm } from "react-hook-form";
@@ -43,6 +42,8 @@ const ProfileUser = () => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
 
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const {
     register,
     handleSubmit,
@@ -60,12 +61,12 @@ const ProfileUser = () => {
     });
   }, []);
 
-  const onSubmit = (formData) => {    
+  const onSubmit = (formData) => {
     formData.name = formData.name.replace(/\s+/g, " ");
     formData.lastname = formData.lastname.replace(/\s+/g, " ");
     axios
       .put(`/api/users/${id}`, formData)
-      .then((response) => {      
+      .then((response) => {
         setTitle(response.data.title);
         setMessage(response.data.message);
         onOpen();
@@ -125,16 +126,12 @@ const ProfileUser = () => {
                 marginY={"2vh"}
               >
                 <InputGroup marginY={"1vh"}>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiUser} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="name"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -157,16 +154,12 @@ const ProfileUser = () => {
                 </FormErrorMessage>
 
                 <InputGroup marginY={"1vh"}>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiUser} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="lastname"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -189,17 +182,13 @@ const ProfileUser = () => {
                 </FormErrorMessage>
 
                 <InputGroup marginY={"1vh"}>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiUser} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     type="Number"
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="DNI"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -225,16 +214,13 @@ const ProfileUser = () => {
                 </FormErrorMessage>
 
                 <InputGroup marginY={"1vh"}>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiMail} color={"gray.400"}></Icon>
+                  </InputLeftElement>
+
                   <Input
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="email address"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
@@ -256,11 +242,11 @@ const ProfileUser = () => {
                     id="changePassword"
                     onClick={() => router.push("/users/change-password")}
                     // type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
+                    bg={colorBg}
                     color={"white"}
                     w="full"
                     _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
+                      bg: colorBg,
                     }}
                   >
                     Change Password
@@ -270,11 +256,11 @@ const ProfileUser = () => {
                   <Button
                     id="save"
                     type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
+                    bg={colorBg}
                     color={"white"}
                     w="full"
                     _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
+                      bg: colorBg,
                     }}
                   >
                     Save

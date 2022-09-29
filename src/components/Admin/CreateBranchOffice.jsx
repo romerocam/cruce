@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React from "react";
 import axios from "axios";
 //react
@@ -30,6 +29,8 @@ import {
 } from "react-icons/hi";
 
 const CreateBranchOffice = () => {
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const {
     register,
     handleSubmit,
@@ -50,7 +51,7 @@ const CreateBranchOffice = () => {
   return (
     <Container maxW={"7xl"} position={"relative"}>
       <Box
-        bg={useColorModeValue("brand.700", "brand.600")}
+        bg={colorBg}
         mt="20px"
         fontSize="2em"
         textAlign="center"
@@ -85,19 +86,15 @@ const CreateBranchOffice = () => {
                 marginY={"2vh"}
               >
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiHome} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiHome} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Name"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                    
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="name"
                     {...register("name", {
@@ -116,19 +113,15 @@ const CreateBranchOffice = () => {
                 </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiMail} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Address"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                  
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="address"
                     {...register("address", {
@@ -147,20 +140,16 @@ const CreateBranchOffice = () => {
                 </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiPhone} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiPhone} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     type={"number"}
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Phone Number"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                    
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="phone"
                     {...register("phone", {
@@ -171,28 +160,24 @@ const CreateBranchOffice = () => {
 
                 <FormErrorMessage>
                   {errors.phone && errors.phone.message}
-                </FormErrorMessage>                
+                </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiClock} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiClock} color={"gray.400"}></Icon>
+                  </InputLeftElement>
 
                   <Input
-                  type={"time"}
+                    type={"time"}
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Opens At:"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                    
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="opensat"
                     {...register("timeRange.from", {
-                      required: "Opening hour is required",                      
+                      required: "Opening hour is required",
                     })}
                   />
                 </InputGroup>
@@ -201,26 +186,22 @@ const CreateBranchOffice = () => {
                 </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiClock} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiClock} color={"gray.400"}></Icon>
+                  </InputLeftElement>
 
                   <Input
-                  type={"time"}
+                    type={"time"}
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Closes At:"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                  
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="closesat"
                     name="closesat"
                     {...register("timeRange.to", {
-                      required: "Opening hour is required",                     
+                      required: "Opening hour is required",
                     })}
                   />
                 </InputGroup>
@@ -229,21 +210,17 @@ const CreateBranchOffice = () => {
                 </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiUsers} color={"gray.400"}></Icon>}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiUsers} color={"gray.400"}></Icon>
+                  </InputLeftElement>
 
                   <Input
                     type="number"
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Max capacity"
                     _placeholder={{ color: "gray.500" }}
-                    borderColor={"gray.200"}                    
+                    borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="capacityPerSlot"
                     {...register("capacityPerSlot", {
@@ -261,11 +238,11 @@ const CreateBranchOffice = () => {
                 <Stack alignItems={"center"} paddingTop={5}>
                   <Button
                     type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
+                    bg={colorBg}
                     color={"white"}
                     w="md"
                     _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
+                      bg: colorBg,
                     }}
                   >
                     Submit

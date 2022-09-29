@@ -33,23 +33,15 @@ const Header = () => {
   const router = useRouter();
 
   const { data: session, status } = useSession();
-  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
-
-  // const [profile, setProfile] = useState({});
+  const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading  
 
   const name = session && session.user.name;
   const role = session && session.user.role;
-  //const id = session && session.user.id;
-
-  // console.log("Session in header", session); // ver porque se consologuea cada vez que se escribe en el login
-
-  // useEffect(() => {
-  //   session &&
-  //     axios.get(`/api/users/${id}`).then((profile) => {
-  //       setProfile(profile.data.data)
-  //       console.log(">>>>>-----",profile)
-  //     });
-  // }, []);
+  
+  const colorBg = useColorModeValue(
+    "brand.700",
+    "brand.600"
+  )
 
   const logoutHandler = () => signOut();
 
@@ -75,7 +67,7 @@ const Header = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue("brand.700", "brand.600")} px={6}>
+      <Box bg={colorBg} px={6}>
         <Flex h={10} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
             <Button
