@@ -17,11 +17,12 @@ import {
   Checkbox,
   Button,
   Container,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export default function BranchTable({}) {
+export default function BranchTable({ }) {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [bookings, setBookings] = useState([]);
@@ -32,7 +33,7 @@ export default function BranchTable({}) {
   const office = session && session.user.office;
   const role = session && session.user.role;
   const router = useRouter();
-
+  const colorBg = useColorModeValue("brand.700", "brand.600");
   useEffect(() => {
     axios
       .get(`/api/offices/${officeId}`)
@@ -65,16 +66,16 @@ export default function BranchTable({}) {
       return parseInt(p) + 1;
     });
   }
- 
-  const changeBookingStatus = (e,bookingId)=>{
+
+  const changeBookingStatus = (e, bookingId) => {
     e.preventDefault()
     const attendance = e.target.value
-    axios.put(`/api/bookings/${bookingId}`, {attendance})
-    .then(response=>response.data)
-    .catch(error=>console.log(error))
+    axios.put(`/api/bookings/${bookingId}`, { attendance })
+      .then(response => response.data)
+      .catch(error => console.log(error))
   }
 
-  
+
 
   if (!bookings) {
     return <p>Loading...</p>;
@@ -114,14 +115,14 @@ export default function BranchTable({}) {
                     <Td>
                       <Box>
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                          <Select 
-                          defaultValue={booking.attendance}
-                          onChange={(e)=>changeBookingStatus(e,booking._id)}
+                          <Select
+                            defaultValue={booking.attendance}
+                            onChange={(e) => changeBookingStatus(e, booking._id)}
                           >
                             <option>pending</option>
                             <option>present</option>
                             <option>absent</option>
-                           
+
                           </Select>
                           {/* <Checkbox size="md" colorScheme="red" defaultChecked>
                             {booking.attendance}
@@ -152,7 +153,7 @@ export default function BranchTable({}) {
           >
             Previous
           </Button>
-          {}
+          { }
           <Button
             colorScheme="teal"
             variant="solid"
@@ -173,6 +174,19 @@ export default function BranchTable({}) {
                 return <option key={index}>{index + 1}</option>;
               })}
           </select>
+        </Stack>
+        <Stack direction={"row"} alignItems={"center"} paddingTop={5}>
+          <Button
+            onClick={() => router.push("/users/operator-panel")}
+            bg={colorBg}
+            color={"white"}
+            w="md"
+            _hover={{
+              bg: colorBg,
+            }}
+          >
+            Back
+          </Button>
         </Stack>
       </Container>
     </>
