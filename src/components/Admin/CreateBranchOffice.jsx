@@ -28,10 +28,12 @@ import {
   HiAtSymbol,
   HiHome,
 } from "react-icons/hi";
+import { useRouter } from "next/router";
 
 import ModalComponent from "../common/ModalComponent/ModalComponent";
 
 const CreateBranchOffice = () => {
+  const router = useRouter();
   //States
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -90,7 +92,7 @@ const CreateBranchOffice = () => {
             p={6}
             textAlign={"center"}
           >
-            <Stack spacing={3}>
+            <Stack alignItems={"center"} spacing={3}>
               <form onSubmit={handleSubmit(onSubmit)} color={"#000505"}>
                 <FormControl
                   isInvalid={
@@ -255,8 +257,19 @@ const CreateBranchOffice = () => {
                     {errors.capacityPerSlot && errors.capacityPerSlot.message}
                   </FormErrorMessage>
 
-                  <Stack alignItems={"center"} paddingTop={5}>
+                  <Stack direction={"row"} alignItems={"center"} paddingTop={5}>
                     <Button
+                    onClick={() => router.push("/users/adminpanel")}
+                    bg={colorBg}
+                    color={"white"}
+                    w="md"
+                    _hover={{
+                      bg: colorBg,
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <Button
                       type="submit"
                       bg={colorBg}
                       color={"white"}

@@ -17,6 +17,7 @@ import {
   Checkbox,
   Button,
   Container,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
@@ -40,7 +41,7 @@ export default function BranchTable({}) {
   const office = session && session.user.office;
   const role = session && session.user.role;
   const router = useRouter();
-
+  const colorBg = useColorModeValue("brand.700", "brand.600");
   useEffect(() => {
     axios
       .get(`/api/offices/${officeId}`)
@@ -164,8 +165,7 @@ export default function BranchTable({}) {
             onClick={handlePrevious}
           >
             Previous
-          </Button>
-          {}
+          </Button>        
           <Button
             colorScheme="teal"
             variant="solid"
@@ -186,6 +186,19 @@ export default function BranchTable({}) {
                 return <option key={index}>{index + 1}</option>;
               })}
           </select>
+        </Stack>
+        <Stack direction={"row"} alignItems={"center"} paddingTop={5}>
+          <Button
+            onClick={() => router.push("/users/operator-panel")}
+            bg={colorBg}
+            color={"white"}
+            w="md"
+            _hover={{
+              bg: colorBg,
+            }}
+          >
+            Back
+          </Button>
         </Stack>
       </Container>
     </>
