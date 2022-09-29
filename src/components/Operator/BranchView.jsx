@@ -39,7 +39,7 @@ export default function BranchTable({}) {
       .then((office) => setOfficeName(office.data.data.name))
       .then(() => {
         axios
-          .get(`http://localhost:3000/api/bookings/office/${officeId}/${page}`)
+          .get(`/api/bookings/office/${officeId}/${page}`)
           .then((response) => {
             setBookings(response.data.data.bookings);
             setPagination(response.data.data.pagination);
