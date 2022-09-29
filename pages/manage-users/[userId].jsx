@@ -13,7 +13,7 @@ const EditUserPage = () => {
   const[user, setUser] = useState({})
 
   useEffect(()=>{
-    axios.get(`http://localhost:3000/api/users/${userId}`).then(response=>setUser(response.data.data))
+    axios.get(`/api/users/${userId}`).then(response=>setUser(response.data.data))
   },[])
 
    
