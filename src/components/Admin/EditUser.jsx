@@ -23,6 +23,8 @@ import {
 import { HiUser, HiMail } from "react-icons/hi";
 
 const EditUser = ({ user }) => {
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const {
     register,
     handleSubmit,
@@ -112,19 +114,15 @@ const EditUser = ({ user }) => {
               >
                 <Stack spacing={3}>
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
                       defaultValue={user.name}
                       placeholder="name"
                       _placeholder={{ color: "gray.500" }}
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       borderColor={"gray.200"}
                       errorBorderColor="none"
                       {...register("name", {
@@ -137,19 +135,15 @@ const EditUser = ({ user }) => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
                       defaultValue={user.lastname}
                       placeholder="lastname"
                       _placeholder={{ color: "gray.500" }}
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       borderColor={"gray.200"}
                       errorBorderColor="none"
                       {...register("lastname", {
@@ -162,20 +156,16 @@ const EditUser = ({ user }) => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
                       defaultValue={user.dni}
                       placeholder="DNI"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       errorBorderColor="none"
                       {...register("dni", {
                         required: "DNI is required",
@@ -190,10 +180,9 @@ const EditUser = ({ user }) => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiMail} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       type="email"
                       variant="flushed"
@@ -201,10 +190,7 @@ const EditUser = ({ user }) => {
                       placeholder="email address"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       errorBorderColor="none"
                       {...register("email", {
                         required: "E-mail is required",
@@ -247,11 +233,11 @@ const EditUser = ({ user }) => {
                 <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
                   <Button
                     type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
+                    bg={colorBg}
                     color={"white"}
                     w="full"
                     _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
+                      bg: colorBg,
                     }}
                   >
                     Save

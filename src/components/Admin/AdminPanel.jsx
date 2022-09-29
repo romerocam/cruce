@@ -23,6 +23,11 @@ const AdminPanel = () => {
   const lastname = session && session.user.lastname;
   const role = session && session.user.role;
 
+  const colorBg = useColorModeValue(
+    "brand.700",
+    "brand.600"
+  )
+
   return (
     <>
       <Container maxW={"7xl"} position={"relative"}>
@@ -71,11 +76,11 @@ const AdminPanel = () => {
             </Text>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
               <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
+                bg={colorBg}
                 color={"white"}
                 w="full"
                 _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
+                  bg: colorBg,
                 }}
                 onClick={() => {
                   router.push("/users/createbranchoffice");
@@ -86,11 +91,11 @@ const AdminPanel = () => {
             </Stack>
             <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
               <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
+                bg={colorBg}
                 color={"white"}
                 w="full"
                 _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
+                  bg: colorBg,
                 }}
                 onClick={() => {
                   router.push("/offices");
@@ -102,11 +107,11 @@ const AdminPanel = () => {
 
             <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
               <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
+                bg={colorBg}
                 color={"white"}
                 w="full"
                 _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
+                  bg: colorBg,
                 }}
                 onClick={() => {
                   router.push("/manage-users");
