@@ -53,8 +53,7 @@ export default async function handler(req, res) {
 
     case "POST": // crear Booking:
       try {
-        //const newId = await Booking.estimatedDocumentCount() + 1;
-        //console.log("ID", newId)
+        //const newId = await Booking.estimatedDocumentCount() + 1;        
 
         /*** Validation to ensure there are available slots before posting the booking ***/
         // 1st step: Get max capacity of the selected slot, per selected office, per selected date
