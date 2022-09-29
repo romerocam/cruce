@@ -11,24 +11,24 @@ export default function MyAppointments() {
     </Layout>
   )
 }
-// export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {
 
-//   // console.log("CONTEXT", context)
+  // console.log("CONTEXT", context)
 
-//   const session = await getSession({ req: context.req })
+  const session = await getSession({ req: context.req })
 
-//   //console.log("SESSION", session)
+  //console.log("SESSION", session)
 
-//   if (session === null || session.user.role === "customer") {
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       }
-//     }
-//   }
-//   return {
-//     props: { session }
-//   }
+  if (session === null || session.user.role !== "operator") {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+  return {
+    props: { session }
+  }
 
-// }
+}

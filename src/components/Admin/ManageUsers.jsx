@@ -26,7 +26,7 @@ export default function ManageUsers() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/users?page=${page}`)
+      .get(`/api/users?page=${page}`)
       .then((response) => {
         setUsers(response.data.data.users)
         setPagination(response.data.data.pagination);

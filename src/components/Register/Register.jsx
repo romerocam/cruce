@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React from "react";
 import axios from "axios";
 //react
@@ -24,6 +23,8 @@ import {
 import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 
 const Register = () => {
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const {
     register,
     handleSubmit,
@@ -33,7 +34,6 @@ const Register = () => {
   const router = useRouter();
 
   const onSubmit = (formData) => {
-    console.log("esta es la form data", formData);
     formData.name = formData.name.replace(/\s+/g, " ");
     formData.lastname = formData.lastname.replace(/\s+/g, " ");
     formData.address = formData.address.replace(/\s+/g, " ");
@@ -60,7 +60,7 @@ const Register = () => {
             textAlign={"center"}
           >
             <Avatar
-              bg={useColorModeValue("brand.700", "brand.600")}
+              bg={colorBg}
               size={"xl"}
               alt={"Avatar Alt"}
               mb={4}
@@ -79,30 +79,27 @@ const Register = () => {
                     errors.confirmpassword
                   }
                   textColor={"black"}
-                marginY={"2vh"}
+                  marginY={"2vh"}
                 >
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="name"
                       _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}                      
+                      borderColor={"gray.200"}
                       errorBorderColor="none"
                       id="name"
                       {...register("name", {
                         required: "Name is required",
                         pattern: {
-                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                          message: 'Exceeded character limit or special characters' 
-                        }
+                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,
+                          message:
+                            "Exceeded character limit or special characters",
+                        },
                       })}
                     />
                   </InputGroup>
@@ -112,27 +109,24 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="lastname"
                       _placeholder={{ color: "gray.500" }}
-                      borderColor={"gray.200"}                      
+                      borderColor={"gray.200"}
                       errorBorderColor="none"
                       id="lastname"
                       {...register("lastname", {
                         required: "Last Name is required",
                         pattern: {
-                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,                        
-                          message: 'Exceeded character limit or special characters' 
-                        }
+                          value: /^(?!\s*$)[-a-zA-Z,.'' ']{1,40}$/,
+                          message:
+                            "Exceeded character limit or special characters",
+                        },
                       })}
                     />
                   </InputGroup>
@@ -142,33 +136,29 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
-                     type="Number"
-                     variant="flushed"
-                     focusBorderColor={useColorModeValue(
-                       "brand.700",
-                       "brand.600"
-                     )}
-                     placeholder="DNI"
-                     _placeholder={{ color: "gray.500" }}
-                     borderColor={"gray.200"}                     
-                     errorBorderColor="none"
-                     id="dni"
-                     {...register("dni", {
-                       required: "DNI is required",
-                       minLength: {
-                         value: 8,
-                         message: "Please enter 8 digits",
-                       },
-                       maxLength: {
-                         value: 8,
-                         message: "Please enter 8 digits",
-                       },                     
-                     })}
+                      type="Number"
+                      variant="flushed"
+                      focusBorderColor={colorBg}
+                      placeholder="DNI"
+                      _placeholder={{ color: "gray.500" }}
+                      borderColor={"gray.200"}
+                      errorBorderColor="none"
+                      id="dni"
+                      {...register("dni", {
+                        required: "DNI is required",
+                        minLength: {
+                          value: 8,
+                          message: "Please enter 8 digits",
+                        },
+                        maxLength: {
+                          value: 8,
+                          message: "Please enter 8 digits",
+                        },
+                      })}
                     />
                   </InputGroup>
 
@@ -177,16 +167,12 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiUser} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiUser} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Address"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -196,9 +182,10 @@ const Register = () => {
                       {...register("address", {
                         required: "Address is required",
                         pattern: {
-                          value: /^[a-zA-Z0-9\s,'#/-]*$/,                        
-                          message: 'Exceeded character limit or special characters' 
-                        }
+                          value: /^[a-zA-Z0-9\s,'#/-]*$/,
+                          message:
+                            "Exceeded character limit or special characters",
+                        },
                       })}
                     />
                   </InputGroup>
@@ -208,17 +195,13 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiMail} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       type="email"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="E-mail"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -228,9 +211,10 @@ const Register = () => {
                       {...register("email", {
                         required: "E-mail is required",
                         pattern: {
-                          value: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,                        
-                          message: 'Enter a valid email' 
-                        }
+                          value:
+                            /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                          message: "Enter a valid email",
+                        },
                       })}
                     />
                   </InputGroup>
@@ -240,17 +224,13 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       type="password"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -273,17 +253,13 @@ const Register = () => {
                   </FormErrorMessage>
 
                   <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<Icon as={HiLockClosed} color={"gray.400"}></Icon>}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                    </InputLeftElement>
                     <Input
                       type="password"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Confirm Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -304,11 +280,11 @@ const Register = () => {
                   <Stack alignItems={"center"} paddingTop={5}>
                     <Button
                       type="submit"
-                      bg={useColorModeValue("brand.700", "brand.600")}
+                      bg={colorBg}
                       color={"white"}
                       w="md"
                       _hover={{
-                        bg: useColorModeValue("brand.600", "brand.700"),
+                        bg: colorBg,
                       }}
                       disabled={!isValid}
                     >

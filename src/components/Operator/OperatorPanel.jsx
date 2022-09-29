@@ -19,6 +19,8 @@ const OperatorPanel = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading"; // ver de sacarlo si no usamos un mensaje de loading
 
+  const colorBg = useColorModeValue("brand.700", "brand.600");
+
   const name = session && session.user.name;
   const lastname = session && session.user.lastname;
   const role = session && session.user.role;
@@ -69,14 +71,14 @@ const OperatorPanel = () => {
             >
               {role}
             </Text>
-      
+
             <Stack spacing={6} direction={["column", "row"]} paddingTop={20}>
               <Button
-                bg={useColorModeValue("brand.700", "brand.600")}
+                bg={colorBg}
                 color={"white"}
                 w="full"
                 _hover={{
-                  bg: useColorModeValue("brand.600", "brand.700"),
+                  bg: colorBg,
                 }}
                 onClick={() => {
                   router.push("/users/branch-view");
@@ -85,7 +87,6 @@ const OperatorPanel = () => {
                 View Bookings
               </Button>
             </Stack>
-            
           </Box>
         </Center>
       </Container>

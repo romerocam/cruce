@@ -20,7 +20,7 @@ UID:1664223413890-64116@ical.marudot.com
 DTSTART;TZID=America/Argentina/Buenos_Aires:20220927T120000
 DTEND;TZID=America/Argentina/Buenos_Aires:20220927T121500
 SUMMARY:Prueba
-URL:localhost:3000
+URL:https://cruce-bookingapp.vercel.app/
 DESCRIPTION:Aca va la descripcion
 LOCATION:av montes de oca 100
 BEGIN:VALARM

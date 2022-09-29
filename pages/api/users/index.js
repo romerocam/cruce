@@ -27,7 +27,9 @@ export default async function handler(req, res) {
         const session = await getSession({ req: req });
         console.log("session:", session)
         if (!session) res.status(401).json({ title: `Get Users`, message: 'Not Authenticated!' }); // return implicito
-        if (session.user.role === 'customer') res.status(403).json({ title: `Get Users`, message: 'Forbidden' }); // return implicito
+        if (session.user.role === 'customer') res.status(403).json({ title: `Get Users`, message: 'Forbidden' });
+        
+        // return implicito
         const skip = (pages - 1) * usersPerPage;
         const countPromise = User.estimatedDocumentCount(); 
 

@@ -38,6 +38,11 @@ const ChangePassword = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const handleClickShowConfirm = () => setShowConfirm(!showConfirm);
 
+  const colorBg = useColorModeValue(
+    "brand.700",
+    "brand.600"
+  )
+
   const { data: session, status } = useSession();
 
   const name = session && session.user.name;
@@ -136,10 +141,7 @@ const ChangePassword = () => {
                   <InputGroup marginY={"1vh"} size="md">
                     <Input id="newPassword"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="New Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -166,10 +168,7 @@ const ChangePassword = () => {
                   <InputGroup marginY={"1vh"} size="md">
                     <Input id="confirmPassword"
                       variant="flushed"
-                      focusBorderColor={useColorModeValue(
-                        "brand.700",
-                        "brand.600"
-                      )}
+                      focusBorderColor={colorBg}
                       placeholder="Confirm New Password"
                       _placeholder={{ color: "gray.500" }}
                       borderColor={"gray.200"}
@@ -194,11 +193,11 @@ const ChangePassword = () => {
                   <Stack spacing={6} direction={["column", "row"]} paddingTop={5}>
                     <Button
                       type="submit"
-                      bg={useColorModeValue("brand.700", "brand.600")}
+                      bg={colorBg}
                       color={"white"}
                       w="full"
                       _hover={{
-                        bg: useColorModeValue("brand.600", "brand.700"),
+                        bg: colorBg,
                       }}
                     >
                       Submit

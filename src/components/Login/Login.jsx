@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { useState } from "react";
 import {
   Avatar,
@@ -25,33 +24,30 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
-  const [active,setActive] = useState(false)
+  const [active, setActive] = useState(false);
 
-  //const session = await getSession({ req })
+  const colorBg = useColorModeValue("brand.700", "brand.600");
 
   const router = useRouter();
 
-  // console.log("SESSION", session);
-  // console.log("LOADING", loading);
- 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onBlur" });
 
-const onSubmit =  async (formData) => {
-  const loginResult = await signIn("credentials", {
-    redirect: false, // para que no redirija a otra pagina cuando da error el login
+  const onSubmit = async (formData) => {
+    const loginResult = await signIn("credentials", {
+      redirect: false, // para que no redirija a otra pagina cuando da error el login
 
-    // le paso las credenciales al pedido (signIn)
-    email: formData.email,
-    password: formData.password,
-  });
-  if (loginResult.ok) {
-    router.push("/users/profile-user");
-  }
-}
+      // le paso las credenciales al pedido (signIn)
+      email: formData.email,
+      password: formData.password,
+    });
+    if (loginResult.ok) {
+      router.push("/users/profile-user");
+    }
+  };
 
   return (
     <>
@@ -67,7 +63,7 @@ const onSubmit =  async (formData) => {
             textAlign={"center"}
           >
             <Avatar
-              bg={useColorModeValue("brand.700", "brand.600")}
+              bg={colorBg}
               size={"xl"}
               alt={"Avatar Alt"}
               mb={4}
@@ -80,18 +76,14 @@ const onSubmit =  async (formData) => {
                 marginY={"2vh"}
               >
                 <InputGroup marginY={"1vh"}>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<Icon as={HiMail} color={"gray.400"}></Icon>}
-                  />                          
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiMail} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
-                    variant="flushed"                    
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    variant="flushed"
+                    focusBorderColor={colorBg}
                     placeholder="email address"
-                    _placeholder={{ color: "gray.500" }}                    
+                    _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
                     errorBorderColor="none"
                     id="email"
@@ -106,24 +98,18 @@ const onSubmit =  async (formData) => {
                 </FormErrorMessage>
 
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={
-                      <Icon as={HiLockClosed} color={"gray.400"}></Icon>
-                    }
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={HiLockClosed} color={"gray.400"}></Icon>
+                  </InputLeftElement>
                   <Input
                     type="password"
                     variant="flushed"
-                    focusBorderColor={useColorModeValue(
-                      "brand.700",
-                      "brand.600"
-                    )}
+                    focusBorderColor={colorBg}
                     placeholder="Password"
                     _placeholder={{ color: "gray.500" }}
                     borderColor={"gray.200"}
                     color={"black"}
-                    errorBorderColor="none"                    
+                    errorBorderColor="none"
                     id="password"
                     {...register("password", {
                       required: "Password is required",
@@ -152,11 +138,11 @@ const onSubmit =  async (formData) => {
                 <Stack pacing={6} direction={["column", "row"]} paddingTop={2}>
                   <Button
                     type="submit"
-                    bg={useColorModeValue("brand.700", "brand.600")}
+                    bg={colorBg}
                     color={"white"}
                     w="md"
                     _hover={{
-                      bg: useColorModeValue("brand.600", "brand.700"),
+                      bg: colorBg,
                     }}
                     disabled={!isValid}
                   >
