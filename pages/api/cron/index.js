@@ -10,7 +10,7 @@ import "../../../models/User";
 
 import { bookingReminderEmail } from "../../../util/mailer";
 
-const SECRET = process.env.NEXTAUTH_SECRET
+// const SECRET = process.env.NEXTAUTH_SECRET
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
