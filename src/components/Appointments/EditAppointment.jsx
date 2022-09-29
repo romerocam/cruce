@@ -73,7 +73,7 @@ export default function EditAppointment({ booking }) {
       url: "/api/bookings",
     })
       .then((response) => {
-        console.log("created booking", response.data)
+        console.log("created booking", response.data);
         axios
           .delete(`/api/bookings/${booking._id}`)
           .then((response) => {
@@ -82,7 +82,7 @@ export default function EditAppointment({ booking }) {
           .catch((error) => console.log(error));
       })
       .then(() => {
-        alert("Your appointment has been modified successfully!")
+        alert("Your appointment has been modified successfully!");
         router.push("/users/my-appointments");
       })
       .catch((error) => console.log(error));
@@ -262,7 +262,8 @@ export default function EditAppointment({ booking }) {
                       </AlertDialogHeader>
 
                       <AlertDialogBody>
-                        Are you sure? You can't undo this action afterwards.
+                        Are you sure? You can&apos;t undo this action
+                        afterwards.
                       </AlertDialogBody>
 
                       <AlertDialogFooter>
