@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
+  const [active,setActive] = useState(false)
 
   //const session = await getSession({ req })
 
@@ -36,7 +37,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({ mode: "onBlur" });
 
 const onSubmit =  async (formData) => {
@@ -74,7 +75,7 @@ const onSubmit =  async (formData) => {
             />
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl
-                // isInvalid={errors.email || errors.password}
+                isInvalid={errors.email || errors.password}
                 textColor={"black"}
                 marginY={"2vh"}
               >
@@ -157,6 +158,7 @@ const onSubmit =  async (formData) => {
                     _hover={{
                       bg: useColorModeValue("brand.600", "brand.700"),
                     }}
+                    disabled={!isValid}
                   >
                     Submit
                   </Button>

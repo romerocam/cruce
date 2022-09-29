@@ -4,22 +4,30 @@
  * ***************/
 
 import { getSession } from "next-auth/react";
-
+import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
+import Office from "../../../models/Office";
+import { bookingEmail } from "../../../util/mailer"
 import connectMongo from "../../../util/dbConnect";
 import Booking from "../../../models/Booking";
-import { ObjectId } from "mongodb"; // para convertir los ids que vienen en el pedido a ObjectId de Mongo
+import User from "../../../models/User";
 
 export default async function handler(req, res) {
   const { method } = req;
   const reqBody = req.body;
   const userId = reqBody.userId;
+  const officeId = req.body.office;
+  const dateId = new Date(req.body.date);
+  const yearId = dateId.getFullYear();
+  const monthId = dateId.getMonth();
+  const dayId = dateId.getDate();
+  const startAt = req.body.startAt;
 
   // verifica que el usuario este logeado:
   const session = await getSession({ req: req });
   if (!session) res.status(401).json({ message: "Not Authenticated!" }); // return implicito
 
   await connectMongo();
-  console.log("BODY", reqBody);
+  // console.log("BODY", reqBody);
 
   switch (method) {
     case "GET": // busca todos los bookings de la db:
@@ -48,23 +56,47 @@ export default async function handler(req, res) {
         //const newId = await Booking.estimatedDocumentCount() + 1;
         //console.log("ID", newId)
 
-        const newBooking = await Booking.create({
-          //_id: newId,
-          date: reqBody.date,
-          startAt: reqBody.startAt,
-          office: ObjectId(reqBody.office),
-          user: ObjectId(reqBody.user),
-          attendance: reqBody.attendance,
-        });
-        console.log("CREATED BOOKING >>>>>", newBooking);
-        res.status(201).json({
-          success: true,
-          data: newBooking,
-          message: `Booking has been created`, //${newBooking._id}
-        });
+        /*** Validation to ensure there are available slots before posting the booking ***/
+        // 1st step: Get max capacity of the selected slot, per selected office, per selected date
+        const officeData = await Office.findOne({_id: officeId});
+        const capacityPerSelection = officeData.capacityPerSlot;
+
+        // 2nd step: Get already booked appointments on the selected slot
+        const bookedSlots = await Booking.find({office: officeId, startAt: startAt, date: dateId}).count()
+        
+        // 3rd step: Validate that the remainder is positive before posting the booking.
+        //console.log("CapacityPerSelection", capacityPerSelection);
+        //console.log("AlreadyBookedSlotsPerSelection", bookedSlots);
+
+        const remainingAppointmentsPerSlot = capacityPerSelection - bookedSlots
+
+        if (remainingAppointmentsPerSlot) {
+          const newBooking = await Booking.create({
+            //_id: newId,
+            date: reqBody.date,
+            startAt: reqBody.startAt,
+            office: ObjectId(reqBody.office),
+            user: ObjectId(reqBody.user),
+            attendance: reqBody.attendance,
+          });
+          console.log("CREATED BOOKING >>>>>", newBooking);
+  
+          const populatedNewBooking = await Booking.find({ _id: newBooking._id }).populate('office').populate('user', 'name lastname email dni')
+  
+          bookingEmail(populatedNewBooking[0], populatedNewBooking[0].user, populatedNewBooking[0].office)
+  
+          res.status(201).json({
+            success: true,
+            data: newBooking,
+            message: `Booking has been confirmed, check your email for details`, //${newBooking._id}
+          });
+        } else {
+          res.status(409).json({ success: false, message: `No remaining appointments` , title: `Create booking`})
+        }
+
       } catch (error) {
         // console.log(reqBody)
-        //console.log(error)
+        console.log(error)
         res.status(400).json({
           success: false,
           data: error,

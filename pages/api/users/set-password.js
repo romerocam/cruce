@@ -8,6 +8,7 @@ import { getSession } from "next-auth/react";
 import connectMongo from "../../../util/dbConnect";
 import { hashPassword, verifyPassword } from "../../../util/auth"
 import User from "../../../models/User";
+import { changePasswordEmail } from "../../../util/mailer";
 
 
 export default async function handler(req, res) {
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
     const session = await getSession({ req: req });
 
     if (!session) {
-        res.status(401).json({ message: 'Not Authenticated!' })
+        res.status(401).json({ title: 'Reset Password', message: 'Not Authenticated!' })
         return
     }
 
@@ -34,11 +35,11 @@ export default async function handler(req, res) {
 
         const client = await connectMongo();
 
-        const foundUser = await User.findOne({ email: userEmail })
+        const foundUser = await User.findOne({ email: userEmail }, 'name lastname email')
 
         if (!foundUser) {
 
-            res.status(404).json({ message: 'user not found!' });
+            res.status(404).json({ title: 'Reset Password', message: 'user not found!' });
             return;
             // client.close();
         }
@@ -48,8 +49,11 @@ export default async function handler(req, res) {
 
         // $set edita las propiedades que se especifiquen dentro (sino existe la crea)
         const result = await User.updateOne({ email: userEmail }, { $set: { password: newHashedPassword } })
-        console.log("RESULT", result)
-        res.status(200).json({ message: 'password updated' });
+        console.log("FOUND_USER", foundUser)
+
+        changePasswordEmail(foundUser)
+
+        res.status(200).json({ title: 'Reset Password', message: 'password updated' });
         // client.close();
 
     } catch (error) {
@@ -59,6 +63,7 @@ export default async function handler(req, res) {
             .json({
                 success: false,
                 data: error,
+                title: 'Reset Password',
                 message: 'could not update password',
             });
 

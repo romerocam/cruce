@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
     // verifica que el usuario este logeado
     const session = await getSession({ req: req });
-    if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
+    if (!session) res.status(401).json({ title: `Login`, message: 'Not Authenticated!' }); // return implicito
 
 
     await connectMongo();
@@ -43,6 +43,7 @@ export default async function handler(req, res) {
                     {
                         success: true,
                         data: foundUser,
+                        title: `Find User`,
                         message: `User ${foundUser.email} found`,
                     })
 
@@ -52,6 +53,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
+                        title: `Find User`,
                         message: `User not found`,
                     });
             }
@@ -71,7 +73,8 @@ export default async function handler(req, res) {
                             // id: newUser._id,
                             email: email,
                         },
-                        message: `User ${email} has been deleted`,
+                        title: `Delete Account`,
+                        message: `User Account ${email} has been deleted`,
                     })
                 }
             } catch (error) {
@@ -80,7 +83,8 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
-                        message: `User has not been deleted`,
+                        title: `Delete Account`,
+                        message: `Account has ${email} not been deleted`,
                     });
             }
             break;
@@ -91,7 +95,7 @@ export default async function handler(req, res) {
                 /* 
                  * User.findOneAndUpdate(filter, updateInfo, option)
                  * option = { new: true } hace que retorne el documento actualizado, por defecto
-                 * trae el anterio al update
+                 * trae el anterior al update
                  */
 
                 const updatedUser = await User.findOneAndUpdate(
@@ -121,6 +125,7 @@ export default async function handler(req, res) {
                             dni: updatedUser.dni,
                             address: updatedUser.address
                         },
+                        title: `Update Account`,
                         message: `User ${updatedUser.email} has been updated`,
                     })
             } catch (error) {
@@ -130,6 +135,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
+                        title: `Update Account`,
                         message: `User has not been updated`,
                     });
             }

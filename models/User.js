@@ -12,8 +12,9 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   dni: {
-    type: Number,
+    type: String,
     required: true,
+    unique: true,
   },
   address: {
     type: String,

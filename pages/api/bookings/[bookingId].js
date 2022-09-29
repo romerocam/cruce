@@ -8,6 +8,9 @@ import { getSession } from "next-auth/react";
 import connectMongo from "../../../util/dbConnect";
 // import { ObjectId } from "mongodb";         // para convertir el bookingId que viene por params de string a ObjectId de Mongo
 import Booking from "../../../models/Booking";
+import Office from "../../../models/Office"
+import "../../../models/User"
+import { canceledBookingEmail } from "../../../util/mailer";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -23,14 +26,14 @@ export default async function handler(req, res) {
     // verifica que el usuario este logeado:
     const session = await getSession({ req: req });
     if (!session) res.status(401).json({ message: 'Not Authenticated!' }); // return implicito
-    
+
 
     await connectMongo();
 
     switch (method) {
         case "GET": // busca el booking del bookingId pasado por params:
             try {
-                const foundBooking = await Booking.findOne({ _id: bookingId });   // ObjectId convierte el string a ObjetId de mongo
+                const foundBooking = await Booking.findOne({ _id: bookingId }).populate("office", "name address phone");   // ObjectId convierte el string a ObjetId de mongo
 
                 if (!foundBooking) res.status(404).json({ success: false, data: `Booking N° ${bookingId} does not exist` })
 
@@ -54,15 +57,23 @@ export default async function handler(req, res) {
 
         case "DELETE": // si no existe el booking responde con 409 y un mensaje, sino lo borra:
             try {
-                const existingBooking = await Booking.findOne({ _id: bookingId })
+                const existingBooking = await Booking.findOne({ _id: bookingId }).populate('office').populate('user', 'name lastname email dni')
                 if (!existingBooking) {
-                    res.status(409).json({ success: false, data: `Booking N° ${bookingId} does not exist` })
+                    res.status(409).json({ success: false, title: `Cancel Booking`, message: `Booking N° ${bookingId} does not exist` })
                 } else {
                     const data = await Booking.deleteOne({ _id: bookingId })
                     console.log("DELETED DATA >>>>>", data)
+
+                    console.log("EXISTING_BOOKING", existingBooking)
+                    console.log("USER", existingBooking.user)
+                    console.log("OFFICE", existingBooking.office)
+
+                    canceledBookingEmail(existingBooking, existingBooking.user, existingBooking.office)
+
                     res.status(200).json({
                         success: true,
                         data,
+                        title: `Cancel Booking`,
                         message: `Booking N° ${bookingId} has been deleted`,
                     })
                 }
@@ -72,6 +83,7 @@ export default async function handler(req, res) {
                     .json({
                         success: false,
                         data: error,
+                        title: `Cancel Booking`,
                         message: `Booking has not been deleted`,
                     });
             }

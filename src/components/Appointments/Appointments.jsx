@@ -3,39 +3,63 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Box,
   Center,
   Icon,
   Button,
-  useColorModeValue,
+  Stack,
+  Container,
 } from "@chakra-ui/react";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Appointments = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
-  const id = session?.user;
-
-  console.log("user ------> ", id);
-
-  const [userBooking, setUserBooking] = useState({});
+  const id = session?.user.id;
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [pagination, setPagination] = useState([]);
+  const [userBooking, setUserBooking] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/bookings`, { data: { userId: id } }).then((bookings) => {
-      setUserBooking(bookings);
+    axios.get(`/api/bookings/user/${id}/${page}`).then((response) => {
+      setUserBooking(response.data.data.foundBookingsUser);
+      setPagination(response.data.data.pagination);
     });
-  }, []);
+  }, [page]);
+  console.log("----pagination", pagination);
+  console.log("----userBooking", userBooking);
 
-  console.log("Bookings --------->", userBooking);
+  useEffect(() => {
+    if (userBooking) {
+      setPageCount(pagination.pageCount);
+    }
+  }, [userBooking]);
+  function handlePrevious() {
+    setPage((p) => {
+      if (parseInt(p) === 1) return parseInt(p);
+      return parseInt(p) - 1;
+    });
+  }
+
+  function handleNext() {
+    setPage((p) => {
+      if (parseInt(p) === pageCount) return parseInt(p);
+      return parseInt(p) + 1;
+    });
+  }
+  if (!userBooking) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -54,28 +78,48 @@ const Appointments = () => {
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th>Date</Th>
-                  <Th>Time</Th>
-                  <Th>Office</Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Date
+                  </Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Time
+                  </Th>
+                  <Th style={{ borderBottomColor: "#E0E0E0", color: "black" }}>
+                    Office
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {userBooking?.data?.data.map((bookings) => {
-                  console.log(bookings.office);
+                {userBooking?.map((bookings) => {
                   return (
                     <Tr key={bookings._id}>
-                      <Td>{bookings.date}</Td>
-                      <Td>{bookings.startAt}</Td>
-                      <Td>
-                        {bookings.office ? bookings.office.name : "--"}                        
+                      <Td style={{ borderBottomColor: "#E0E0E0" }}>
+                        {dayjs(bookings.date).format("DD/MM/YYYY")}
+                      </Td>
+                      <Td style={{ borderBottomColor: "#E0E0E0" }}>
+                        {bookings.startAt}
+                      </Td>
+                      <Td
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          borderBottomColor: "#E0E0E0",
+                        }}
+                      >
+                        <span>{bookings.office.name}</span>
                         <Button
                           marginLeft={6}
-                          //bg={useColorModeValue("brand.700", "brand.600")}
+                          bg="brand.700"
+                          _dark={{ bg: "brand.600" }}
+                          onClick={() => {
+                            router.push(
+                              `/users/my-appointments/${bookings._id}`
+                            );
+                          }}
                         >
-                          <Icon
-                            as={HiArrowNarrowRight}
-                            //color={useColorModeValue("white", "black")}
-                          />
+                          <Icon as={HiArrowNarrowRight} color="white" />
                         </Button>
                       </Td>
                     </Tr>
@@ -86,6 +130,39 @@ const Appointments = () => {
           </TableContainer>
         </Box>
       </Center>
+      <Container maxW="2xl" centerContent>
+        <Stack direction="row column" spacing={4} align="center">
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === 1}
+            onClick={handlePrevious}
+          >
+            Previous
+          </Button>
+          {}
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            disabled={page === pageCount}
+            onClick={handleNext}
+          >
+            Next ---
+          </Button>
+          <select
+            value={page}
+            onChange={(event) => {
+              setPage(event.target.value);
+            }}
+          >
+            {Array(pageCount)
+              .fill(null)
+              .map((_, index) => {
+                return <option key={index}>{index + 1}</option>;
+              })}
+          </select>
+        </Stack>
+      </Container>
     </>
   );
 };

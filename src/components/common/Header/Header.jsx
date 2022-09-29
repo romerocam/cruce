@@ -6,7 +6,7 @@ import {
   Stack,
   Button,
   Flex,
-  Text, 
+  Text,
   Menu,
   MenuButton,
   MenuList,
@@ -16,6 +16,7 @@ import {
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { BsPersonCircle } from "react-icons/bs";
 //next.js
@@ -23,6 +24,8 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Icon from "../../../assets/Icon/logo_iso-white.svg";
+import { icons } from "react-icons";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -45,7 +48,7 @@ const Header = () => {
   //     axios.get(`/api/users/${id}`).then((profile) => {
   //       setProfile(profile.data.data)
   //       console.log(">>>>>-----",profile)
-  //     });    
+  //     });
   // }, []);
 
   const logoutHandler = () => signOut();
@@ -81,7 +84,15 @@ const Header = () => {
               }}
               variant={Link}
             >
-             <Avatar/>                            
+              <div style={{ width: "40px", height: "40px", padding: "0px" }} >
+                <Image
+                  src={Icon}
+                  alt={"logo"}
+                  width={Icon.width}
+                  height={Icon.height}
+                  hovered={"red"}
+                />
+              </div>
             </Button>
           </Box>
 
@@ -128,7 +139,9 @@ const Header = () => {
                     variant={"link"}
                     cursor={"pointer"}
                     minW={0}
-                    onClick={()=>{useEffect}}
+                    onClick={() => {
+                      useEffect;
+                    }}
                   >
                     {/* <HamburgerIcon color={"black"}></HamburgerIcon> */}
                     <BsPersonCircle color="black" size="30px" />
@@ -143,7 +156,7 @@ const Header = () => {
                       />
                     </Center>
                     <Center fontWeight="bold" fontSize="xl">
-                      {name}                      
+                      {name}
                     </Center>
                     <Center fontSize="sm">{`Role: ${role}`}</Center>
                     <MenuDivider />
