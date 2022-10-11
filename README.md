@@ -33,7 +33,7 @@ First clone the repository to your local machine and run ```npm install``` to in
 Execute ```npm run dev``` and open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
 #### Log in as an Admin or Operator:
-Find below the accesses for admin and operator demo users to try all the features: <br/>
+Find below the accesses for admin and operator demo users to try all the features: <br/><br/>
 Admin:<br/>
 email: admin@mail.com<br/>
 password: 123123123<br/>
