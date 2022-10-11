@@ -25,13 +25,6 @@ This project was developed in one month as part of an internship assignment ment
 - Refactor the code.
 
 
-## Contributors
-- [Cristian Alvarez](https://github.com/Cris-Alvarez09)
-- [Juan Camilo Romero](https://github.com/romerocam)
-- [Matias Abossio](https://github.com/Agrossio)
-- [Natalia Bebebino](https://github.com/NataliaBebebino)
-- [Stanislava Berberova](https://github.com/sberberova)
-
 ## Getting Started
 ### Set up:
 First clone the repository to your local machine and run ```npm install``` to install the dependencies.
@@ -43,8 +36,15 @@ Execute ```npm run dev``` and open [http://localhost:3000](http://localhost:3000
 Find below the accesses for admin and operator demo users to try all the features: <br/>
 Admin:<br/>
 email: admin@mail.com<br/>
-password: 123123123<br/><br/>
+password: 123123123<br/>
 
 Operator:<br/>
 email: operator@mail.com<br/>
 password: 123123123<br/>
+
+## Contributors
+- [Cristian Alvarez](https://github.com/Cris-Alvarez09)
+- [Juan Camilo Romero](https://github.com/romerocam)
+- [Matias Abossio](https://github.com/Agrossio)
+- [Natalia Bebebino](https://github.com/NataliaBebebino)
+- [Stanislava Berberova](https://github.com/sberberova)
