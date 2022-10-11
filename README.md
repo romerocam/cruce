@@ -2,11 +2,10 @@
 
 ![BookingsApp](https://raw.githubusercontent.com/romerocam/cruce/main/public/calendar.png)
 
-**BookingsApp** is an online booking app.
-
 ## Description
-As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.<br/>
-As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.<br/>
+**BookingsApp** is an online booking app.<br/><br/>
+As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.<br/><br/>
+As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.<br/><br/>
 As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details.<br/> 
 
 ## Technologies
