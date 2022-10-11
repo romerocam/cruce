@@ -116,7 +116,6 @@ export default async function handler(req, res) {
 
     case "POST": // crear Booking:
       let key = `${req.body.office}_${req.body.date}_${req.body.startAt}`;
-      db.Booking.getPlanCache().clear()
       lock.acquire(
         key,
         function () {
