@@ -11,7 +11,7 @@ Main features:<br/>
 - As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details.<br/> 
 
 ## Technologies
-![Next.js](https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg)
+![Next.js](https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg)<br/>
 ***Next.js framework***.<br/>
 ⚙️ **Back-end:** Node.js, MongoDB, Mongoose, JWT, Bcrypt, NextAuth, Nodemailer, Async-lock.<br/>
 🖥️ **Front-end:** Axios, Chakra UI, React-Calendar.<br/>
