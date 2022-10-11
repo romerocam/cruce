@@ -4,14 +4,14 @@
 
 ## Description
 **BookingsApp** is an online booking app.<br/><br/>
-As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.<br/><br/>
-As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.<br/><br/>
-As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details.<br/> 
+- As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.<br/><br/>
+- As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.<br/><br/>
+- As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details.<br/> 
 
 ## Technologies
-Next.js framework<br/>
-⚙️ **- Back-end:** Node.js, MongoDB, Mongoose, JWT, Bcrypt, NextAuth, Nodemailer, Async-lock.<br/>
-🖱 **- Front-end:** Axios, Chakra UI, React-Calendar.<br/>
+***Next.js framework***.<br/>
+⚙️ **Back-end:** Node.js, MongoDB, Mongoose, JWT, Bcrypt, NextAuth, Nodemailer, Async-lock.<br/>
+🖱 **Front-end:** Axios, Chakra UI, React-Calendar.<br/>
 Project management: Trello, Figma.<br/>
 
 ## ToDos
@@ -43,34 +43,18 @@ https://lucid.app/lucidchart/09e2d921-8cad-457b-b27f-c2a0ae29b244/edit?beaconFlo
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+**Set up:**
+First clone the repository to your local machine and run ```npm install``` to install the dependencies.
 
-First, run the development server:
+**Run app:**
+Execute ```npm run dev``` and open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+**Run app:**
+Find below the accesses for admin and operator demo users to try all the features: 
+Admin:
+email: admin@mail.com
+password: 123123123
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Operator:
+email: operator@mail.com
+password: 123123123
