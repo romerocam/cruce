@@ -26,13 +26,13 @@ This project was developed in one month as part of an internship assignment ment
 
 
 ## Getting Started
-### Set up:
+#### Set up:
 First clone the repository to your local machine and run ```npm install``` to install the dependencies.
 
-### Run app:
+#### Run app:
 Execute ```npm run dev``` and open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
-### Log in as an Admin or Operator:
+#### Log in as an Admin or Operator:
 Find below the accesses for admin and operator demo users to try all the features: <br/>
 Admin:<br/>
 email: admin@mail.com<br/>
@@ -41,6 +41,9 @@ password: 123123123<br/>
 Operator:<br/>
 email: operator@mail.com<br/>
 password: 123123123<br/>
+
+#### Deployed version:
+[Link to app](https://cruce-bookingapp.vercel.app/)
 
 ## Contributors
 - [Cristian Alvarez](https://github.com/Cris-Alvarez09)
