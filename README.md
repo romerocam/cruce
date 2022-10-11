@@ -5,7 +5,7 @@
 ## Description
 This project was developed in one month as part of an internship assignment mentored by [#Plataforma5](https://www.plataforma5.la/) and [#CRUCE](https://www.e-cruce.com/). It was a very defying challenge because we had to develop it using Next.js, MongoDB and Chakra UI, all technologies that we had not studied in the first part of the bootcamp, so we had to make a deep research through the documentation before starting to code.<br/><br/>
 **BookingsApp** is an online booking app.<br/><br/>
-Main features:<br/>
+**Main features:**<br/>
 - As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.<br/><br/>
 - As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.<br/><br/>
 - As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details.<br/> 
@@ -33,13 +33,13 @@ Main features:<br/>
 - [Stanislava Berberova](https://github.com/sberberova)
 
 ## Getting Started
-# Set up:
+### Set up:
 First clone the repository to your local machine and run ```npm install``` to install the dependencies.
 
-# Run app:
+### Run app:
 Execute ```npm run dev``` and open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
-# Log in as an Admin or Operator:
+### Log in as an Admin or Operator:
 Find below the accesses for admin and operator demo users to try all the features: <br/>
 Admin:<br/>
 email: admin@mail.com<br/>
