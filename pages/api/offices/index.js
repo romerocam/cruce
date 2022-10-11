@@ -39,11 +39,15 @@ export default async function handler(req, res) {
         res.status(201).json({
           success: true,
           data: office,
+          title: `Create Branch Office`,
+          message: `Branch has been created`,
         });
       } catch (error) {
         res.status(400).json({
           success: false,
-          error: error.message,
+          data: error,
+          title: `Create Branch Office`,
+          message: `The branch has not been created`,
         });
       }
       break;

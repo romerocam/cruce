@@ -110,7 +110,8 @@ export default async function handler(req, res) {
                 // sino existe el booking responde con 404 y un mensaje:
                 if (!data) res.status(404).json({
                     success: false,
-                    message: `Booking N° ${bookingId} does not exist`
+                    message: `Booking N° ${bookingId} does not exist`,
+                    title: `Update Booking Status`,
                 })
 
                 res.status(200).json(
@@ -118,6 +119,7 @@ export default async function handler(req, res) {
                         success: true,
                         data,
                         message: `Booking N° ${data._id} has been updated!`,
+                        title: `Update Booking Status`,
                     })
             } catch (error) {
                 console.log(error)
@@ -127,6 +129,7 @@ export default async function handler(req, res) {
                         success: false,
                         data: error,
                         message: `Booking has not been updated`,
+                        title: "Update Booking Status"
                     });
             }
             break;
