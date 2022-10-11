@@ -1,3 +1,24 @@
+
+## Description
+As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.
+As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.
+As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details. 
+
+## ToDos
+- Fix mongo caché issue that enables 2 users to book the same slot if (in localhost it works correctly).
+- Improve styles.
+- Add data visualization panels.
+- Apply next.js features in all cases where we used plain react.js. 
+- Refactor the code.
+
+
+## Contributors
+- [Cristian Alvarez](https://github.com/Cris-Alvarez09)
+- [Juan Camilo Romero](https://github.com/romerocam)
+- [Matias Abossio](https://github.com/Agrossio)
+- [Natalia Bebebino](https://github.com/NataliaBebebino)
+- [Stanislava Berberova](https://github.com/sberberova)
+
 1st Demo:
 
 Slides:
