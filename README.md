@@ -1,11 +1,20 @@
+# myAppointments
+
+**myAppointments** is an online booking app.
 
 ## Description
 As a ***user*** you will be able to book appointments by selecting a branch, month and day. The days that have available slots will be colored with a greenish hue. The more slots available, the darker the green color will be. If the day is not colored, it means there are no available slots. The user will be able to modify appointments, cancel them and see their appointment history.
 As an ***operator*** you will be able to view all the appointments of the branch you manage and confirm attendance.
 As an ***administrator*** you will be able to create branches, view or edit their details, view the list of users, edit their roles (admin, branch operator or customer) or update their details. 
 
+## Technologies
+Next.js framework
+⚙️ **- Back-end:** Node.js, MongoDB, Mongoose, JWT, Bcrypt, NextAuth, Nodemailer, Async-lock.
+🖱 **- Front-end:** Axios, Chakra UI, React-Calendar.
+Project management: Trello, Figma.
+
 ## ToDos
-- Fix mongo caché issue that enables 2 users to book the same slot if (in localhost it works correctly).
+- Fix mongo caché issue that allows 2 users to book the same slot if they both have the calendar already rendered in their browsers (this is only happening in deployed version but in localhost it works correctly).
 - Improve styles.
 - Add data visualization panels.
 - Apply next.js features in all cases where we used plain react.js. 
