@@ -18,17 +18,25 @@ import {
   Button,
   Container,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export default function BranchTable({ }) {
+import ModalComponent from "../common/ModalComponent/ModalComponent";
+
+export default function BranchTable({}) {
+  //States
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [bookings, setBookings] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [officeName, setOfficeName] = useState({});
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  //Constants
   const { data: session, status } = useSession();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const officeId = session && session.user.office;
   const office = session && session.user.office;
   const role = session && session.user.role;
@@ -68,14 +76,22 @@ export default function BranchTable({ }) {
   }
 
   const changeBookingStatus = (e, bookingId) => {
-    e.preventDefault()
-    const attendance = e.target.value
-    axios.put(`/api/bookings/${bookingId}`, { attendance })
-      .then(response => response.data)
-      .catch(error => console.log(error))
-  }
-
-
+    e.preventDefault();
+    const attendance = e.target.value;
+    axios
+      .put(`/api/bookings/${bookingId}`, { attendance })
+      .then((response) => {
+        setTitle(response.data.title);
+        setMessage(response.data.message);
+        onOpen();
+        response.data;
+      })
+      .catch((error) => {
+        setTitle(error.response.data.title);
+        setMessage(error.response.data.message);
+        onOpen();
+      });
+  };
 
   if (!bookings) {
     return <p>Loading...</p>;
@@ -83,6 +99,11 @@ export default function BranchTable({ }) {
 
   return (
     <>
+      <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
       <Box>
         <Heading as="h1" size="xl" display="flex" justifyContent="center" m="4">
           {`${officeName}`}
@@ -117,22 +138,14 @@ export default function BranchTable({ }) {
                         <Stack spacing={[1, 5]} direction={["column", "row"]}>
                           <Select
                             defaultValue={booking.attendance}
-                            onChange={(e) => changeBookingStatus(e, booking._id)}
+                            onChange={(e) =>
+                              changeBookingStatus(e, booking._id)
+                            }
                           >
                             <option>pending</option>
                             <option>present</option>
                             <option>absent</option>
-
                           </Select>
-                          {/* <Checkbox size="md" colorScheme="red" defaultChecked>
-                            {booking.attendance}
-                          </Checkbox>
-                          <Checkbox size="md" colorScheme="green">
-                            Cancelled
-                          </Checkbox>
-                          <Checkbox size="md" colorScheme="orange">
-                            Attended
-                          </Checkbox> */}
                         </Stack>
                       </Box>
                     </Td>
@@ -152,8 +165,7 @@ export default function BranchTable({ }) {
             onClick={handlePrevious}
           >
             Previous
-          </Button>
-          { }
+          </Button>        
           <Button
             colorScheme="teal"
             variant="solid"

@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 
 /**
-Source: https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/utils/dbConnect.js 
+Source: https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/lib/dbConnect.js 
 **/
 
 const MONGODB_URI = process.env.MONGODB_URI;

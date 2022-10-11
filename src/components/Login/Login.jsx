@@ -13,6 +13,7 @@ import {
   Container,
   useColorModeValue,
   Icon,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -21,13 +22,19 @@ import { HiMail, HiLockClosed } from "react-icons/hi";
 //react
 import { useForm } from "react-hook-form";
 
+import ModalComponent from "../common/ModalComponent/ModalComponent";
+
 const Login = () => {
+  //States
+  const [active, setActive] = useState(false);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
+  //Constants
   const { data: session, status } = useSession();
   const loading = status === "loading";
-  const [active, setActive] = useState(false);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const colorBg = useColorModeValue("brand.700", "brand.600");
-
   const router = useRouter();
 
   const {
@@ -45,12 +52,22 @@ const Login = () => {
       password: formData.password,
     });
     if (loginResult.ok) {
+      console.log("------------------->>>", loginResult);
       router.push("/users/profile-user");
+    } else {
+        setTitle(loginResult.error.split("/")[0]);
+        setMessage(loginResult.error.split("/")[1]);
+        onOpen();      
     }
   };
 
   return (
     <>
+    <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box

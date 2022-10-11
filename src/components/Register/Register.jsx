@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 //react
 import { useForm } from "react-hook-form";
@@ -19,10 +19,19 @@ import {
   InputGroup,
   InputLeftElement,
   Icon,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { HiUser, HiMail, HiLockClosed } from "react-icons/hi";
 
+import ModalComponent from "../common/ModalComponent/ModalComponent";
+
 const Register = () => {
+  //States
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
+  //Constants
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const colorBg = useColorModeValue("brand.700", "brand.600");
 
   const {
@@ -39,15 +48,24 @@ const Register = () => {
     formData.address = formData.address.replace(/\s+/g, " ");
     axios
       .post("/api/users", formData)
-      .then((response) => {
+      .then((response) => {        
         router.push("/users/login");
         return response.data;
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setTitle(error.response.data.title);
+        setMessage(error.response.data.message);
+        onOpen();
+      });
   };
 
   return (
     <>
+    <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box

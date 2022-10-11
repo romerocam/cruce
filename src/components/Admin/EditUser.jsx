@@ -19,10 +19,17 @@ import {
   Icon,
   Select,
   FormErrorMessage,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { HiUser, HiMail } from "react-icons/hi";
 
+import ModalComponent from "../common/ModalComponent/ModalComponent";
+
 const EditUser = ({ user }) => {
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const colorBg = useColorModeValue("brand.700", "brand.600");
 
   const {
@@ -50,10 +57,17 @@ const EditUser = ({ user }) => {
     console.log("la form data es", formData);
     axios
       .put(`/api/users/${userId}`, formData)
-      .then((response) =>
-        alert("The user has been updated successfully", response.data)
-      )
-      .catch((error) => error);
+      .then((response) => {        
+        setTitle(response.data.title);
+        setMessage(response.data.message);
+        onOpen();
+      })
+      .catch((error) => {
+        console.log(">>>",error);
+        setTitle(error.response.data.title);
+        setMessage(error.response.data.message);
+        onOpen();
+      });
   };
 
   if (!user.name) {
@@ -62,6 +76,11 @@ const EditUser = ({ user }) => {
 
   return (
     <>
+    <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        props={{ title, message }}
+      />
       <Container maxW={"7xl"} position={"relative"}>
         <Center py={6}>
           <Box

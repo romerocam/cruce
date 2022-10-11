@@ -112,7 +112,7 @@ export default NextAuth({
 
             if (!foundUser) {
                 // hay que usar throw err para que authorize rechace la promesa y muestre un msg(por defecto redirije a otra pagina)
-                throw new Error('No user found!')
+                throw new Error("Log In/No user found!")
             }
 
             // comparamos el password ingresado en el form con el de la db:
